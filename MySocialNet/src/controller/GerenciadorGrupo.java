@@ -7,7 +7,7 @@ import java.util.List;
 
 import beans.ContaUsuario;
 
-public class GerenciadorContas implements Gerenciavel {
+public class GerenciadorGrupo implements Gerenciavel {
 
 	@Override
 	public void adicionar() {
