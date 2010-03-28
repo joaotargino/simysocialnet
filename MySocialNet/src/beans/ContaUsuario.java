@@ -1,5 +1,6 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContaUsuario {
@@ -8,8 +9,21 @@ public class ContaUsuario {
 	public String dataNascimento;
 	public String senha;
 	public String email;
-	public List<ContaUsuario> amigos;
+//	public List<ContaUsuario> amigos;
 	public List<Grupo> grupos;
+	
+	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
+		if(Util.verificaString(nome)) {
+			this.nome = nome;
+		}
+		if(Util.verificaString(sobrenome)) {
+			this.sobrenome = sobrenome;
+		}
+		this.dataNascimento = dataNascimento;
+		this.senha = senha;
+		//TODO criar a comparação se o email eh valido 
+		this.email = email;
+	}
 	
 	public String getNome() {
 		return nome;
@@ -42,10 +56,11 @@ public class ContaUsuario {
 		this.email = email;
 	}
 	public List<ContaUsuario> getAmigos() {
+		List<ContaUsuario> amigos = new ArrayList<ContaUsuario>();
+		for (Grupo grupo : grupos) {
+			amigos.addAll(grupo.getUsuarios());
+		}
 		return amigos;
-	}
-	public void setAmigos(List<ContaUsuario> amigos) {
-		this.amigos = amigos;
 	}
 	public List<Grupo> getGrupos() {
 		return grupos;
@@ -53,4 +68,6 @@ public class ContaUsuario {
 	public void setGrupos(List<Grupo> grupos) {
 		this.grupos = grupos;
 	}
+	
+	
 }
