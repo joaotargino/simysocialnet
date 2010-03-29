@@ -10,5 +10,13 @@ public class Util {
 		}
 		return true;
 	}
+	
+	public static boolean verificaEmail(String texto) {
+		return true;
+	}
+	
+	public static boolean verificaData(String texto) {
+		return true;
+	}
 
 }

@@ -19,10 +19,14 @@ public class ContaUsuario {
 		if(Util.verificaString(sobrenome)) {
 			this.sobrenome = sobrenome;
 		}
-		this.dataNascimento = dataNascimento;
+		if(Util.verificaData(dataNascimento)) {
+			this.dataNascimento = dataNascimento;
+		}
 		this.senha = senha;
-		//TODO criar a comparação se o email eh valido 
-		this.email = email;
+		if(Util.verificaEmail(email)) {
+			this.email = email;
+		}
+		//TODO criar as exceções
 	}
 	
 	public String getNome() {
