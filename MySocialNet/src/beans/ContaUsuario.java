@@ -11,9 +11,9 @@ public class ContaUsuario {
 	private String dataNascimento;
 	private String senha;
 	private String email;
-//	public List<ContaUsuario> amigos;
+	//	public List<ContaUsuario> amigos;
 	private List<Grupo> grupos;
-	
+
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
 		if(Util.verificaString(nome)) {
 			this.nome = nome;
@@ -30,18 +30,22 @@ public class ContaUsuario {
 		}
 		//TODO criar as exceções
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNome(String nome) throws Exception {
+		if (Util.verificaString(nome)) {
+			this.nome = nome;
+		}
 	}
 	public String getSobrenome() {
 		return sobrenome;
 	}
-	public void setSobrenome(String sobrenome) {
-		this.sobrenome = sobrenome;
+	public void setSobrenome(String sobrenome) throws Exception {
+		if (Util.verificaString(sobrenome)) {
+			this.sobrenome = sobrenome;
+		}
 	}
 	public String getDataNascimento() {
 		return dataNascimento;
@@ -74,6 +78,6 @@ public class ContaUsuario {
 	public void setGrupos(List<Grupo> grupos) {
 		this.grupos = grupos;
 	}
-	
-	
+
+
 }
