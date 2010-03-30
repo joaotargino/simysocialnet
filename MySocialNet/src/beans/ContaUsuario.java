@@ -50,7 +50,7 @@ public class ContaUsuario {
 	public String getDataNascimento() {
 		return dataNascimento;
 	}
-	public void setDataNascimento(String dataNascimento) {
+	public void setDataNascimento(String dataNascimento) throws Exception {
 		if(Util.verificaData(dataNascimento)) {
 			this.dataNascimento = dataNascimento;
 		}
@@ -64,7 +64,7 @@ public class ContaUsuario {
 	public String getEmail() {
 		return email;
 	}
-	public void setEmail(String email) {
+	public void setEmail(String email) throws Exception {
 		if (Util.verificaEmail(email)) {
 			this.email = email;
 		}
