@@ -19,7 +19,14 @@ public class Util {
 		return true;
 	}
 	
-	public static boolean verificaSenha(String senha) {
+	public static boolean verificaSenha(String senha) throws Exception {
+		
+		if (senha == null) throw new Exception("Senha null");
+		else if (senha.isEmpty()) throw new Exception("Senha vazia");
+		else if (senha.trim().isEmpty()) throw new Exception ("Senha só com espaço");
+		
+		if (senha.length() < 6) return false;
+		
 		return true;
 	}
 	
