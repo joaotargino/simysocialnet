@@ -24,8 +24,7 @@ public class Util {
 	public static boolean verificaData(String texto) {
 		String expression = "/^((([0][1-9]|[12][0-9])02(19|20)([13579][26]|" +
 				"[02468][048]))|(([0][1-9]|[12][0-8])02(19|20)([02468][12356]|[13579][13579]))|" +
-				"((([0][1-9]|[12][0-9]|30)(0[469]|11)|([0][1-9]|[12][0-9]|3[01])(0[13578]|1[02]))" +
-				"((19|20)[0-9][0-9])))$/";
+				"((([0][1-9]|[12][0-9]|30)(0[469]|11)|([0][1-9]|[12][0-9]|3[01])(0[13578]|1[02]))((19|20)[0-9][0-9])))$/";
 		Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
 		Matcher pesquisa = pattern.matcher(texto);
 		return pesquisa.matches();
