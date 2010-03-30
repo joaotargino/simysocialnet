@@ -5,7 +5,12 @@ import java.util.regex.Pattern;
 
 public class Util {
 	
-	public static boolean verificaString(String texto) {
+	public static boolean verificaString(String texto) throws Exception {
+		
+		if (texto == null) throw new Exception("String null");
+		else if (texto.isEmpty()) throw new Exception("String vazia");
+		else if (texto.trim().isEmpty()) throw new Exception ("String só com espaço");
+		
 		for (Character caractere : texto.trim().toCharArray()) {
 			if(!Character.isLetter(caractere)) {
 				return false;
