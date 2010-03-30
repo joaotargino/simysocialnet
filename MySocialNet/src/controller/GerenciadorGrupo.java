@@ -11,6 +11,7 @@ import beans.Grupo;
 public class GerenciadorGrupo implements Gerenciavel<Grupo> {
 
 	@Override
+	@Deprecated
 	public void adicionar(Grupo grupo) {
 		// TODO Auto-generated method stub
 
