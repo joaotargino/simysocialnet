@@ -51,7 +51,9 @@ public class ContaUsuario {
 		return dataNascimento;
 	}
 	public void setDataNascimento(String dataNascimento) {
-		this.dataNascimento = dataNascimento;
+		if(Util.verificaData(dataNascimento)) {
+			this.dataNascimento = dataNascimento;
+		}
 	}
 	public String getSenha() {
 		return senha;
@@ -63,7 +65,9 @@ public class ContaUsuario {
 		return email;
 	}
 	public void setEmail(String email) {
-		this.email = email;
+		if (Util.verificaEmail(email)) {
+			this.email = email;
+		}
 	}
 	public List<ContaUsuario> getAmigos() {
 		List<ContaUsuario> amigos = new ArrayList<ContaUsuario>();
