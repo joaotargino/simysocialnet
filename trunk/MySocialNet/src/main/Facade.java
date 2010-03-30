@@ -173,4 +173,8 @@ public class Facade {
 	public String listFriends(String email) {
 		return null;
 	}
+	
+	public String findNewFriend(String login, String friend) {
+		return null;
+	}
 }
