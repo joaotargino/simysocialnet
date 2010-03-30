@@ -169,4 +169,8 @@ public class Facade {
 	public void removeGroupMember(String email, String group, String user) {
 		
 	}
+	
+	public String listFriends(String email) {
+		return null;
+	}
 }
