@@ -163,6 +163,10 @@ public class Facade {
 	}
 	
 	public void addGroupMember(String email, String group, String user) {
+
+	}
+	
+	public void removeGroupMember(String email, String group, String user) {
 		
 	}
 }
