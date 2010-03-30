@@ -18,12 +18,18 @@ public class Facade {
 	/**
 	 * Loga o usuario ao sistema
 	 */
-	public void login(){}
+	public void login(){
+		
+		
+	}
 	
 	/**
 	 * Desloga o usuario do sistema
 	 */
-	public void logout() {}
+	public void logout() {
+		
+		
+	}
 	
 	/**
 	 * @return true se um usuario estiver logado, falso caso contrario
@@ -138,5 +144,13 @@ public class Facade {
 	 */
 	public void removeUserPreference (String login, String preference) {
 		
+	}
+	
+	/**
+	 * Deleta a conta do usuario
+	 * @param login
+	 */
+	public void deleteUser(String login) {
+			
 	}
 }
