@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContaUsuario {
-	public String nome;
-	public String sobrenome;
-	public String dataNascimento;
-	public String senha;
-	public String email;
+	private String nome;
+	private String sobrenome;
+	private String dataNascimento;
+	private String senha;
+	private String email;
 //	public List<ContaUsuario> amigos;
-	public List<Grupo> grupos;
+	private List<Grupo> grupos;
 	
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
 		if(Util.verificaString(nome)) {
