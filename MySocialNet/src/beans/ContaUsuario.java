@@ -3,6 +3,8 @@ package beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import Util.Util;
+
 public class ContaUsuario {
 	private String nome;
 	private String sobrenome;
