@@ -129,4 +129,14 @@ public class Facade {
 	public String listUserPreferences(String login) {
 		return null;
 	}
+	
+	/**
+	 * Remove uma preferencia do usuario
+	 * 
+	 * @param login
+	 * @param preference
+	 */
+	public void removeUserPreference (String login, String preference) {
+		
+	}
 }
