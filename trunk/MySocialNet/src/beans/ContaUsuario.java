@@ -11,14 +11,14 @@ public class ContaUsuario {
 	private String dataNascimento;
 	private String senha;
 	private String email;
-	//	public List<ContaUsuario> amigos;
+	private List<ContaUsuario> amigosPendentes;
 	private List<Grupo> grupos;
 	private String aboutMe; 
 	private String foto; 
 	private String pais; 
 	private String cidade;
-	private String sexo; 
-	
+	private String sexo;
+
 
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
 		if(Util.verificaString(nome)) {
@@ -82,6 +82,16 @@ public class ContaUsuario {
 		}
 		return amigos;
 	}
+	
+	public ContaUsuario getAmigo(String email) {
+		//TODO
+		return null;
+	}
+	
+	public void removerAmigo(String email) {
+		//TODO
+	}
+	
 	public List<Grupo> getGrupos() {
 		return grupos;
 	}
