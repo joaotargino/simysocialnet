@@ -177,4 +177,32 @@ public class Facade {
 	public String findNewFriend(String login, String friend) {
 		return null;
 	}
+	
+	public void sendFriendshipRequest(String login, String user, String message, String group) {
+		
+	}
+	
+	public String viewPendingFriendship(String login) {
+		return null;
+	}
+	
+	public String viewSentFriendship (String login) {
+		return null;
+	}
+	
+	public void declineFriendshipRequest (String login, String contact){
+		
+	}
+	
+	public void acceptFriendshipRequest (String login, String contact, String group){
+		
+	}
+	
+	public String getFriend(String email, String friend) {
+		return null;
+	}
+	
+	public void removeFriend(String login, String friend) {
+		
+	}
 }
