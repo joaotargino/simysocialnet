@@ -17,6 +17,7 @@ public class Util {
 			}
 		}
 		return true;
+		
 	}
 	
 	public static boolean verificaEmail(String texto) {
