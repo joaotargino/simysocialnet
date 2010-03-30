@@ -7,16 +7,16 @@ import java.util.List;
 
 import beans.ContaUsuario;
 
-public class GerenciadorUsuario implements Gerenciavel {
+public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 
 	@Override
-	public void adicionar() {
+	public void adicionar(ContaUsuario contaUsuario) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void remover() {
+	public void remover(ContaUsuario contaUsuario) {
 		// TODO Auto-generated method stub
 
 	}

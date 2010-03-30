@@ -6,17 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.ContaUsuario;
+import beans.Grupo;
 
-public class GerenciadorGrupo implements Gerenciavel {
+public class GerenciadorGrupo implements Gerenciavel<Grupo> {
 
 	@Override
-	public void adicionar() {
+	public void adicionar(Grupo grupo) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void remover() {
+	public void remover(Grupo grupo) {
 		// TODO Auto-generated method stub
 
 	}

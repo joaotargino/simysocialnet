@@ -1,9 +1,9 @@
 package interfaces;
 
-public interface Gerenciavel {
+public interface Gerenciavel<T> {
 	
-	public void adicionar();
+	public void adicionar(T tipoGerenciavel);
 	
-	public void remover();
+	public void remover(T tipoGerenciavel);
 
 }
