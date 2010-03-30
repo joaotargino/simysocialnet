@@ -13,6 +13,12 @@ public class ContaUsuario {
 	private String email;
 	//	public List<ContaUsuario> amigos;
 	private List<Grupo> grupos;
+	private String aboutMe; 
+	private String foto; 
+	private String pais; 
+	private String cidade;
+	private String sexo; 
+	
 
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
 		if(Util.verificaString(nome)) {
