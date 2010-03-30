@@ -1,7 +1,7 @@
 package main;
 
 /**
- * @author tellesmvn
+ * @author tellesmvn, rafael aquino
  *
  */
 public class Facade {
@@ -116,7 +116,17 @@ public class Facade {
 	 * @param preference
 	 */
 	public void addUserPreference(String login, String preference) {
-		
-		
+
+	}
+	
+	/**
+	 * Lista as preferencias do usuario
+	 * 
+	 * @param login
+	 * @return String com as preferencias separada so por virgula (nao sei se isso eh uma re-
+	 * presentacao de lista, mas como la nos testes tava como se fosse string...
+	 */
+	public String listUserPreferences(String login) {
+		return null;
 	}
 }
