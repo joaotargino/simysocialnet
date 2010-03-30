@@ -153,4 +153,16 @@ public class Facade {
 	public void deleteUser(String login) {
 			
 	}
+	
+	public String listGroupMembers(String email, String group) {
+		return null;
+	}
+	
+	public String findGroupMember(String login,String friend, String group) {
+		return null;
+	}
+	
+	public void addGroupMember(String email, String group, String user) {
+		
+	}
 }
