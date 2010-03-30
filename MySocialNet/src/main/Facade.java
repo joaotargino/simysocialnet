@@ -84,8 +84,39 @@ public class Facade {
 		
 	}
 	
-	public void setFieldPrivacy(String login, String field, String type) {
-		
+	/**
+	 * Altera a privacidade de algum campo
+	 * 
+	 * @param login
+	 * @param field
+	 * @param type
+	 */
+	public void setFieldPrivacy(String login, String field, String type) { 
 	}
 	
+	/**
+	 * Diz o que está disponivel no perfil dependendo da visibilidade, pode ocorrer os seguintes erros:
+	 * 
+	 * "Perfil inexistente"
+	 * 
+	 * @param login
+	 * @param visibility
+	 * @return Sting no formato campo(1)=valor(1),...,campo(n)=valor(n)]
+	 * 			exemplo: "photo=photo.png,aboutMe=,gender=male"
+	 */
+	public String viewProfile( String login, String visibility) {
+		return null;
+	}
+	
+	
+	/**
+	 * Adiciona uma preferencia para o usuario
+	 * 
+	 * @param login
+	 * @param preference
+	 */
+	public void addUserPreference(String login, String preference) {
+		
+		
+	}
 }
