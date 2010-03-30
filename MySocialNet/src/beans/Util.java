@@ -3,7 +3,7 @@ package beans;
 public class Util {
 	
 	public static boolean verificaString(String texto) {
-		for (Character caractere : texto.toCharArray()) {
+		for (Character caractere : texto.trim().toCharArray()) {
 			if(!Character.isLetter(caractere)) {
 				return false;
 			}
