@@ -205,4 +205,16 @@ public class Facade {
 	public void removeFriend(String login, String friend) {
 		
 	}
+	
+	public String getRecommendFriends(String login) {
+		return null;
+	}
+	
+	public void exportFriendList(String login, String fileName, String exportFields) {
+		
+	}
+	
+	public void restoreFriendList(String login, String file) {
+		
+	}
 }
