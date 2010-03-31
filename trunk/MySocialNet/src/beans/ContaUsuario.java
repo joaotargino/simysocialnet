@@ -103,6 +103,11 @@ public class ContaUsuario {
 	public void setGrupos(List<Grupo> grupos) {
 		this.grupos = grupos;
 	}
+	
+	@Override
+	public String toString() {
+		return nome + " " + sobrenome;
+	}
 
 
 }
