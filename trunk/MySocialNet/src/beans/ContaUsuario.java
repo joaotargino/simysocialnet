@@ -5,6 +5,10 @@ import java.util.List;
 
 import Util.Util;
 
+/**
+ * @author Rafael Aquino
+ *
+ */
 public class ContaUsuario {
 	private String nome;
 	private String sobrenome;
@@ -18,6 +22,7 @@ public class ContaUsuario {
 	private String pais; 
 	private String cidade;
 	private String sexo;
+	private String emailContato;
 
 
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
