@@ -15,15 +15,7 @@ public class ContaUsuario {
 	private String dataNascimento;
 	private String senha;
 	private String email;
-	private List<ContaUsuario> amigosPendentes;
 	private List<Grupo> grupos;
-	private String aboutMe; 
-	private String foto; 
-	private String pais; 
-	private String cidade;
-	private String sexo;
-	private String emailContato;
-
 
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
 		if(Util.verificaString(nome)) {
