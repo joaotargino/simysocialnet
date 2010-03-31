@@ -154,66 +154,174 @@ public class Facade {
 			
 	}
 	
+	/**
+	 * Lista os membros de um grupo
+	 * 
+	 * @param email
+	 * @param group
+	 * @return
+	 */
 	public String listGroupMembers(String email, String group) {
 		return null;
 	}
 	
+	/**
+	 * Procura um mebro de um grupo
+	 * 
+	 * @param login
+	 * @param friend
+	 * @param group
+	 * @return
+	 */
 	public String findGroupMember(String login,String friend, String group) {
 		return null;
 	}
 	
+	/**
+	 * @param email
+	 * @param group
+	 * @param user
+	 */
 	public void addGroupMember(String email, String group, String user) {
 
 	}
 	
+	/**
+	 * Remove um membro do grupo
+	 * 
+	 * @param email
+	 * @param group
+	 * @param user
+	 */
 	public void removeGroupMember(String email, String group, String user) {
 		
 	}
 	
+	/**
+	 * Listar os amigos
+	 * 
+	 * @param email
+	 * @return
+	 */
 	public String listFriends(String email) {
 		return null;
 	}
 	
+	/**
+	 * procura um novo amigo
+	 * 
+	 * @param login
+	 * @param friend
+	 * @return
+	 */
 	public String findNewFriend(String login, String friend) {
 		return null;
 	}
 	
+	/**
+	 * Envia um convite de amizade para outro usuario
+	 * 
+	 * @param login
+	 * @param user
+	 * @param message
+	 * @param group
+	 */
 	public void sendFriendshipRequest(String login, String user, String message, String group) {
 		
 	}
 	
+	/**
+	 * Ver os convites de amizade. que estão pendentes, para o usuario
+	 * 
+	 * @param login
+	 * @return
+	 */
 	public String viewPendingFriendship(String login) {
 		return null;
 	}
 	
+	/**
+	 * Ver os convites de amizade enviados 
+	 * pelo usuario que estão pendentes
+	 * 
+	 * @param login
+	 * @return
+	 */
 	public String viewSentFriendship (String login) {
 		return null;
 	}
 	
+	/**
+	 * Rejeita o convite de amizade
+	 * 
+	 * @param login
+	 * @param contact
+	 */
 	public void declineFriendshipRequest (String login, String contact){
 		
 	}
 	
+	/**
+	 * Aceita o convite de amizade
+	 * 
+	 * @param login
+	 * @param contact
+	 * @param group
+	 */
 	public void acceptFriendshipRequest (String login, String contact, String group){
 		
 	}
 	
+	/**
+	 * Pega um amigo da lista de amigos
+	 * 
+	 * @param email
+	 * @param friend
+	 * @return
+	 */
 	public String getFriend(String email, String friend) {
 		return null;
 	}
 	
+	/**
+	 * Remove um amigo da lista de amigos
+	 * 
+	 * @param login
+	 * @param friend
+	 */
 	public void removeFriend(String login, String friend) {
 		
 	}
 	
+	/**
+	 * Recomenda amigos a partir da lista de amigos 
+	 * por grau de similaridade ou se ele estiver nos 
+	 * grupos melhores amigos ou familia
+	 * 
+	 * @param login
+	 * @return
+	 */
 	public String getRecommendFriends(String login) {
 		return null;
 	}
 	
+	/**
+	 * Gera um arquivo a partir da lista de amigos com os campos passados por parametro 
+	 * 
+	 * @param login
+	 * @param fileName
+	 * @param exportFields
+	 */
 	public void exportFriendList(String login, String fileName, String exportFields) {
 		
 	}
 	
+	/**
+	 * Recupera uma lista de amigos a partir de um arquivo
+	 * 
+	 * @param login
+	 * @param file
+	 */
 	public void restoreFriendList(String login, String file) {
 		
 	}
