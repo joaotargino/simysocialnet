@@ -1,5 +1,9 @@
 package main;
 
+import java.util.List;
+
+import beans.ContaUsuario;
+
 /**
  * @author tellesmvn, rafael aquino
  *
@@ -67,7 +71,7 @@ public class Facade {
 	 * @param login - o email do usuario
 	 * @return String contendo nome e sobrenome do usuario
 	 */
-	public String getUser (String login) {
+	public ContaUsuario getUser (String login) {
 		return null;
 	}
 	
@@ -86,7 +90,7 @@ public class Facade {
 	 * @param gender
 	 * @param contactEmail
 	 */
-	public void updateUserProfile(String login, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
+	public void updateUserProfile(String login, String aboutMe, int age, String photo, String country, String city, String gender, String contactEmail) {
 		
 	}
 	
@@ -132,7 +136,7 @@ public class Facade {
 	 * @return String com as preferencias separada so por virgula (nao sei se isso eh uma re-
 	 * presentacao de lista, mas como la nos testes tava como se fosse string...
 	 */
-	public String listUserPreferences(String login) {
+	public List<String> listUserPreferences(String login) {
 		return null;
 	}
 	
@@ -161,7 +165,7 @@ public class Facade {
 	 * @param group
 	 * @return
 	 */
-	public String listGroupMembers(String email, String group) {
+	public List<ContaUsuario> listGroupMembers(String email, String group) {
 		return null;
 	}
 	
@@ -173,7 +177,7 @@ public class Facade {
 	 * @param group
 	 * @return
 	 */
-	public String findGroupMember(String login,String friend, String group) {
+	public ContaUsuario findGroupMember(String login,String friend, String group) {
 		return null;
 	}
 	
@@ -203,7 +207,7 @@ public class Facade {
 	 * @param email
 	 * @return
 	 */
-	public String listFriends(String email) {
+	public List<ContaUsuario> listFriends(String email) {
 		return null;
 	}
 	
@@ -214,7 +218,7 @@ public class Facade {
 	 * @param friend
 	 * @return
 	 */
-	public String findNewFriend(String login, String friend) {
+	public ContaUsuario findNewFriend(String login, String friend) {
 		return null;
 	}
 	
@@ -236,7 +240,7 @@ public class Facade {
 	 * @param login
 	 * @return
 	 */
-	public String viewPendingFriendship(String login) {
+	public List<ContaUsuario> viewPendingFriendship(String login) {
 		return null;
 	}
 	
@@ -247,7 +251,7 @@ public class Facade {
 	 * @param login
 	 * @return
 	 */
-	public String viewSentFriendship (String login) {
+	public List<ContaUsuario> viewSentFriendship (String login) {
 		return null;
 	}
 	
@@ -279,7 +283,7 @@ public class Facade {
 	 * @param friend
 	 * @return
 	 */
-	public String getFriend(String email, String friend) {
+	public ContaUsuario getFriend(String email, String friend) {
 		return null;
 	}
 	
@@ -301,7 +305,7 @@ public class Facade {
 	 * @param login
 	 * @return
 	 */
-	public String getRecommendFriends(String login) {
+	public List<ContaUsuario> getRecommendFriends(String login) {
 		return null;
 	}
 	
