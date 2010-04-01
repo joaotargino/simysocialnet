@@ -31,7 +31,6 @@ public class ContaUsuario {
 		if(Util.verificaEmail(email)) {
 			this.email = email;
 		}
-		//TODO criar as exceções
 	}
 
 	public String getNome() {
@@ -61,8 +60,11 @@ public class ContaUsuario {
 	public String getSenha() {
 		return senha;
 	}
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setSenha(String senha) throws Exception {
+		if(Util.verificaSenha(senha)) { 
+			this.senha = senha;
+		}
+		
 	}
 	public String getEmail() {
 		return email;
