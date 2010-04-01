@@ -4,26 +4,28 @@ import java.util.List;
 
 import beans.ContaUsuario;
 
-/**
- * @author tellesmvn, rafael aquino
- *
- */
-public class Facade {
+public class SocialNet {
 	
-	private SocialNet social = SocialNet.getInstance();
+	private static SocialNet social;
+	
+	public synchronized static SocialNet getInstance() {
+		if(social == null) {
+			social = new SocialNet();
+		}
+		return social;
+	}
 	
 	/**
 	 * Loga o usuario ao sistema
 	 */
 	public void login(){
-		social.login();
+		
 	}
 	
 	/**
 	 * Desloga o usuario do sistema
 	 */
 	public void logout() {
-		social.logout();
 		
 	}
 	
@@ -31,7 +33,7 @@ public class Facade {
 	 * @return true se um usuario estiver logado, falso caso contrario
 	 */
 	public boolean estaLogado() {
-		return social.estaLogado();
+		return true;
 	}
 	
 	/**
@@ -51,7 +53,7 @@ public class Facade {
 	 * @param passwd - a senha do usuario
 	 */
 	public void createUser(String name, String lastName, String email, String passwd) {
-		social.createUser(name, lastName, email, passwd);
+		
 	}
 	
 	/**
@@ -64,7 +66,7 @@ public class Facade {
 	 * @return String contendo nome e sobrenome do usuario
 	 */
 	public ContaUsuario getUser (String login) {
-		return social.getUser(login);
+		return null;
 	}
 	
 	/**
@@ -83,7 +85,7 @@ public class Facade {
 	 * @param contactEmail
 	 */
 	public void updateUserProfile(String login, String aboutMe, int age, String photo, String country, String city, String gender, String contactEmail) {
-		social.updateUserProfile(login, aboutMe, age, photo, country, city, gender, contactEmail);
+		
 	}
 	
 	/**
@@ -93,8 +95,7 @@ public class Facade {
 	 * @param field
 	 * @param type
 	 */
-	public void setFieldPrivacy(String login, String field, String type) {
-		social.setFieldPrivacy(login, field, type);
+	public void setFieldPrivacy(String login, String field, String type) { 
 	}
 	
 	/**
@@ -108,7 +109,7 @@ public class Facade {
 	 * 			exemplo: "photo=photo.png,aboutMe=,gender=male"
 	 */
 	public String viewProfile( String login, String visibility) {
-		return social.viewProfile(login, visibility);
+		return null;
 	}
 	
 	
@@ -119,7 +120,7 @@ public class Facade {
 	 * @param preference
 	 */
 	public void addUserPreference(String login, String preference) {
-		social.addUserPreference(login, preference);
+
 	}
 	
 	/**
@@ -130,7 +131,7 @@ public class Facade {
 	 * presentacao de lista, mas como la nos testes tava como se fosse string...
 	 */
 	public List<String> listUserPreferences(String login) {
-		return social.listUserPreferences(login);
+		return null;
 	}
 	
 	/**
@@ -140,7 +141,7 @@ public class Facade {
 	 * @param preference
 	 */
 	public void removeUserPreference (String login, String preference) {
-		social.removeUserPreference(login, preference);
+		
 	}
 	
 	/**
@@ -148,7 +149,7 @@ public class Facade {
 	 * @param login
 	 */
 	public void deleteUser(String login) {
-		social.deleteUser(login);
+			
 	}
 	
 	/**
@@ -159,7 +160,7 @@ public class Facade {
 	 * @return
 	 */
 	public List<ContaUsuario> listGroupMembers(String email, String group) {
-		return social.listGroupMembers(email, group);
+		return null;
 	}
 	
 	/**
@@ -171,7 +172,7 @@ public class Facade {
 	 * @return
 	 */
 	public ContaUsuario findGroupMember(String login,String friend, String group) {
-		return social.findGroupMember(login, friend, group);
+		return null;
 	}
 	
 	/**
@@ -180,7 +181,7 @@ public class Facade {
 	 * @param user
 	 */
 	public void addGroupMember(String email, String group, String user) {
-		social.addGroupMember(email, group, user);
+
 	}
 	
 	/**
@@ -191,7 +192,7 @@ public class Facade {
 	 * @param user
 	 */
 	public void removeGroupMember(String email, String group, String user) {
-		social.removeGroupMember(email, group, user);
+		
 	}
 	
 	/**
@@ -201,7 +202,7 @@ public class Facade {
 	 * @return
 	 */
 	public List<ContaUsuario> listFriends(String email) {
-		return social.listFriends(email);
+		return null;
 	}
 	
 	/**
@@ -212,7 +213,7 @@ public class Facade {
 	 * @return
 	 */
 	public ContaUsuario findNewFriend(String login, String friend) {
-		return social.findNewFriend(login, friend);
+		return null;
 	}
 	
 	/**
@@ -224,7 +225,7 @@ public class Facade {
 	 * @param group
 	 */
 	public void sendFriendshipRequest(String login, String user, String message, String group) {
-		social.sendFriendshipRequest(login, user, message, group);
+		
 	}
 	
 	/**
@@ -234,7 +235,7 @@ public class Facade {
 	 * @return
 	 */
 	public List<ContaUsuario> viewPendingFriendship(String login) {
-		return social.viewPendingFriendship(login);
+		return null;
 	}
 	
 	/**
@@ -245,7 +246,7 @@ public class Facade {
 	 * @return
 	 */
 	public List<ContaUsuario> viewSentFriendship (String login) {
-		return social.viewSentFriendship(login);
+		return null;
 	}
 	
 	/**
@@ -255,7 +256,7 @@ public class Facade {
 	 * @param contact
 	 */
 	public void declineFriendshipRequest (String login, String contact){
-		social.declineFriendshipRequest(login, contact);
+		
 	}
 	
 	/**
@@ -266,7 +267,7 @@ public class Facade {
 	 * @param group
 	 */
 	public void acceptFriendshipRequest (String login, String contact, String group){
-		social.acceptFriendshipRequest(login, contact, group);
+		
 	}
 	
 	/**
@@ -277,7 +278,7 @@ public class Facade {
 	 * @return
 	 */
 	public ContaUsuario getFriend(String email, String friend) {
-		return social.getFriend(email, friend);
+		return null;
 	}
 	
 	/**
@@ -287,7 +288,7 @@ public class Facade {
 	 * @param friend
 	 */
 	public void removeFriend(String login, String friend) {
-		social.removeFriend(login, friend);
+		
 	}
 	
 	/**
@@ -299,7 +300,7 @@ public class Facade {
 	 * @return
 	 */
 	public List<ContaUsuario> getRecommendFriends(String login) {
-		return social.getRecommendFriends(login);
+		return null;
 	}
 	
 	/**
@@ -310,7 +311,7 @@ public class Facade {
 	 * @param exportFields
 	 */
 	public void exportFriendList(String login, String fileName, String exportFields) {
-		social.exportFriendList(login, fileName, exportFields);
+		
 	}
 	
 	/**
@@ -320,6 +321,6 @@ public class Facade {
 	 * @param file
 	 */
 	public void restoreFriendList(String login, String file) {
-		social.restoreFriendList(login, file);
+		
 	}
 }
