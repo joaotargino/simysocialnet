@@ -16,7 +16,8 @@ public class ContaUsuario {
 	private String senha;
 	private String email;
 	private List<Grupo> grupos;
-
+	private List<ContaUsuario> amigos;
+	
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
 		if(Util.verificaString(nome)) {
 			this.nome = nome;
@@ -75,20 +76,39 @@ public class ContaUsuario {
 		}
 	}
 	public List<ContaUsuario> getAmigos() {
-		List<ContaUsuario> amigos = new ArrayList<ContaUsuario>();
-		for (Grupo grupo : grupos) {
-			amigos.addAll(grupo.getUsuarios());
+		if(amigos == null) {
+			return populaListaAmigos();
 		}
-		return amigos;
+		return this.amigos;
 	}
 	
-	public ContaUsuario getAmigo(String email) {
-		//TODO
-		return null;
+	public ContaUsuario getAmigo(String email) throws Exception {
+		if(amigos == null) {
+			populaListaAmigos();
+		}
+		for (ContaUsuario usuario : this.amigos) {
+			if(usuario.getEmail().equals(email)) {
+				return usuario;
+			}
+		}
+		throw new Exception("Amigo não encontrado");
 	}
 	
-	public void removerAmigo(String email) {
-		//TODO
+	public void removerAmigo(String email) throws Exception {
+		for (Grupo grupo : this.grupos) {
+			for (ContaUsuario usuario : grupo.getUsuarios()) {
+				if(usuario.getEmail().equals(email)){
+					grupo.getUsuarios().remove(usuario);
+					populaListaAmigos();
+				}
+			}
+		}
+		throw new Exception("Amigo não encontrado");
+		
+	}
+	
+	public void adiconarAmigo(ContaUsuario amigo, Grupo grupo) {
+		
 	}
 	
 	public List<Grupo> getGrupos() {
@@ -102,6 +122,12 @@ public class ContaUsuario {
 	public String toString() {
 		return nome + " " + sobrenome;
 	}
-
+	
+	private List<ContaUsuario> populaListaAmigos() {
+		for (Grupo grupo : grupos) {
+			this.amigos.addAll(grupo.getUsuarios());
+		}
+		return this.amigos;
+	}
 
 }
