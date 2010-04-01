@@ -1,0 +1,37 @@
+# Teste de aceitação para a US 08 - Importar lista de amigos
+# Criador: Daniel Bruno
+
+clean
+
+createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
+createUser name="Fulano" lastName="de Tal" email="xpto@email.com" passwd="123456"
+createUser name="Sicrano" lastName="Silva" email="xpto123@email.com" passwd="123456"
+createUser name="Beltrano" lastName="Santos" email="xpto123456@email.com" passwd="123456"
+
+ExpectError "Login inexistente" restoreFriendList login="suport@email.com" file="export/exported1.csv"
+ExpectError "Usuário não logado" restoreFriendList login="dev@email.com" file="export/exported1.csv"
+login email="dev@email.com" senha="123456"
+ExpectError "Arquivo não encontrado" restoreFriendList login="dev@email.com" fileName="w:/export/exported1.csv"
+ExpectError "Arquivo não encontrado" restoreFriendList login="dev@email.com" fileName="../export/exported1.csv"
+restoreFriendList login="dev@email.com" file="export/exported1.csv"
+Expect "" listFriends login="dev@email.com"
+Expect "xpto@email.com,xpto123@email.com" viewSentFriendship login="dev@email.com"
+logoff email="dev@email.com"
+
+login email="xpto@email.com" senha="123456"
+Expect "John Doe <dev@email.com> - mensagem: Olá, xpto@email.com me adicione como seu amigo." viewPendingFriendship login="xpto@email.com"
+logoff email="xpto@email.com"
+
+login email="xpto123@email.com" senha="123456"
+Expect "John Doe <dev@email.com> - mensagem: Olá, xpto123@email.com me adicione como seu amigo." viewPendingFriendship login="xpto123@email.com"
+Expect "" listFriends login="xpto123@email.com"
+acceptFriendshipRequest login="xpto123@email.com" contact="dev@email.com" group="familia"
+Expect "John Doe" listFriends login="xpto123@email.com"
+logoff email="xpto123@email.com"
+
+login email="dev@email.com" senha="123456"
+Expect "Sicrano Silva" listFriends login="dev@email.com"
+restoreFriendList login="dev@email.com" file="export/exported2.csv"
+Expect "Sicrano Silva" listFriends login="dev@email.com"
+Expect "xpto@email.com" viewSentFriendship login="dev@email.com"
+logoff email="dev@email.com"

@@ -1,0 +1,20 @@
+# Testes de aceitação para a US 03 - Realizar Logoff
+# Criador: Daniel Bruno
+
+#####Remover dados anteriores do sistema
+clean
+
+#Cadastro de Usuário
+createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
+
+#Logoff
+expectError "Login inválido" logoff email="xpto@email.com"
+expectError "Usuário não logado" logoff email="dev@email.com"
+
+#Login
+login email="dev@email.com" senha="123456"
+
+#Logoff
+expectError "Login inválido" logoff email="xpto@email.com"
+logoff email="dev@email.com"
+expectError "Usuário não logado" logoff email="dev@email.com"

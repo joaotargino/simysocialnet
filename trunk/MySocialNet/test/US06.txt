@@ -1,0 +1,144 @@
+# Teste de aceita√ß√£o para a US 06 - Recomendar novos amigos
+# Criador: Daniel Bruno
+
+#####Remover dados anteriores do sistema
+clean
+
+#Cadastro de Usu√°rio
+
+createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
+createUser name="Fulano" lastName="de Tal" email="xpto@email.com" passwd="123456"
+createUser name="Sicrano" lastName="Silva" email="xpto123@email.com" passwd="123456"
+createUser name="Beltrano" lastName="Santos" email="xpto123456@email.com" passwd="123456"
+
+login email="dev@email.com" senha="123456"
+updateUserProfile login="dev@email.com" aboutMe="algo sobre John Doe" age="23" photo="photo.png" country="brazil" city="Campina Grande" gender="male" contactEmail="dev@email.com"
+sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
+sendFriendshipRequest login="dev@email.com" user="xpto123@email.com" message="algum texto" group="familia"
+logoff email="dev@email.com"
+
+login email="xpto@email.com" senha="123456"
+updateUserProfile login="xpto@email.com" aboutMe="algo sobre Fulano de Tal" age="21" photo="photo1.png" country="brazil" city="Jo„o Pessoa" gender="male" contactEmail="xpto@email.com"
+acceptFriendshipRequest login="xpto@email.com" contact="dev@email.com" group="familia"
+sendFriendshipRequest login="xpto@email.com" user="xpto123@email.com" message="algum texto" group="familia"
+sendFriendshipRequest login="xpto@email.com" user="xpto123456@email.com" message="algum texto" group="familia"
+logoff email="xpto@email.com"
+
+login email="xpto123@email.com" senha="123456"
+updateUserProfile login="xpto123@email.com" aboutMe="algo sobre Sicrano Silva" age="20" photo="photo2.png" country="brazil" city="Patos" gender="male" contactEmail="xpto123@email.com"
+acceptFriendshipRequest login="xpto123@email.com" contact="dev@email.com" group="familia"
+acceptFriendshipRequest login="xpto123@email.com" contact="xpto@email.com" group="familia"
+logoff email="xpto123@email.com"
+
+login email="xpto123456@email.com" senha="123456"
+updateUserProfile login="xpto123456@email.com" aboutMe="algo sobre Beltrano Santos" age="22" photo="photo3.png" country="brazil" city="Patos" gender="male" contactEmail="xpto123456@email.com"
+acceptFriendshipRequest login="xpto123456@email.com" contact="xpto@email.com" group="familia"
+logoff email="xpto123456@email.com"
+
+login email="dev@email.com" senha="123456"
+Expect "Fulano de Tal,Sicrano Silva" listFriends email="dev@email.com"
+logoff email="dev@email.com"
+
+login email="xpto@email.com" senha="123456"
+Expect "Beltrano Santos,John Doe,Sicrano Silva" listFriends email="xpto@email.com"
+logoff email="xpto@email.com"
+
+login email="xpto123@email.com" senha="123456"
+Expect "Fulano de Tal,John Doe" listFriends email="xpto123@email.com"
+logoff email="xpto123@email.com"
+
+login email="xpto123456@email.com" senha="123456"
+Expect "Fulano de Tal" listFriends email="xpto123456@email.com"
+logoff email="xpto123456@email.com"
+
+login email="dev@email.com" senha="123456"
+Expect "Beltrano Santos" getRecommendFriends login="dev@email.com"
+logoff email="dev@email.com"
+
+login email="xpto@email.com" senha="123456"
+Expect "" getRecommendFriends login="xpto@email.com"
+addGroupMember email="xpto@email.com" group="trabalho" user="xpto123456@email.com"
+logoff email="xpto@email.com"
+
+login email="dev@email.com" senha="123456"
+Expect "Beltrano Santos" getRecommendFriends login="dev@email.com"
+logoff email="dev@email.com"
+
+login email="xpto@email.com" senha="123456"
+addGroupMember email="xpto@email.com" group="melhores amigos" user="xpto123456@email.com"
+logoff email="xpto@email.com"
+
+login email="dev@email.com" senha="123456"
+Expect "Beltrano Santos" getRecommendFriends login="dev@email.com"
+logoff email="dev@email.com"
+
+login email="xpto123@email.com" senha="123456"
+Expect "Beltrano Santos" getRecommendFriends login="xpto123@email.com"
+logoff email="xpto123@email.com"
+
+login email="xpto123456@email.com" senha="123456"
+Expect "John Doe,Sicrano Silva" getRecommendFriends login="xpto123456@email.com"
+logoff email="xpto123456@email.com"
+
+
+# VerificaÁ„o de similaridade
+clean
+
+createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
+createUser name="Fulano" lastName="de Tal" email="xpto@email.com" passwd="123456"
+createUser name="Sicrano" lastName="Silva" email="xpto123@email.com" passwd="123456"
+createUser name="Beltrano" lastName="Santos" email="xpto123456@email.com" passwd="123456"
+
+login email="dev@email.com" senha="123456"
+updateUserProfile login="dev@email.com" aboutMe="algo sobre John Doe" age="23" photo="photo.png" country="brazil" city="Campina Grande" gender="male" contactEmail="dev@email.com"
+addUserPreference login="dev@email.com" preference="futebol"
+addUserPreference login="dev@email.com" preference="cinema"
+addUserPreference login="dev@email.com" preference="viajar"
+addUserPreference login="dev@email.com" preference="leitura"
+Expect "futebol,cinema,viajar,leitura" listUserPreferences login="dev@email.com"
+sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="trabalho"
+sendFriendshipRequest login="dev@email.com" user="xpto123@email.com" message="algum texto" group="familia"
+logoff email="dev@email.com"
+
+login email="xpto@email.com" senha="123456"
+updateUserProfile login="xpto@email.com" aboutMe="algo sobre Fulano de Tal" age="21" photo="photo1.png" country="brazil" city="Jo„o Pessoa" gender="male" contactEmail="xpto@email.com"
+addUserPreference login="xpto@email.com" preference="cinema"
+addUserPreference login="xpto@email.com" preference="viajar"
+acceptFriendshipRequest login="xpto@email.com" contact="dev@email.com" group="trabalho"
+sendFriendshipRequest login="xpto@email.com" user="xpto123@email.com" message="algum texto" group="escola"
+sendFriendshipRequest login="xpto@email.com" user="xpto123456@email.com" message="algum texto" group="familia"
+logoff email="xpto@email.com"
+
+login email="xpto123@email.com" senha="123456"
+updateUserProfile login="xpto123@email.com" aboutMe="algo sobre Sicrano Silva" age="20" photo="photo2.png" country="brazil" city="Patos" gender="male" contactEmail="xpto123@email.com"
+acceptFriendshipRequest login="xpto123@email.com" contact="dev@email.com" group="familia"
+acceptFriendshipRequest login="xpto123@email.com" contact="xpto@email.com" group="escola"
+logoff email="xpto123@email.com"
+
+login email="xpto123456@email.com" senha="123456"
+updateUserProfile login="xpto123456@email.com" aboutMe="algo sobre Beltrano Santos" age="22" photo="photo3.png" country="brazil" city="Patos" gender="male" contactEmail="xpto123456@email.com"
+addUserPreference login="xpto123456@email.com" preference="futebol"
+addUserPreference login="xpto123456@email.com" preference="cinema"
+addUserPreference login="xpto123456@email.com" preference="viajar"
+acceptFriendshipRequest login="xpto123456@email.com" contact="xpto@email.com" group="familia"
+logoff email="xpto123456@email.com"
+
+login email="dev@email.com" senha="123456"
+Expect "Fulano de Tal,Sicrano Silva" listFriends email="dev@email.com"
+logoff email="dev@email.com"
+
+login email="xpto@email.com" senha="123456"
+Expect "Beltrano Santos,John Doe,Sicrano Silva" listFriends email="xpto@email.com"
+logoff email="xpto@email.com"
+
+login email="xpto123@email.com" senha="123456"
+Expect "Fulano de Tal,John Doe" listFriends email="xpto123@email.com"
+logoff email="xpto123@email.com"
+
+login email="xpto123456@email.com" senha="123456"
+Expect "Fulano de Tal" listFriends email="xpto123456@email.com"
+logoff email="xpto123456@email.com"
+
+login email="dev@email.com" senha="123456"
+Expect "Beltrano Santos" getRecommendFriends login="dev@email.com"
+logoff email="dev@email.com"
