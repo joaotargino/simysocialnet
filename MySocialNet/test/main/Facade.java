@@ -150,8 +150,9 @@ public class Facade {
 	 * 
 	 * @param login
 	 * @param preference
+	 * @throws Exception 
 	 */
-	public void removeUserPreference (String login, String preference) {
+	public void removeUserPreference (String login, String preference) throws Exception {
 		SocialNet.getInstance().removeUserPreference(login, preference);
 	}
 	
