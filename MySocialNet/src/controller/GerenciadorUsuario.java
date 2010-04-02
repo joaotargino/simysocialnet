@@ -25,4 +25,8 @@ public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 		return new ArrayList<ContaUsuario>();
 	}
 
+	public ContaUsuario getUsuario(String login) {
+		return null;
+	}
+
 }

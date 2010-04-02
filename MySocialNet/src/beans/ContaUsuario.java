@@ -1,6 +1,5 @@
 package beans;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Util.Util;
@@ -27,6 +26,19 @@ public class ContaUsuario {
 		}
 		if(Util.verificaData(dataNascimento)) {
 			this.dataNascimento = dataNascimento;
+		}
+		this.senha = senha;
+		if(Util.verificaEmail(email)) {
+			this.email = email;
+		}
+	}
+	
+	public ContaUsuario(String nome, String sobrenome, String senha, String email) throws Exception {
+		if(Util.verificaString(nome)) {
+			this.nome = nome;
+		}
+		if(Util.verificaString(sobrenome)) {
+			this.sobrenome = sobrenome;
 		}
 		this.senha = senha;
 		if(Util.verificaEmail(email)) {
