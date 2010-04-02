@@ -181,9 +181,10 @@ public class SocialNet {
 	 * @param login
 	 * @return String com as preferencias separada so por virgula (nao sei se isso eh uma re-
 	 * presentacao de lista, mas como la nos testes tava como se fosse string...
+	 * @throws Exception 
 	 */
-	public List<String> listUserPreferences(String login) {
-		return usuario.getPreferencias();
+	public List<String> listUserPreferences(String login) throws Exception {
+		return GerenciadorUsuario.getInstance().getUsuario(login).getPreferencias();
 	}
 	
 	/**
