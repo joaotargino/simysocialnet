@@ -272,29 +272,29 @@ public class usersDAO {
 	}
 
 	// a nivel de teste =P
-	public static void main(String[] args) throws Exception {
-		ContaUsuario usuario1 = new ContaUsuario("Joao", "Targino", "123456",
-				"joaotargino@lsd.ufcg.edu.br");
-		ContaUsuario usuario2 = new ContaUsuario("Telles", "Nobrega", "123456",
-				"telles@lsd.ufcg.edu.br");
-		ContaUsuario usuario3 = new ContaUsuario("Rafael", "Carvalho",
-				"123456", "rafael@lsd.ufcg.edu.br");
-		usersDAO dao = new usersDAO();
-		dao.cadastraUsuario(usuario1);
-		dao.cadastraUsuario(usuario2);
-		dao.cadastraUsuario(usuario3);
-
-		usuario1.setNome("Joao Paulo");
-
-		dao.atualizaUsuario(usuario1);
-
-		// dao.reset();
-		// dao.cadastraUsuario(usuario3);
-		ContaUsuario userRecuperado = dao
-				.getUsuario("joaotargino@lsd.ufcg.edu.br");
-
-		dao.removeUsuario("telles@lsd.ufcg.edu.br");
-		System.out.println(dao.getUsuarios());
-	}
+//	public static void main(String[] args) throws Exception {
+//		ContaUsuario usuario1 = new ContaUsuario("Joao", "Targino", "123456",
+//				"joaotargino@lsd.ufcg.edu.br");
+//		ContaUsuario usuario2 = new ContaUsuario("Telles", "Nobrega", "123456",
+//				"telles@lsd.ufcg.edu.br");
+//		ContaUsuario usuario3 = new ContaUsuario("Rafael", "Carvalho",
+//				"123456", "rafael@lsd.ufcg.edu.br");
+//		usersDAO dao = new usersDAO();
+//		dao.cadastraUsuario(usuario1);
+//		dao.cadastraUsuario(usuario2);
+//		dao.cadastraUsuario(usuario3);
+//
+//		usuario1.setNome("Joao Paulo");
+//
+//		dao.atualizaUsuario(usuario1);
+//
+//		// dao.reset();
+//		// dao.cadastraUsuario(usuario3);
+//		ContaUsuario userRecuperado = dao
+//				.getUsuario("joaotargino@lsd.ufcg.edu.br");
+//
+//		dao.removeUsuario("telles@lsd.ufcg.edu.br");
+//		System.out.println(dao.getUsuarios());
+//	}
 
 }
