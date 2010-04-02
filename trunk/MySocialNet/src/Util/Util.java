@@ -9,17 +9,17 @@ public class Util {
 		
 		if (texto == null) throw new Exception("String null");
 		else if (texto.isEmpty()) throw new Exception("String vazia");
-		else if (texto.trim().isEmpty()) throw new Exception ("String só com espaço");
+		else if (texto.trim().isEmpty()) throw new Exception ("String so com espaco");
 		
 		char[] caracteres = texto.toCharArray();
 		
 		for (int i = 0; i < caracteres.length; i++) {
 			if(!(Character.isLetter(caracteres[i]) || Character.isWhitespace(caracteres[i]))) {
-				return false;
+				throw new Exception("String invalida");
 			}
 			else if (Character.isWhitespace(caracteres[i])) {
 				if (!(Character.isLetter(caracteres[i + 1]))) {
-					return false;
+					throw new Exception("String invalida");
 				}
 			}
 		}
