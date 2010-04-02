@@ -9,7 +9,15 @@ import beans.ContaUsuario;
 
 public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 
-	List<ContaUsuario> usuarios = new ArrayList<ContaUsuario>();
+	private static GerenciadorUsuario gerenciadorUsuario;
+	private List<ContaUsuario> usuarios = new ArrayList<ContaUsuario>();
+	
+	public synchronized static GerenciadorUsuario getInstance() {
+		if (gerenciadorUsuario == null) {
+			gerenciadorUsuario = new GerenciadorUsuario();
+		}
+		return gerenciadorUsuario;
+	}
 	
 	public void adicionar(ContaUsuario contaUsuario) throws Exception {
 		if (usuarios.contains(contaUsuario)) throw new Exception("Login indisponível");

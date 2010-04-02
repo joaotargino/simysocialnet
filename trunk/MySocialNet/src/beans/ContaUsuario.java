@@ -17,6 +17,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	private List<Grupo> grupos;
 	private List<ContaUsuario> amigos;
 	private List<String> preferencias;
+	private boolean loged;
 	
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
 		if(Util.verificaString(nome,"Nome")) {
@@ -171,6 +172,14 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	public int compareTo(ContaUsuario o) {
 		if (o.getEmail().equals(getEmail())) return 0;
 		return -1;
+	}
+
+	public void setLoged(boolean loged) {
+		this.loged = loged;
+	}
+
+	public boolean isLoged() {
+		return loged;
 	}
 
 }
