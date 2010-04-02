@@ -191,9 +191,12 @@ public class SocialNet {
 	 * 
 	 * @param login
 	 * @param preference
+	 * @throws Exception 
 	 */
-	public void removeUserPreference (String login, String preference) {
-		usuario.getPreferencias().remove(preference);
+	public void removeUserPreference (String login, String preference) throws Exception {
+		ContaUsuario user = GerenciadorUsuario.getInstance().getUsuario(login);
+		if (!user.isLoged()) throw new Exception("Usuário não logado");
+		user.getPreferencias().remove(preference);
 	}
 	
 	/**

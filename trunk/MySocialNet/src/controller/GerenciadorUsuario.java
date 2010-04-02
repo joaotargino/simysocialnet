@@ -36,6 +36,7 @@ public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 	}
 
 	public ContaUsuario getUsuario(String login) throws Exception {
+		if (login.trim().isEmpty()) throw new Exception("Login não pode ser vazio");
 		ContaUsuario user = new ContaUsuario();
 		user.setEmail(login);
 		for (ContaUsuario usuario : usuarios) {
