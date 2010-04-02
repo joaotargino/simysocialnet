@@ -9,13 +9,17 @@ import beans.ContaUsuario;
 
 public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 
-	public void adicionar(ContaUsuario contaUsuario) {
-		// TODO Auto-generated method stub
-
+	List<ContaUsuario> usuarios = new ArrayList<ContaUsuario>();
+	
+	public void adicionar(ContaUsuario contaUsuario) throws Exception {
+		if (usuarios.contains(contaUsuario)) throw new Exception("Login indisponível");
+		usuarios.add(contaUsuario);
 	}
 
-	public void remover(String login) {
-		// TODO Auto-generated method stub
+	public void remover(String login) throws Exception {
+		ContaUsuario user = new ContaUsuario();
+		user.setEmail(login);
+		usuarios.remove(user);
 
 	}
 	
@@ -23,9 +27,13 @@ public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 		return new ArrayList<ContaUsuario>();
 	}
 
-	public ContaUsuario getUsuario(String login) {
-		// TODO Auto-generated method stub
-		return null;
+	public ContaUsuario getUsuario(String login) throws Exception {
+		ContaUsuario user = new ContaUsuario();
+		user.setEmail(login);
+		for (ContaUsuario usuario : usuarios) {
+			if (usuario.equals(user)) return usuario;
+		}
+		throw new Exception("Login inexistente");
 	}
 
 }
