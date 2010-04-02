@@ -362,4 +362,11 @@ public class SocialNet {
 	public void restoreFriendList(String login, String file) {
 		
 	}
+	
+	/**
+	 * Limpar o banco de dados
+	 */
+	public void clean() {
+		
+	}
 }
