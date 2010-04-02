@@ -28,7 +28,9 @@ public class ContaUsuario {
 		if(Util.verificaData(dataNascimento)) {
 			this.dataNascimento = dataNascimento;
 		}
-		this.senha = senha;
+		if(Util.verificaSenha(senha)) {
+			this.senha = senha;
+		}
 		if(Util.verificaEmail(email)) {
 			this.email = email;
 		}
@@ -41,7 +43,9 @@ public class ContaUsuario {
 		if(Util.verificaString(sobrenome)) {
 			this.sobrenome = sobrenome;
 		}
-		this.senha = senha;
+		if(Util.verificaSenha(senha)) {
+			this.senha = senha;
+		}
 		if(Util.verificaEmail(email)) {
 			this.email = email;
 		}
