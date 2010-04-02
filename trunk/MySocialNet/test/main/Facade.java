@@ -134,8 +134,9 @@ public class Facade {
 	 * @param login
 	 * @return String com as preferencias separada so por virgula (nao sei se isso eh uma re-
 	 * presentacao de lista, mas como la nos testes tava como se fosse string...
+	 * @throws Exception 
 	 */
-	public String listUserPreferences(String login) {
+	public String listUserPreferences(String login) throws Exception {
 		List<String> listPreferences = SocialNet.getInstance().listUserPreferences(login);
 		String preferences = listPreferences.get(0);
 		if (preferences == null) return "";
