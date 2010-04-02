@@ -16,6 +16,7 @@ public class ContaUsuario {
 	private String email;
 	private List<Grupo> grupos;
 	private List<ContaUsuario> amigos;
+	private List<String> preferencias;
 	
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
 		if(Util.verificaString(nome)) {
@@ -140,6 +141,14 @@ public class ContaUsuario {
 			this.amigos.addAll(grupo.getUsuarios());
 		}
 		return this.amigos;
+	}
+
+	public void setPreferencias(List<String> preferencias) {
+		this.preferencias = preferencias;
+	}
+
+	public List<String> getPreferencias() {
+		return preferencias;
 	}
 
 }

@@ -9,14 +9,12 @@ import beans.ContaUsuario;
 
 public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 
-	@Override
 	public void adicionar(ContaUsuario contaUsuario) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public void remover(ContaUsuario contaUsuario) {
+	public void remover(String login) {
 		// TODO Auto-generated method stub
 
 	}
@@ -26,6 +24,7 @@ public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 	}
 
 	public ContaUsuario getUsuario(String login) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

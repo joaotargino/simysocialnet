@@ -119,8 +119,9 @@ public class Facade {
 	 * 
 	 * @param login
 	 * @param preference
+	 * @throws Exception 
 	 */
-	public void addUserPreference(String login, String preference) {
+	public void addUserPreference(String login, String preference) throws Exception {
 		social.addUserPreference(login, preference);
 	}
 	
@@ -148,8 +149,9 @@ public class Facade {
 	/**
 	 * Deleta a conta do usuario
 	 * @param login
+	 * @throws Exception 
 	 */
-	public void deleteUser(String login) {
+	public void deleteUser(String login) throws Exception {
 		social.deleteUser(login);
 	}
 	
