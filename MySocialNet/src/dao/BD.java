@@ -13,11 +13,6 @@ import beans.Grupo;
 /**
  * Classe responsavel pela manipulação com o banco de dados
  * 
- * @author Arnett Rufino
- * @author Erickson Filipe
- * @author Jessica Priscila
- * @author Joao Paulo
- * @version 1.0 - 2009
  */
 public class BD {
 
