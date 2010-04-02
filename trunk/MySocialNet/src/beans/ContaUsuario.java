@@ -1,5 +1,8 @@
 package beans;
 
+import interfaces.Preferenciavel;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import Util.Util;
@@ -9,7 +12,9 @@ import Util.Util;
  *
  */
 public class ContaUsuario implements Comparable<ContaUsuario>{
+	
 	private String nome;
+	private Profile<Preferenciavel> profile;
 	private String sobrenome;
 	private String dataNascimento;
 	private String senha;
@@ -35,6 +40,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		if(Util.verificaEmail(email)) {
 			this.email = email;
 		}
+		preferencias = new ArrayList<String>();
 	}
 	
 	public ContaUsuario(String nome, String sobrenome, String senha, String email) throws Exception {
@@ -50,9 +56,11 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		if(Util.verificaEmail(email)) {
 			this.email = email;
 		}
+		preferencias = new ArrayList<String>();
 	}
 
 	public ContaUsuario() {
+		preferencias = new ArrayList<String>();
 	}
 
 	public String getNome() {
@@ -180,6 +188,14 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 
 	public boolean isLoged() {
 		return loged;
+	}
+
+	public void setProfile(Profile<Preferenciavel> profile) {
+		this.profile = profile;
+	}
+
+	public Profile<Preferenciavel> getProfile() {
+		return profile;
 	}
 
 }

@@ -1,6 +1,6 @@
 package beans;
 
-public class Profie<Preferenciavel> {
+public class Profile<Preferenciavel> {
 	
 	private String aboutMe; 
 	private String foto; 

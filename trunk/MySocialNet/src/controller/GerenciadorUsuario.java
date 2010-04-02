@@ -11,14 +11,14 @@ public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 
 	private static GerenciadorUsuario gerenciadorUsuario;
 	private List<ContaUsuario> usuarios = new ArrayList<ContaUsuario>();
-	
+
 	public synchronized static GerenciadorUsuario getInstance() {
 		if (gerenciadorUsuario == null) {
 			gerenciadorUsuario = new GerenciadorUsuario();
 		}
 		return gerenciadorUsuario;
 	}
-	
+
 	public void adicionar(ContaUsuario contaUsuario) throws Exception {
 		if (usuarios.contains(contaUsuario)) throw new Exception("Login indisponível");
 		usuarios.add(contaUsuario);
@@ -30,7 +30,7 @@ public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 		usuarios.remove(user);
 
 	}
-	
+
 	public List<ContaUsuario> buscar() {
 		return new ArrayList<ContaUsuario>();
 	}
@@ -46,7 +46,13 @@ public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 
 	public void updateUserProfile(ContaUsuario contaUsuario) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	public void addUserPreferences(ContaUsuario user,String preferencia) {
+		if (!user.getPreferencias().contains(preferencia)) {
+			user.getPreferencias().add(preferencia);
+		}
 	}
 
 }

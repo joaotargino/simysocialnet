@@ -2,7 +2,9 @@ package main;
 
 import java.util.List;
 
+import Util.ProfileConstants;
 import beans.ContaUsuario;
+import beans.Profile;
 import controller.GerenciadorGrupo;
 import controller.GerenciadorUsuario;
 
@@ -22,13 +24,17 @@ public class SocialNet {
 	/**
 	 * Loga o usuario ao sistema
 	 * @throws Exception 
+	 * @throws Exception 
 	 */
-	public void login(String login, String senha) throws Exception{
-		usuario = GerenciadorUsuario.getInstance().getUsuario(login);
-		
-		if ( usuario == null) throw new Exception("Login Invalido");
-		else if (!senha.equals(usuario.getSenha())) throw new Exception("senha invalida");
-		
+	public void login(String login, String senha) throws Exception {
+		try {
+			usuario = GerenciadorUsuario.getInstance().getUsuario(login);
+			if ( usuario == null) throw new Exception("Login inválido ou senha incorreta");
+			else if (!senha.equals(usuario.getSenha())) throw new Exception("Login inválido ou senha incorreta");
+		} catch (Exception e) {
+			throw new Exception("Login inválido ou senha incorreta");
+		}
+		if (usuario.isLoged()) throw new Exception("Usuário já logado");
 		usuario.setLoged(true);
 	}
 	
@@ -137,8 +143,19 @@ public class SocialNet {
 	 * @param visibility
 	 * @return Sting no formato campo(1)=valor(1),...,campo(n)=valor(n)]
 	 * 			exemplo: "photo=photo.png,aboutMe=,gender=male"
+	 * @throws Exception 
 	 */
-	public String viewProfile( String login, String visibility) {
+	public String viewProfile( String login, String visibility) throws Exception {
+		
+		ContaUsuario user;
+		try {
+			 user = GerenciadorUsuario.getInstance().getUsuario(login);
+		} catch (Exception e) {
+			throw new Exception("Perfil inexistente");
+		}
+		
+		if (!(estaLogado()) && visibility.equals(ProfileConstants.JUST_ME)) throw new Exception("Usuário não logado");
+		Profile profile = user.getProfile();
 		return null;
 	}
 	
@@ -151,10 +168,11 @@ public class SocialNet {
 	 * @throws Exception 
 	 */
 	public void addUserPreference(String login, String preference) throws Exception {
-		if(!estaLogado()) {
-			throw new Exception("Usuario deve estar logado");
+		ContaUsuario user = GerenciadorUsuario.getInstance().getUsuario(login);
+		if(!user.isLoged()) {
+			throw new Exception("Usuário não logado");
 		}
-		usuario.getPreferencias().add(preference);
+		GerenciadorUsuario.getInstance().addUserPreferences(user, preference);
 	}
 	
 	/**
@@ -184,7 +202,8 @@ public class SocialNet {
 	 * @throws Exception 
 	 */
 	public void deleteUser(String login) throws Exception {
-		if (!estaLogado()) throw new Exception("Usuario deve estar logado");
+		ContaUsuario user = GerenciadorUsuario.getInstance().getUsuario(login);
+		if (!user.isLoged()) throw new Exception("Usuário não logado");
 		GerenciadorUsuario.getInstance().remover(login);
 	}
 	
