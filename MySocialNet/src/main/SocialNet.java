@@ -3,6 +3,7 @@ package main;
 import java.util.List;
 
 import beans.ContaUsuario;
+import controller.GerenciadorGrupo;
 import controller.GerenciadorUsuario;
 
 public class SocialNet {
@@ -10,6 +11,7 @@ public class SocialNet {
 	private static SocialNet social;
 	private GerenciadorUsuario gerenciadorUsuario;
 	private ContaUsuario usuario;
+	private GerenciadorGrupo gerenciadorGrupo;
 	
 	public synchronized static SocialNet getInstance() {
 		if(social == null) {
@@ -127,9 +129,13 @@ public class SocialNet {
 	 * 
 	 * @param login
 	 * @param preference
+	 * @throws Exception 
 	 */
-	public void addUserPreference(String login, String preference) {
-
+	public void addUserPreference(String login, String preference) throws Exception {
+		if(!estaLogado()) {
+			throw new Exception("Usuario deve estar logado");
+		}
+		usuario.getPreferencias().add(preference);
 	}
 	
 	/**
@@ -140,7 +146,7 @@ public class SocialNet {
 	 * presentacao de lista, mas como la nos testes tava como se fosse string...
 	 */
 	public List<String> listUserPreferences(String login) {
-		return null;
+		return usuario.getPreferencias();
 	}
 	
 	/**
@@ -150,15 +156,17 @@ public class SocialNet {
 	 * @param preference
 	 */
 	public void removeUserPreference (String login, String preference) {
-		
+		usuario.getPreferencias().remove(preference);
 	}
 	
 	/**
 	 * Deleta a conta do usuario
 	 * @param login
+	 * @throws Exception 
 	 */
-	public void deleteUser(String login) {
-			
+	public void deleteUser(String login) throws Exception {
+		if (!estaLogado()) throw new Exception("Usuario deve estar logado");
+		gerenciadorUsuario.remover(login);
 	}
 	
 	/**
@@ -169,7 +177,7 @@ public class SocialNet {
 	 * @return
 	 */
 	public List<ContaUsuario> listGroupMembers(String email, String group) {
-		return null;
+		return gerenciadorGrupo.getMembros(group);
 	}
 	
 	/**
@@ -181,7 +189,7 @@ public class SocialNet {
 	 * @return
 	 */
 	public ContaUsuario findGroupMember(String login,String friend, String group) {
-		return null;
+		return gerenciadorGrupo.getMembro(friend, group);
 	}
 	
 	/**
@@ -190,7 +198,7 @@ public class SocialNet {
 	 * @param user
 	 */
 	public void addGroupMember(String email, String group, String user) {
-
+		gerenciadorGrupo.adicionar(user, group);
 	}
 	
 	/**
@@ -201,7 +209,7 @@ public class SocialNet {
 	 * @param user
 	 */
 	public void removeGroupMember(String email, String group, String user) {
-		
+		gerenciadorGrupo.remover(user, group);
 	}
 	
 	/**
@@ -211,7 +219,7 @@ public class SocialNet {
 	 * @return
 	 */
 	public List<ContaUsuario> listFriends(String email) {
-		return null;
+		return usuario.getAmigos();
 	}
 	
 	/**
@@ -222,7 +230,7 @@ public class SocialNet {
 	 * @return
 	 */
 	public ContaUsuario findNewFriend(String login, String friend) {
-		return null;
+		return gerenciadorUsuario.getUsuario(friend);
 	}
 	
 	/**
