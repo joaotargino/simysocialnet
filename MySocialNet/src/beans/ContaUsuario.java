@@ -8,7 +8,7 @@ import Util.Util;
  * @author Rafael Aquino
  *
  */
-public class ContaUsuario {
+public class ContaUsuario implements Comparable<ContaUsuario>{
 	private String nome;
 	private String sobrenome;
 	private String dataNascimento;
@@ -19,10 +19,10 @@ public class ContaUsuario {
 	private List<String> preferencias;
 	
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
-		if(Util.verificaString(nome)) {
+		if(Util.verificaString(nome,"Nome")) {
 			this.nome = nome;
 		}
-		if(Util.verificaString(sobrenome)) {
+		if(Util.verificaString(sobrenome, "Sobrenome")) {
 			this.sobrenome = sobrenome;
 		}
 		if(Util.verificaData(dataNascimento)) {
@@ -37,10 +37,10 @@ public class ContaUsuario {
 	}
 	
 	public ContaUsuario(String nome, String sobrenome, String senha, String email) throws Exception {
-		if(Util.verificaString(nome)) {
+		if(Util.verificaString(nome,"Nome")) {
 			this.nome = nome;
 		}
-		if(Util.verificaString(sobrenome)) {
+		if(Util.verificaString(sobrenome,"Sobrenome")) {
 			this.sobrenome = sobrenome;
 		}
 		if(Util.verificaSenha(senha)) {
@@ -51,11 +51,14 @@ public class ContaUsuario {
 		}
 	}
 
+	public ContaUsuario() {
+	}
+
 	public String getNome() {
 		return nome;
 	}
 	public void setNome(String nome) throws Exception {
-		if (Util.verificaString(nome)) {
+		if (Util.verificaString(nome, "Nome")) {
 			this.nome = nome;
 		}
 	}
@@ -63,7 +66,7 @@ public class ContaUsuario {
 		return sobrenome;
 	}
 	public void setSobrenome(String sobrenome) throws Exception {
-		if (Util.verificaString(sobrenome)) {
+		if (Util.verificaString(sobrenome, "Sobrenome")) {
 			this.sobrenome = sobrenome;
 		}
 	}
@@ -153,6 +156,21 @@ public class ContaUsuario {
 
 	public List<String> getPreferencias() {
 		return preferencias;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ContaUsuario) {
+			ContaUsuario user = (ContaUsuario) obj;
+			return user.getEmail().equals(getEmail());
+		}
+		return false;
+	}
+	
+	@Override
+	public int compareTo(ContaUsuario o) {
+		if (o.getEmail().equals(getEmail())) return 0;
+		return -1;
 	}
 
 }

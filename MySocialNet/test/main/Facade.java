@@ -64,8 +64,9 @@ public class Facade {
 	 * 
 	 * @param login - o email do usuario
 	 * @return String contendo nome e sobrenome do usuario
+	 * @throws Exception 
 	 */
-	public ContaUsuario getUser (String login) {
+	public ContaUsuario getUser (String login) throws Exception {
 		return social.getUser(login);
 	}
 	
@@ -203,8 +204,9 @@ public class Facade {
 	 * 
 	 * @param email
 	 * @return
+	 * @throws Exception 
 	 */
-	public List<ContaUsuario> listFriends(String email) {
+	public List<ContaUsuario> listFriends(String email) throws Exception {
 		return social.listFriends(email);
 	}
 	
@@ -214,8 +216,9 @@ public class Facade {
 	 * @param login
 	 * @param friend
 	 * @return
+	 * @throws Exception 
 	 */
-	public ContaUsuario findNewFriend(String login, String friend) {
+	public ContaUsuario findNewFriend(String login, String friend) throws Exception {
 		return social.findNewFriend(login, friend);
 	}
 	

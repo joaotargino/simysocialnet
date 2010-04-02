@@ -75,8 +75,9 @@ public class SocialNet {
 	 * 
 	 * @param login - o email do usuario
 	 * @return String contendo nome e sobrenome do usuario
+	 * @throws Exception 
 	 */
-	public ContaUsuario getUser (String login) {
+	public ContaUsuario getUser (String login) throws Exception {
 		return gerenciadorUsuario.getUsuario(login);
 	}
 	
@@ -217,9 +218,11 @@ public class SocialNet {
 	 * 
 	 * @param email
 	 * @return
+	 * @throws Exception 
 	 */
-	public List<ContaUsuario> listFriends(String email) {
-		return usuario.getAmigos();
+	public List<ContaUsuario> listFriends(String email) throws Exception {
+		ContaUsuario user = gerenciadorUsuario.getUsuario(email);
+		return user.getAmigos();
 	}
 	
 	/**
@@ -228,8 +231,9 @@ public class SocialNet {
 	 * @param login
 	 * @param friend
 	 * @return
+	 * @throws Exception 
 	 */
-	public ContaUsuario findNewFriend(String login, String friend) {
+	public ContaUsuario findNewFriend(String login, String friend) throws Exception {
 		return gerenciadorUsuario.getUsuario(friend);
 	}
 	
