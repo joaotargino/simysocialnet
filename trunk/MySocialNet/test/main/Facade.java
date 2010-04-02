@@ -14,9 +14,10 @@ public class Facade {
 	
 	/**
 	 * Loga o usuario ao sistema
+	 * @throws Exception 
 	 */
-	public void login(){
-		social.login();
+	public void login(String login, String senha) throws Exception{
+		social.login(login, senha);
 	}
 	
 	/**
@@ -49,8 +50,9 @@ public class Facade {
 	 * @param lastName - o sobrenome do usuario
 	 * @param email - o email do usuario
 	 * @param passwd - a senha do usuario
+	 * @throws Exception 
 	 */
-	public void createUser(String name, String lastName, String email, String passwd) {
+	public void createUser(String name, String lastName, String email, String passwd) throws Exception {
 		social.createUser(name, lastName, email, passwd);
 	}
 	

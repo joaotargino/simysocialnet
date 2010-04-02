@@ -3,10 +3,13 @@ package main;
 import java.util.List;
 
 import beans.ContaUsuario;
+import controller.GerenciadorUsuario;
 
 public class SocialNet {
 	
 	private static SocialNet social;
+	private GerenciadorUsuario gerenciadorUsuario;
+	private ContaUsuario usuario;
 	
 	public synchronized static SocialNet getInstance() {
 		if(social == null) {
@@ -17,23 +20,27 @@ public class SocialNet {
 	
 	/**
 	 * Loga o usuario ao sistema
+	 * @throws Exception 
 	 */
-	public void login(){
+	public void login(String login, String senha) throws Exception{
+		usuario = gerenciadorUsuario.getUsuario(login);
 		
+		if ( usuario == null) throw new Exception("Login Invalido");
+		else if (senha.equals(usuario.getSenha())) throw new Exception("senha invalida");
 	}
 	
 	/**
 	 * Desloga o usuario do sistema
 	 */
 	public void logout() {
-		
+		usuario = null;
 	}
 	
 	/**
 	 * @return true se um usuario estiver logado, falso caso contrario
 	 */
 	public boolean estaLogado() {
-		return true;
+		return (usuario != null);
 	}
 	
 	/**
@@ -51,9 +58,11 @@ public class SocialNet {
 	 * @param lastName - o sobrenome do usuario
 	 * @param email - o email do usuario
 	 * @param passwd - a senha do usuario
+	 * @throws Exception 
 	 */
-	public void createUser(String name, String lastName, String email, String passwd) {
-		
+	public void createUser(String name, String lastName, String email, String passwd) throws Exception {
+		ContaUsuario contaUsuario = new ContaUsuario(name, lastName, passwd, email);
+		gerenciadorUsuario.adicionar(contaUsuario);
 	}
 	
 	/**
@@ -66,7 +75,7 @@ public class SocialNet {
 	 * @return String contendo nome e sobrenome do usuario
 	 */
 	public ContaUsuario getUser (String login) {
-		return null;
+		return gerenciadorUsuario.getUsuario(login);
 	}
 	
 	/**
