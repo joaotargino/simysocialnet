@@ -11,9 +11,16 @@ public class Util {
 		else if (texto.isEmpty()) throw new Exception("String vazia");
 		else if (texto.trim().isEmpty()) throw new Exception ("String só com espaço");
 		
-		for (Character caractere : texto.trim().toCharArray()) {
-			if(!Character.isLetter(caractere)) {
+		char[] caracteres = texto.toCharArray();
+		
+		for (int i = 0; i < caracteres.length; i++) {
+			if(!(Character.isLetter(caracteres[i]) || Character.isWhitespace(caracteres[i]))) {
 				return false;
+			}
+			else if (Character.isWhitespace(caracteres[i])) {
+				if (!(Character.isLetter(caracteres[i + 1]))) {
+					return false;
+				}
 			}
 		}
 		return true;
