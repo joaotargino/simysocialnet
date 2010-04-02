@@ -141,7 +141,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	
 	@Override
 	public String toString() {
-		return nome + " " + sobrenome;
+		return "Nome=" + nome + ",Sobrenome=" + sobrenome;
 	}
 	
 	private List<ContaUsuario> populaListaAmigos() {

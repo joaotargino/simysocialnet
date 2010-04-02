@@ -23,8 +23,8 @@ public class Facade {
 	/**
 	 * Desloga o usuario do sistema
 	 */
-	public void logout() {
-		social.logout();
+	public void logoff(String email) {
+		social.logoff(email);
 		
 	}
 	
@@ -84,8 +84,9 @@ public class Facade {
 	 * @param city
 	 * @param gender
 	 * @param contactEmail
+	 * @throws Exception 
 	 */
-	public void updateUserProfile(String login, String aboutMe, int age, String photo, String country, String city, String gender, String contactEmail) {
+	public void updateUserProfile(String login, String aboutMe, int age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
 		social.updateUserProfile(login, aboutMe, age, photo, country, city, gender, contactEmail);
 	}
 	
@@ -95,8 +96,9 @@ public class Facade {
 	 * @param login
 	 * @param field
 	 * @param type
+	 * @throws Exception 
 	 */
-	public void setFieldPrivacy(String login, String field, String type) {
+	public void setFieldPrivacy(String login, String field, String type) throws Exception {
 		social.setFieldPrivacy(login, field, type);
 	}
 	
