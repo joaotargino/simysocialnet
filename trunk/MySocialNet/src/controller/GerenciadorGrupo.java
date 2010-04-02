@@ -4,6 +4,7 @@ import interfaces.Gerenciavel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import beans.ContaUsuario;
 import beans.Grupo;
@@ -20,17 +21,18 @@ public class GerenciadorGrupo implements Gerenciavel<Grupo> {
 
 	}
 	
-	public List<ContaUsuario> listar() {
-		return new ArrayList<ContaUsuario>();
-	}
-
 	public List<ContaUsuario> getMembros(String group) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public ContaUsuario getMembro(String friend, String group) {
-		// TODO Auto-generated method stub
+		List<ContaUsuario> listaUsuarios = getMembros(group);
+		for (ContaUsuario usuario : listaUsuarios) {
+			if(usuario.getEmail().equals(friend)) {
+				return usuario;
+			}
+		}
 		return null;
 	}
 
