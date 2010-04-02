@@ -35,7 +35,7 @@ public class SocialNet {
 	/**
 	 * Desloga o usuario do sistema
 	 */
-	public void logout() {
+	public void logoff(String email) {
 		usuario.setLoged(false);
 		usuario = null;
 	}
@@ -106,9 +106,12 @@ public class SocialNet {
 	 * @param city
 	 * @param gender
 	 * @param contactEmail
+	 * @throws Exception 
 	 */
-	public void updateUserProfile(String login, String aboutMe, int age, String photo, String country, String city, String gender, String contactEmail) {
-		
+	public void updateUserProfile(String login, String aboutMe, int age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
+		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
+		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
+		GerenciadorUsuario.getInstance().updateUserProfile(usuario);
 	}
 	
 	/**
@@ -117,8 +120,12 @@ public class SocialNet {
 	 * @param login
 	 * @param field
 	 * @param type
+	 * @throws Exception 
 	 */
-	public void setFieldPrivacy(String login, String field, String type) { 
+	public void setFieldPrivacy(String login, String field, String type) throws Exception {
+		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
+		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
+		GerenciadorUsuario.getInstance().updateUserProfile(usuario);
 	}
 	
 	/**

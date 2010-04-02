@@ -44,4 +44,9 @@ public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 		throw new Exception("Login inexistente");
 	}
 
+	public void updateUserProfile(ContaUsuario contaUsuario) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
