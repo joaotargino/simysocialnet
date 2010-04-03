@@ -1,6 +1,6 @@
 package beans;
 
-import interfaces.Preferenciavel;
+import interfaces.ProfileIF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,9 @@ import Util.Util;
 public class ContaUsuario implements Comparable<ContaUsuario>{
 	
 	private String nome;
-	private Profile<Preferenciavel> profile;
+	private ProfileIF profileAll;
+	private ProfileIF profileJustMe;
+	private ProfileIF profileFriends;
 	private String sobrenome;
 	private String dataNascimento;
 	private String senha;
@@ -41,6 +43,10 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 			this.email = email;
 		}
 		preferencias = new ArrayList<String>();
+		
+		profileAll = new ProfileAll();
+		profileJustMe = new ProfileJustMe();
+		profileFriends = new ProfileFriends();
 	}
 	
 	public ContaUsuario(String nome, String sobrenome, String senha, String email) throws Exception {
@@ -57,10 +63,16 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 			this.email = email;
 		}
 		preferencias = new ArrayList<String>();
+		profileAll = new ProfileAll();
+		profileJustMe = new ProfileJustMe();
+		profileFriends = new ProfileFriends();
 	}
 
 	public ContaUsuario() {
 		preferencias = new ArrayList<String>();
+		profileAll = new ProfileAll();
+		profileJustMe = new ProfileJustMe();
+		profileFriends = new ProfileFriends();
 	}
 
 	public String getNome() {
@@ -189,24 +201,40 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	public boolean isLoged() {
 		return loged;
 	}
-
-	public void setProfile(Profile<Preferenciavel> profile) {
-		this.profile = profile;
-	}
-
-	public Profile<Preferenciavel> getProfile() {
-		return profile;
-	}
 	
 	public void setFieldPrivacy(String field, String visibility) {
-		profile.setFieldPrivacy
-		(field, visibility);
+//		profile.setFieldPrivacy(field, visibility);
 	}
 
 	public String checkProfile(String visibility) {
-		return profile.checkProfile(visibility);
+//		return profile.checkProfile(visibility);
+		return "";
 	}
 	public static void main(String[] args) {
 //		ContaUsuario usuario = new ContaUsuario("Telles","Nobrega","")
+	}
+
+	public void setProfileAll(ProfileIF profileAll) {
+		this.profileAll = profileAll;
+	}
+
+	public ProfileIF getProfileAll() {
+		return profileAll;
+	}
+
+	public void setProfileJustMe(ProfileIF profileJustMe) {
+		this.profileJustMe = profileJustMe;
+	}
+
+	public ProfileIF getProfileJustMe() {
+		return profileJustMe;
+	}
+
+	public void setProfileFriends(ProfileIF profileFriends) {
+		this.profileFriends = profileFriends;
+	}
+
+	public ProfileIF getProfileFriends() {
+		return profileFriends;
 	}
 }

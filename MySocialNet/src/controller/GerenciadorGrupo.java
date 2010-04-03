@@ -1,13 +1,10 @@
 package controller;
 
-import interfaces.Gerenciavel;
-
 import java.util.List;
 
 import beans.ContaUsuario;
-import beans.Grupo;
 
-public class GerenciadorGrupo implements Gerenciavel<Grupo> {
+public class GerenciadorGrupo {
 
 	public void adicionar(String login, String grupo) {
 		// TODO Auto-generated method stub

@@ -1,10 +1,12 @@
 package main;
 
+import interfaces.ProfileIF;
+
 import java.util.List;
 
 import beans.ContaUsuario;
-import beans.Profile;
 import controller.GerenciadorGrupo;
+import controller.GerenciadorProfile;
 import controller.GerenciadorUsuario;
 import dao.usersDAO;
 
@@ -124,10 +126,10 @@ public class SocialNet {
 	 * @param contactEmail
 	 * @throws Exception 
 	 */
-	public void updateUserProfile(String login, String aboutMe, int age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
+	public void updateUserProfile(String login, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
 		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
 		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
-		GerenciadorUsuario.getInstance().updateUserProfile(usuario);
+		GerenciadorProfile.getInstance().updateUserProfile(usuario, aboutMe, age, photo, country, city,gender, contactEmail);
 	}
 
 	/**
@@ -155,7 +157,7 @@ public class SocialNet {
 	 * 			exemplo: "photo=photo.png,aboutMe=,gender=male"
 	 * @throws Exception 
 	 */
-	public String checkProfile(String login, String visibility) throws Exception {
+	public ProfileIF checkProfile(String login, String visibility) throws Exception {
 
 		ContaUsuario user;
 		try {
@@ -166,8 +168,8 @@ public class SocialNet {
 		}
 
 		if (!(estaLogado())) throw new Exception("Usuário não logado");
-		Profile profile = user.getProfile();
-		return null;
+		ProfileIF profile = GerenciadorProfile.getInstance().getProfile(login, visibility);
+		return profile;
 	}
 
 

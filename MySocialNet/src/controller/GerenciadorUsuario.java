@@ -1,15 +1,12 @@
 package controller;
 
-import interfaces.Gerenciavel;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import beans.ContaUsuario;
 import dao.usersDAO;
 
-import beans.ContaUsuario;
-
-public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
+public class GerenciadorUsuario {
 
 	private static GerenciadorUsuario gerenciadorUsuario;
 

@@ -86,7 +86,7 @@ public class Facade {
 	 * @param contactEmail
 	 * @throws Exception 
 	 */
-	public void updateUserProfile(String login, String aboutMe, int age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
+	public void updateUserProfile(String login, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
 		SocialNet.getInstance().updateUserProfile(login, aboutMe, age, photo, country, city, gender, contactEmail);
 	}
 	
@@ -114,7 +114,7 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public String checkProfile( String login, String visibility) throws Exception {
-		return SocialNet.getInstance().checkProfile(login, visibility);
+		return SocialNet.getInstance().checkProfile(login, visibility).toString();
 	}
 	
 	public String viewProfile( String viewer, String profileOwner) throws Exception {
