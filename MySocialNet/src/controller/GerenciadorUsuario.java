@@ -5,6 +5,8 @@ import interfaces.Gerenciavel;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.usersDAO;
+
 import beans.ContaUsuario;
 
 public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
@@ -20,14 +22,16 @@ public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 	}
 
 	public void adicionar(ContaUsuario contaUsuario) throws Exception {
-		if (usuarios.contains(contaUsuario)) throw new Exception("Login indisponÌvel");
+		if (usuarios.contains(contaUsuario)) throw new Exception("Login indispon√≠vel");
 		usuarios.add(contaUsuario);
+		usersDAO.cadastraUsuario(contaUsuario);
 	}
 
 	public void remover(String login) throws Exception {
 		ContaUsuario user = new ContaUsuario();
 		user.setEmail(login);
 		usuarios.remove(user);
+		usersDAO.removeUsuario(login);
 
 	}
 
@@ -36,23 +40,24 @@ public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 	}
 
 	public ContaUsuario getUsuario(String login) throws Exception {
-		if (login.trim().isEmpty()) throw new Exception("Login n„o pode ser vazio");
+		if (login.trim().isEmpty()) throw new Exception("Login n√£o pode ser vazio");
 		ContaUsuario user = new ContaUsuario();
 		user.setEmail(login);
-		for (ContaUsuario usuario : usuarios) {
+		for (ContaUsuario usuario : usersDAO.getUsuarios()) {
 			if (usuario.equals(user)) return usuario;
 		}
 		throw new Exception("Login inexistente");
 	}
 
 	public void updateUserProfile(ContaUsuario contaUsuario) {
-		// TODO Auto-generated method stub
+		usersDAO.atualizaUsuario(contaUsuario);
 
 	}
 
 	public void addUserPreferences(ContaUsuario user,String preferencia) {
 		if (!user.getPreferencias().contains(preferencia)) {
 			user.getPreferencias().add(preferencia);
+			usersDAO.atualizaUsuario(user);
 		}
 	}
 

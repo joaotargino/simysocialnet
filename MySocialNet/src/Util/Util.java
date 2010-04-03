@@ -8,7 +8,7 @@ public class Util {
 	public static boolean verificaString(String texto, String campo) throws Exception {
 		
 		if (texto == null) throw new Exception(campo + " null");
-		else if (texto.isEmpty()) throw new Exception(campo + " do usu·rio deve ser informado");
+		else if (texto.isEmpty()) throw new Exception(campo + " do usu√°rio deve ser informado");
 		else if (texto.trim().isEmpty()) throw new Exception ("String so com espaco");
 		
 		char[] caracteres = texto.toCharArray();
@@ -30,29 +30,29 @@ public class Util {
 		
 		if (senha == null) throw new Exception("Senha null");
 		else if (senha.isEmpty()) throw new Exception("Senha deve ser informada");
-		else if (senha.trim().isEmpty()) throw new Exception ("Senha sÛ com espaÁo");
+		else if (senha.trim().isEmpty()) throw new Exception ("Senha s√≥ com espa√ßo");
 		
-		if (senha.length() < 6) throw new Exception("A senha deve ter pelo menos 6 dÌgitos");
+		if (senha.length() < 6) throw new Exception("A senha deve ter pelo menos 6 d√≠gitos");
 		
 		return true;
 	}
 	
 	public static boolean verificaEmail(String email) throws Exception {
 		if (email == null) throw new Exception("E-mail null");
-		else if (email.isEmpty()) throw new Exception("E-mail do usu·rio deve ser informado");
-		else if (email.trim().isEmpty()) throw new Exception ("E-mail sÛ com espaÁo");
+		else if (email.isEmpty()) throw new Exception("E-mail do usu√°rio deve ser informado");
+		else if (email.trim().isEmpty()) throw new Exception ("E-mail s√≥ com espa√ßo");
 
 		String expression = "^[\\w\\-]+(\\.[\\w\\-]+)*@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$";
 		Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
 		Matcher pesquisa = pattern.matcher(email);
-		if (!pesquisa.matches()) throw new Exception("E-mail inv·lido");
+		if (!pesquisa.matches()) throw new Exception("E-mail inv√°lido");
 		return true;
 	}
 	
 	public static boolean verificaData(String data) throws Exception {
 		if (data == null) throw new Exception("Data null");
 		else if (data.isEmpty()) throw new Exception("Data vazia");
-		else if (data.trim().isEmpty()) throw new Exception ("Data sÛ com espaÁo");
+		else if (data.trim().isEmpty()) throw new Exception ("Data s√≥ com espa√ßo");
 
 		
 		String expression = "/^((([0][1-9]|[12][0-9])02(19|20)([13579][26]|" +

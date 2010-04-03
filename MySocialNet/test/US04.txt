@@ -1,4 +1,4 @@
-# Testes de aceitaÁ„o para a US 04 - Gerenciamento de grupos
+# Testes de aceitaÔøΩÔøΩo para a US 04 - Gerenciamento de grupos
 # Criador: Daniel Bruno
 
 #####Remover dados anteriores do sistema
@@ -6,13 +6,13 @@ clean
 
 ExpectError "Login inexistente" listGroupMembers email="dev@email.com" group="conhecidos"
 
-#Cadastro de usu·rio
+#Cadastro de usu√°rio
 createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
 createUser name="Fulano" lastName="de Tal" email="xpto@email.com" passwd="123456"
 createUser name="Sicrano" lastName="Silva" email="xpto123@email.com" passwd="123456"
 createUser name="Beltrano" lastName="Santos" email="xpto123456@email.com" passwd="123456"
 
-ExpectError "Usu·rio n„o logado" listGroupMembers email="dev@email.com" group="conhecidos"
+ExpectError "Usu√°rio n√£o logado" listGroupMembers email="dev@email.com" group="conhecidos"
 
 #Login
 login email="dev@email.com" senha="123456"
@@ -26,14 +26,14 @@ Expect "" listGroupMembers email="dev@email.com" group="escola"
 Expect "" listGroupMembers email="dev@email.com" group="familia"
 Expect "" listGroupMembers email="dev@email.com" group="melhores amigos"
 Expect "" listGroupMembers email="dev@email.com" group="trabalho"
-ExpectError "Grupo xxxxx n„o existe" listGroupMembers email="dev@email.com" group="xxxxx"
+ExpectError "Grupo xxxxx n√£o existe" listGroupMembers email="dev@email.com" group="xxxxx"
 
 logoff email="dev@email.com"
 
 #Buscar amigo por grupo
 
 ExpectError "Login inexistente" findGroupMember login="dev1@email.com" friend="Fulano de Tal" group="familia"
-ExpectError "Usu·rio n„o logado" findGroupMember login="dev@email.com" friend="xpto@email.com" group="familia"
+ExpectError "Usu√°rio n√£o logado" findGroupMember login="dev@email.com" friend="xpto@email.com" group="familia"
 login email="dev@email.com" senha="123456"
 Expect null findGroupMember login="dev@email.com" friend="Fulano de Tal" group="familia"
 Expect null findGroupMember login="dev@email.com" friend="xpto@email.com" group="familia"
@@ -42,14 +42,14 @@ logoff email="dev@email.com"
 #Associar contato ao grupo
 
 ExpectError "Login inexistente" addGroupMember email="suport@email.com" group="trabalho" user="xpto@email.com"
-ExpectError "Usu·rio n„o logado" addGroupMember email="dev@email.com" group="trabalho" user="xpto@email.com"
+ExpectError "Usu√°rio n√£o logado" addGroupMember email="dev@email.com" group="trabalho" user="xpto@email.com"
 
 login email="dev@email.com" senha="123456"
 ExpectError "Login inexistente" addGroupMember email="suport@email.com" group="trabalho" user="xpto@email.com"
-ExpectError "Grupo xxxx n„o existe" addGroupMember email="dev@email.com" group="xxxx" user="xpto@email.com"
-ExpectError "Usu·rio a ser adicionado inexistente no sistema" addGroupMember email="dev@email.com" group="trabalho" user="suport@email.com"
+ExpectError "Grupo xxxx n√£o existe" addGroupMember email="dev@email.com" group="xxxx" user="xpto@email.com"
+ExpectError "Usu√°rio a ser adicionado inexistente no sistema" addGroupMember email="dev@email.com" group="trabalho" user="suport@email.com"
 addGroupMember email="dev@email.com" group="trabalho" user="xpto@email.com"
-ExpectError "Contato j· existente no grupo trabalho" addGroupMember email="dev@email.com" group="trabalho" user="xpto@email.com"
+ExpectError "Contato j√° existente no grupo trabalho" addGroupMember email="dev@email.com" group="trabalho" user="xpto@email.com"
 Expect "Fulano de Tal" listGroupMembers email="dev@email.com" group="trabalho"
 addGroupMember email="dev@email.com" group="trabalho" user="xpto123@email.com"
 addGroupMember email="dev@email.com" group="trabalho" user="xpto123456@email.com"
@@ -67,13 +67,13 @@ logoff email="dev@email.com"
 #Remover contato do Grupo
 
 ExpectError "Login inexistente" removeGroupMember email="suport@email.com" group="trabalho" user="xpto@email.com"
-ExpectError "Usu·rio n„o logado" removeGroupMember email="dev@email.com" group="trabalho" user="xpto@email.com"
+ExpectError "Usu√°rio n√£o logado" removeGroupMember email="dev@email.com" group="trabalho" user="xpto@email.com"
 login email="dev@email.com" senha="123456"
 ExpectError "Login inexistente" removeGroupMember email="suport@email.com" group="trabalho" user="xpto@email.com"
-ExpectError "Grupo xxxx n„o existe" removeGroupMember email="dev@email.com" group="xxxx" user="xpto@email.com"
-ExpectError "Usu·rio a ser removido inexistente no sistema" removeGroupMember email="dev@email.com" group="trabalho" user="suport@email.com"
+ExpectError "Grupo xxxx n√£o existe" removeGroupMember email="dev@email.com" group="xxxx" user="xpto@email.com"
+ExpectError "Usu√°rio a ser removido inexistente no sistema" removeGroupMember email="dev@email.com" group="trabalho" user="suport@email.com"
 removeGroupMember email="dev@email.com" group="trabalho" user="xpto@email.com"
-ExpectError "Contato n„o existente no grupo trabalho" removeGroupMember email="dev@email.com" group="trabalho" user="xpto@email.com"
+ExpectError "Contato n√£o existente no grupo trabalho" removeGroupMember email="dev@email.com" group="trabalho" user="xpto@email.com"
 Expect "Sicrano Silva" listGroupMembers email="dev@email.com" group="trabalho"
 Expect "Fulano de Tal" listGroupMembers email="dev@email.com" group="conhecidos"
 logoff email="dev@email.com"

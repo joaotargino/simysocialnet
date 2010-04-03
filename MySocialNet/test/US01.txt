@@ -1,4 +1,4 @@
-# Testes de aceita��o para a US 01 - Criar Usu�rio
+# Testes de aceitação para a US 01 - Criar Usuário
 # Criador: Daniel Bruno
 
 #####Remover dados anteriores do sistema
@@ -6,36 +6,36 @@ clean
 
 #####Cadastrar usuario
 
-ExpectError "Nome do usu�rio deve ser informado" createUser name="" lastName="Doe" email="dev@email.com" passwd="123456"
-ExpectError "Sobrenome do usu�rio deve ser informado" createUser name="John" lastName="" email="dev@email.com" passwd="123456"
-ExpectError "E-mail do usu�rio deve ser informado" createUser name="John" lastName="Doe" email="" passwd="123456"
+ExpectError "Nome do usuário deve ser informado" createUser name="" lastName="Doe" email="dev@email.com" passwd="123456"
+ExpectError "Sobrenome do usuário deve ser informado" createUser name="John" lastName="" email="dev@email.com" passwd="123456"
+ExpectError "E-mail do usuário deve ser informado" createUser name="John" lastName="Doe" email="" passwd="123456"
 ExpectError "Senha deve ser informada" createUser name="John" lastName="Doe" email="dev@email.com" passwd=""
 
-ExpectError "E-mail inv�lido" createUser name="John" lastName="Doe" email="dev@email" passwd="123456"
-ExpectError "E-mail inv�lido" createUser name="John" lastName="Doe" email="@email.com" passwd="123456"
-ExpectError "E-mail inv�lido" createUser name="John" lastName="Doe" email="dev" passwd="123456"
+ExpectError "E-mail inválido" createUser name="John" lastName="Doe" email="dev@email" passwd="123456"
+ExpectError "E-mail inválido" createUser name="John" lastName="Doe" email="@email.com" passwd="123456"
+ExpectError "E-mail inválido" createUser name="John" lastName="Doe" email="dev" passwd="123456"
 
-ExpectError "A senha deve ter pelo menos 6 d�gitos" createUser name="John" lastName="Doe" email="dev@email.com" passwd="12345"
+ExpectError "A senha deve ter pelo menos 6 dígitos" createUser name="John" lastName="Doe" email="dev@email.com" passwd="12345"
 
 createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
 createUser name="Fulano" lastName="Xpto" email="dev1@email.com" passwd="123456"
-ExpectError "Login indispon�vel" createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
-ExpectError "Login indispon�vel" createUser name="John1" lastName="Doe1" email="dev@email.com" passwd="12345678"
+ExpectError "Login indisponível" createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
+ExpectError "Login indisponível" createUser name="John1" lastName="Doe1" email="dev@email.com" passwd="12345678"
 
 #####Recuperar Usuario
 
 ExpectError "Login inexistente" getUser login="xpto@email.com"
-ExpectError "Usu�rio n�o logado" getUser login="dev@email.com"
+ExpectError "Usuário não logado" getUser login="dev@email.com"
 login email="dev@email.com" passwd="123456"
-ExpectError "Usu�rio n�o logado" getUser login="dev1@email.com"
+ExpectError "Usuário não logado" getUser login="dev1@email.com"
 ExpectError "Login inexistente" getUser login="xpto@email.com"
 Expect "Nome=John,Sobrenome=Doe" getUser login="dev@email.com"
 logoff email="dev@email.com"
 
 ExpectError "Login inexistente" getUser login="xpto@email.com"
-ExpectError "Usu�rio n�o logado" getUser login="dev1@email.com"
+ExpectError "Usuário não logado" getUser login="dev1@email.com"
 login email="dev1@email.com" passwd="123456"
-ExpectError "Usu�rio n�o logado" getUser login="dev@email.com"
+ExpectError "Usuário não logado" getUser login="dev@email.com"
 ExpectError "Login inexistente" getUser login="xpto@email.com"
 Expect "Nome=Fulano,Sobrenome=Xpto" getUser login="dev1@email.com"
 logoff email="dev1@email.com"
@@ -43,14 +43,14 @@ logoff email="dev1@email.com"
 ####Atualizar Usuario
 
 ExpectError "Login inexistente" updateUserProfile login="xpto@email.com" aboutMe="algum texto" age="23" photo="photo.png" country="brazil" city="Campina Grande" gender="male" contactEmail="dev@email.com"
-ExpectError "Usu�rio n�o logado" updateUserProfile login="dev@email.com" aboutMe="algum texto" age="23" photo="photo.png" country="brazil" city="Campina Grande" gender="male" contactEmail="dev@email.com"
+ExpectError "Usuário não logado" updateUserProfile login="dev@email.com" aboutMe="algum texto" age="23" photo="photo.png" country="brazil" city="Campina Grande" gender="male" contactEmail="dev@email.com"
 
 login email="dev@email.com" passwd="123456"
 updateUserProfile login="dev@email.com" aboutMe="" age="23" photo="photo.png" country="brazil" city="Campina Grande" gender="male" contactEmail="dev@email.com"
 logoff email="dev@email.com"
 
 ExpectError "Login inexistente" setFieldPrivacy login="xpto@email.com" field="photo" type="ALL"
-ExpectError "Usu�rio n�o logado" setFieldPrivacy login="dev@email.com" field="city" type="JUST_ME"
+ExpectError "Usuário não logado" setFieldPrivacy login="dev@email.com" field="city" type="JUST_ME"
 
 login email="dev@email.com" passwd="123456"
 
@@ -62,34 +62,46 @@ setFieldPrivacy login="dev@email.com" field="city" type="JUST_ME"
 setFieldPrivacy login="dev@email.com" field="gender" type="JUST_ME"
 setFieldPrivacy login="dev@email.com" field="contactEmail" type="JUST_ME"
 
-Expect "" viewProfile login="dev@email.com" visibility="ALL"
-Expect "contactEmail=dev@email.com,age=23,photo=photo.png,aboutMe=,gender=male,city=Campina Grande,country=brazil" viewProfile login="dev@email.com" visibility="JUST_ME"
-Expect "" viewProfile login="dev@email.com" visibility="FRIENDS"
+Expect "" checkProfile login="dev@email.com" visibility="ALL"
+Expect "contactEmail=dev@email.com,age=23,photo=photo.png,aboutMe=,gender=male,city=Campina Grande,country=brazil" checkProfile login="dev@email.com" visibility="JUST_ME"
+Expect "" checkProfile login="dev@email.com" visibility="FRIENDS"
 
 setFieldPrivacy login="dev@email.com" field="age" type="FRIENDS"
 setFieldPrivacy login="dev@email.com" field="country" type="FRIENDS"
 setFieldPrivacy login="dev@email.com" field="city" type="FRIENDS"
 
-Expect "contactEmail=dev@email.com,age=23,photo=photo.png,aboutMe=,gender=male,city=Campina Grande,country=brazil" viewProfile login="dev@email.com" visibility="JUST_ME"
-Expect "age=23,city=Campina Grande,country=brazil" viewProfile login="dev@email.com" visibility="FRIENDS"
-Expect "" viewProfile login="dev@email.com" visibility="ALL"
+Expect "contactEmail=dev@email.com,age=23,photo=photo.png,aboutMe=,gender=male,city=Campina Grande,country=brazil" checkProfile login="dev@email.com" visibility="JUST_ME"
+Expect "age=23,city=Campina Grande,country=brazil" checkProfile login="dev@email.com" visibility="FRIENDS"
+Expect "" checkProfile login="dev@email.com" visibility="ALL"
 
 setFieldPrivacy login="dev@email.com" field="country" type="ALL"
 setFieldPrivacy login="dev@email.com" field="city" type="ALL"
 setFieldPrivacy login="dev@email.com" field="contactEmail" type="ALL"
 
-Expect "contactEmail=dev@email.com,city=Campina Grande,country=brazil" viewProfile login="dev@email.com" visibility="ALL"
-Expect "contactEmail=dev@email.com,age=23,city=Campina Grande,country=brazil" viewProfile login="dev@email.com" visibility="FRIENDS"
-Expect "contactEmail=dev@email.com,age=23,photo=photo.png,aboutMe=,gender=male,city=Campina Grande,country=brazil" viewProfile login="dev@email.com" visibility="JUST_ME"
+Expect "contactEmail=dev@email.com,city=Campina Grande,country=brazil" checkProfile login="dev@email.com" visibility="ALL"
+Expect "contactEmail=dev@email.com,age=23,city=Campina Grande,country=brazil" checkProfile login="dev@email.com" visibility="FRIENDS"
+Expect "contactEmail=dev@email.com,age=23,photo=photo.png,aboutMe=,gender=male,city=Campina Grande,country=brazil" checkProfile login="dev@email.com" visibility="JUST_ME"
 logoff email="dev@email.com"
 
-Expect "contactEmail=dev@email.com,city=Campina Grande,country=brazil" viewProfile login="dev@email.com" visibility="ALL"
-Expect "contactEmail=dev@email.com,age=23,city=Campina Grande,country=brazil" viewProfile login="dev@email.com" visibility="FRIENDS"
-ExpectError "Usu�rio n�o logado" viewProfile login="dev@email.com" visibility="JUST_ME"
-ExpectError "Perfil inexistente" viewProfile login="xpto@email.com" visibility="JUST_ME"
+ExpectError "Usuário não logado" checkProfile login="dev@email.com" visibility="ALL"
+ExpectError "Usuário não logado" checkProfile login="dev@email.com" visibility="FRIENDS"
+ExpectError "Usuário não logado" checkProfile login="dev@email.com" visibility="JUST_ME"
+ExpectError "Perfil inexistente" checkProfile login="xpto@email.com" visibility="JUST_ME"
+
+ExpectError "Login do viewer não existente no sistema" viewProfile viewer="suport@email.com" profileOwner="dev@email.com"
+ExpectError "Perfil inexistente" viewProfile viewer="dev1@email.com" profileOwner="suport@email.com"
+ExpectError "Usuário não logado" viewProfile viewer="dev1@email.com" profileOwner="dev@email.com"
+
+login email="dev1@email.com" passwd="123456"
+##Usuários não s�o amigos - ver campos do perfil com visibilidade ALL
+login email="dev@email.com" passwd="123456"
+allVisibility=checkProfile login="dev@email.com" visibility="ALL"
+Expect ${allVisibility} viewProfile viewer="dev1@email.com" profileOwner="dev@email.com"
+logoff email="dev@email.com"
+logoff email="dev1@email.com"
 
 ExpectError "Login inexistente" addUserPreference login="xpto@email.com" preference="futebol"
-ExpectError "Usu�rio n�o logado" addUserPreference login="dev@email.com" preference="futebol"
+ExpectError "Usuário não logado" addUserPreference login="dev@email.com" preference="futebol"
 login email="dev@email.com" passwd="123456"
 addUserPreference login="dev@email.com" preference="futebol"
 Expect "futebol" listUserPreferences login="dev@email.com" 
@@ -100,7 +112,7 @@ Expect "futebol,cinema" listUserPreferences login="dev@email.com"
 logoff email="dev@email.com"
 
 ExpectError "Login inexistente" removeUserPreference login="xpto@email.com" preference="futebol"
-ExpectError "Usu�rio n�o logado" removeUserPreference login="dev@email.com" preference="futebol"
+ExpectError "Usuário não logado" removeUserPreference login="dev@email.com" preference="futebol"
 login email="dev@email.com" passwd="123456"
 removeUserPreference login="dev@email.com" preference="futebol"
 Expect "cinema" listUserPreferences login="dev@email.com"
@@ -109,9 +121,9 @@ logoff email="dev@email.com"
 ####Remover Usuario
 
 ExpectError "Login inexistente" deleteUser login="xpto@email.com"
-ExpectError "Usu�rio n�o logado" deleteUser login="dev@email.com"
+ExpectError "Usuário não logado" deleteUser login="dev@email.com"
 login email="dev@email.com" passwd="123456"
-ExpectError "Login n�o pode ser vazio" deleteUser login=""
+ExpectError "Login não pode ser vazio" deleteUser login=""
 deleteUser login="dev@email.com"
-ExpectError "Login inv�lido ou senha incorreta" login email="dev@email.com" passwd="123456"
+ExpectError "Login inválido ou senha incorreta" login email="dev@email.com" passwd="123456"
 ExpectError "Login inexistente" deleteUser login="dev@email.com"

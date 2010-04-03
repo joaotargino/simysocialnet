@@ -7,20 +7,21 @@ import beans.ContaUsuario;
 import beans.Profile;
 import controller.GerenciadorGrupo;
 import controller.GerenciadorUsuario;
+import dao.usersDAO;
 
 public class SocialNet {
-	
+
 	private static SocialNet social;
 	private ContaUsuario usuario;
 	private GerenciadorGrupo gerenciadorGrupo;
-	
+
 	public synchronized static SocialNet getInstance() {
 		if(social == null) {
 			social = new SocialNet();
 		}
 		return social;
 	}
-	
+
 	/**
 	 * Loga o usuario ao sistema
 	 * @throws Exception 
@@ -29,40 +30,42 @@ public class SocialNet {
 	public void login(String login, String senha) throws Exception {
 		try {
 			usuario = GerenciadorUsuario.getInstance().getUsuario(login);
-			if ( usuario == null) throw new Exception("Login inválido ou senha incorreta");
-			else if (!senha.equals(usuario.getSenha())) throw new Exception("Login inválido ou senha incorreta");
+			if ( usuario == null) throw new Exception("Login invÃ¡lido ou senha incorreta");
+			else if (!senha.equals(usuario.getSenha())) throw new Exception("Login invÃ¡lido ou senha incorreta");
 		} catch (Exception e) {
-			throw new Exception("Login inválido ou senha incorreta");
+			throw new Exception("Login invÃ¡lido ou senha incorreta");
 		}
-		if (usuario.isLoged()) throw new Exception("Usuário já logado");
+		if (usuario.isLoged()) throw new Exception("UsuÃ¡rio jÃ¡ logado");
 		usuario.setLoged(true);
+		usersDAO.atualizaUsuario(usuario);
 	}
-	
+
 	/**
 	 * Desloga o usuario do sistema
 	 */
 	public void logoff(String email) {
 		usuario.setLoged(false);
+		usersDAO.atualizaUsuario(usuario);
 		usuario = null;
 	}
-	
+
 	/**
 	 * @return true se um usuario estiver logado, falso caso contrario
 	 */
 	public boolean estaLogado() {
 		return (usuario != null);
 	}
-	
+
 	/**
 	 * Cria um usuario, pode ocorrer os seguintes erros:
 	 * 
-	 * "Nome do usuário deve ser informado"
-	 * "Sobrenome do usuário deve ser informado"
-	 * "E-mail do usuário deve ser informado"
+	 * "Nome do usuï¿½rio deve ser informado"
+	 * "Sobrenome do usuï¿½rio deve ser informado"
+	 * "E-mail do usuï¿½rio deve ser informado"
 	 * "Senha deve ser informada"
-	 * "E-mail inválido"
-	 * "A senha deve ter pelo menos 6 dígitos"
-	 * "Login indisponível"
+	 * "E-mail invï¿½lido"
+	 * "A senha deve ter pelo menos 6 dï¿½gitos"
+	 * "Login indisponï¿½vel"
 	 * 
 	 * @param name - o nome do usuario
 	 * @param lastName - o sobrenome do usuario
@@ -76,17 +79,17 @@ public class SocialNet {
 			contaUsuario = new ContaUsuario(name, lastName, passwd, email);
 		}
 		catch (Exception e) {
-			if (e.getMessage().equals("String invalida")) throw new Exception("Login indisponível");
+			if (e.getMessage().equals("String invalida")) throw new Exception("Login indisponÃ­vel");
 			else throw new Exception(e.getMessage());
 		}
 		GerenciadorUsuario.getInstance().adicionar(contaUsuario);
 	}
-	
+
 	/**
 	 * Recupera um usuario, pode ocorrer os seguintes erros:
 	 * 
 	 * "Login inexistente"
-	 * "Usuário não logado"
+	 * "Usuï¿½rio nï¿½o logado"
 	 * 
 	 * @param login - o email do usuario
 	 * @return String contendo nome e sobrenome do usuario
@@ -94,15 +97,15 @@ public class SocialNet {
 	 */
 	public ContaUsuario getUser (String login) throws Exception {
 		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
-		if (!usuario.isLoged()) throw new Exception("Usuário não logado"); 
+		if (!usuario.isLoged()) throw new Exception("UsuÃ¡rio nÃ£o logado"); 
 		return usuario;
 	}
-	
+
 	/**
-	 * Atualiza as informações do usuario,pode ocorrer os seguintes erros:
+	 * Atualiza as informaï¿½ï¿½es do usuario,pode ocorrer os seguintes erros:
 	 * 
 	 * "Login inexistente"
-	 * "Usuário não logado"
+	 * "Usuï¿½rio nï¿½o logado"
 	 * 
 	 * @param login
 	 * @param aboutMe
@@ -116,10 +119,10 @@ public class SocialNet {
 	 */
 	public void updateUserProfile(String login, String aboutMe, int age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
 		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
-		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
+		if (!usuario.isLoged()) throw new Exception("UsuÃ¡rio nÃ£o logado");
 		GerenciadorUsuario.getInstance().updateUserProfile(usuario);
 	}
-	
+
 	/**
 	 * Altera a privacidade de algum campo
 	 * 
@@ -130,12 +133,12 @@ public class SocialNet {
 	 */
 	public void setFieldPrivacy(String login, String field, String type) throws Exception {
 		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
-		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
+		if (!usuario.isLoged()) throw new Exception("UsuÃ¡rio nÃ£o logado");
 		GerenciadorUsuario.getInstance().updateUserProfile(usuario);
 	}
-	
+
 	/**
-	 * Diz o que está disponivel no perfil dependendo da visibilidade, pode ocorrer os seguintes erros:
+	 * Diz o que estï¿½ disponivel no perfil dependendo da visibilidade, pode ocorrer os seguintes erros:
 	 * 
 	 * "Perfil inexistente"
 	 * 
@@ -145,21 +148,29 @@ public class SocialNet {
 	 * 			exemplo: "photo=photo.png,aboutMe=,gender=male"
 	 * @throws Exception 
 	 */
-	public String viewProfile( String login, String visibility) throws Exception {
-		
+	public String checkProfile(String login, String visibility) throws Exception {
+
 		ContaUsuario user;
 		try {
-			 user = GerenciadorUsuario.getInstance().getUsuario(login);
+			user = GerenciadorUsuario.getInstance().getUsuario(login);
 		} catch (Exception e) {
 			throw new Exception("Perfil inexistente");
 		}
-		
-		if (!(estaLogado()) && visibility.equals(ProfileConstants.JUST_ME)) throw new Exception("Usuário não logado");
+
+		if (!(estaLogado())) throw new Exception("UsuÃ¡rio nÃ£o logado");
 		Profile profile = user.getProfile();
 		return null;
 	}
-	
-	
+
+
+	public String viewProfile(String viewer, String profileOwner) throws Exception {
+		
+		ContaUsuario viewerUser = GerenciadorUsuario.getInstance().getUsuario(viewer);
+		if(!viewerUser.isLoged()) throw new Exception("UsuÃ¡rio nÃ£o logado");
+		return null;
+	}
+
+
 	/**
 	 * Adiciona uma preferencia para o usuario
 	 * 
@@ -170,11 +181,11 @@ public class SocialNet {
 	public void addUserPreference(String login, String preference) throws Exception {
 		ContaUsuario user = GerenciadorUsuario.getInstance().getUsuario(login);
 		if(!user.isLoged()) {
-			throw new Exception("Usuário não logado");
+			throw new Exception("UsuÃ¡rio nÃ£o logado");
 		}
 		GerenciadorUsuario.getInstance().addUserPreferences(user, preference);
 	}
-	
+
 	/**
 	 * Lista as preferencias do usuario
 	 * 
@@ -186,7 +197,7 @@ public class SocialNet {
 	public List<String> listUserPreferences(String login) throws Exception {
 		return GerenciadorUsuario.getInstance().getUsuario(login).getPreferencias();
 	}
-	
+
 	/**
 	 * Remove uma preferencia do usuario
 	 * 
@@ -196,10 +207,10 @@ public class SocialNet {
 	 */
 	public void removeUserPreference (String login, String preference) throws Exception {
 		ContaUsuario user = GerenciadorUsuario.getInstance().getUsuario(login);
-		if (!user.isLoged()) throw new Exception("Usuário não logado");
+		if (!user.isLoged()) throw new Exception("UsuÃ¡rio nÃ£o logado");
 		user.getPreferencias().remove(preference);
 	}
-	
+
 	/**
 	 * Deleta a conta do usuario
 	 * @param login
@@ -207,10 +218,10 @@ public class SocialNet {
 	 */
 	public void deleteUser(String login) throws Exception {
 		ContaUsuario user = GerenciadorUsuario.getInstance().getUsuario(login);
-		if (!user.isLoged()) throw new Exception("Usuário não logado");
+		if (!user.isLoged()) throw new Exception("UsuÃ¡rio nÃ£o logado");
 		GerenciadorUsuario.getInstance().remover(login);
 	}
-	
+
 	/**
 	 * Lista os membros de um grupo
 	 * 
@@ -221,7 +232,7 @@ public class SocialNet {
 	public List<ContaUsuario> listGroupMembers(String email, String group) {
 		return gerenciadorGrupo.getMembros(group);
 	}
-	
+
 	/**
 	 * Procura um mebro de um grupo
 	 * 
@@ -233,7 +244,7 @@ public class SocialNet {
 	public ContaUsuario findGroupMember(String login,String friend, String group) {
 		return gerenciadorGrupo.getMembro(friend, group);
 	}
-	
+
 	/**
 	 * @param email
 	 * @param group
@@ -242,7 +253,7 @@ public class SocialNet {
 	public void addGroupMember(String email, String group, String user) {
 		gerenciadorGrupo.adicionar(user, group);
 	}
-	
+
 	/**
 	 * Remove um membro do grupo
 	 * 
@@ -253,7 +264,7 @@ public class SocialNet {
 	public void removeGroupMember(String email, String group, String user) {
 		gerenciadorGrupo.remover(user, group);
 	}
-	
+
 	/**
 	 * Listar os amigos
 	 * 
@@ -265,7 +276,7 @@ public class SocialNet {
 		ContaUsuario user = GerenciadorUsuario.getInstance().getUsuario(email);
 		return user.getAmigos();
 	}
-	
+
 	/**
 	 * procura um novo amigo
 	 * 
@@ -277,7 +288,7 @@ public class SocialNet {
 	public ContaUsuario findNewFriend(String login, String friend) throws Exception {
 		return GerenciadorUsuario.getInstance().getUsuario(friend);
 	}
-	
+
 	/**
 	 * Envia um convite de amizade para outro usuario
 	 * 
@@ -287,11 +298,11 @@ public class SocialNet {
 	 * @param group
 	 */
 	public void sendFriendshipRequest(String login, String user, String message, String group) {
-		
+
 	}
-	
+
 	/**
-	 * Ver os convites de amizade. que estão pendentes, para o usuario
+	 * Ver os convites de amizade. que estï¿½o pendentes, para o usuario
 	 * 
 	 * @param login
 	 * @return
@@ -299,10 +310,10 @@ public class SocialNet {
 	public List<ContaUsuario> viewPendingFriendship(String login) {
 		return null;
 	}
-	
+
 	/**
 	 * Ver os convites de amizade enviados 
-	 * pelo usuario que estão pendentes
+	 * pelo usuario que estï¿½o pendentes
 	 * 
 	 * @param login
 	 * @return
@@ -310,7 +321,7 @@ public class SocialNet {
 	public List<ContaUsuario> viewSentFriendship (String login) {
 		return null;
 	}
-	
+
 	/**
 	 * Rejeita o convite de amizade
 	 * 
@@ -318,9 +329,9 @@ public class SocialNet {
 	 * @param contact
 	 */
 	public void declineFriendshipRequest (String login, String contact){
-		
+
 	}
-	
+
 	/**
 	 * Aceita o convite de amizade
 	 * 
@@ -329,9 +340,9 @@ public class SocialNet {
 	 * @param group
 	 */
 	public void acceptFriendshipRequest (String login, String contact, String group){
-		
+
 	}
-	
+
 	/**
 	 * Pega um amigo da lista de amigos
 	 * 
@@ -342,7 +353,7 @@ public class SocialNet {
 	public ContaUsuario getFriend(String email, String friend) {
 		return null;
 	}
-	
+
 	/**
 	 * Remove um amigo da lista de amigos
 	 * 
@@ -350,9 +361,9 @@ public class SocialNet {
 	 * @param friend
 	 */
 	public void removeFriend(String login, String friend) {
-		
+
 	}
-	
+
 	/**
 	 * Recomenda amigos a partir da lista de amigos 
 	 * por grau de similaridade ou se ele estiver nos 
@@ -364,7 +375,7 @@ public class SocialNet {
 	public List<ContaUsuario> getRecommendFriends(String login) {
 		return null;
 	}
-	
+
 	/**
 	 * Gera um arquivo a partir da lista de amigos com os campos passados por parametro 
 	 * 
@@ -373,9 +384,9 @@ public class SocialNet {
 	 * @param exportFields
 	 */
 	public void exportFriendList(String login, String fileName, String exportFields) {
-		
+
 	}
-	
+
 	/**
 	 * Recupera uma lista de amigos a partir de um arquivo
 	 * 
@@ -383,13 +394,13 @@ public class SocialNet {
 	 * @param file
 	 */
 	public void restoreFriendList(String login, String file) {
-		
+
 	}
-	
+
 	/**
 	 * Limpar o banco de dados
 	 */
 	public void clean() {
-		
+		usersDAO.reset();
 	}
 }
