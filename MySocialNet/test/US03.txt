@@ -8,7 +8,7 @@ clean
 createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
 
 #Logoff
-expectError "Login inv�lido" logoff email="xpto@email.com"
+expectError "Login inválido" logoff email="xpto@email.com"
 expectError "Usuário não logado" logoff email="dev@email.com"
 
 #Login

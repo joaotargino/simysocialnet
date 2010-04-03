@@ -12,7 +12,6 @@ import beans.ContaUsuario;
 public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 
 	private static GerenciadorUsuario gerenciadorUsuario;
-	private List<ContaUsuario> usuarios = new ArrayList<ContaUsuario>();
 
 	public synchronized static GerenciadorUsuario getInstance() {
 		if (gerenciadorUsuario == null) {
@@ -22,15 +21,13 @@ public class GerenciadorUsuario implements Gerenciavel<ContaUsuario> {
 	}
 
 	public void adicionar(ContaUsuario contaUsuario) throws Exception {
-		if (usuarios.contains(contaUsuario)) throw new Exception("Login indisponível");
-		usuarios.add(contaUsuario);
+		if (usersDAO.getUsuarios().contains(contaUsuario)) throw new Exception("Login indisponível");
 		usersDAO.cadastraUsuario(contaUsuario);
 	}
 
 	public void remover(String login) throws Exception {
 		ContaUsuario user = new ContaUsuario();
 		user.setEmail(login);
-		usuarios.remove(user);
 		usersDAO.removeUsuario(login);
 
 	}

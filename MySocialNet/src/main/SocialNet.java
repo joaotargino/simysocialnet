@@ -2,7 +2,6 @@ package main;
 
 import java.util.List;
 
-import Util.ProfileConstants;
 import beans.ContaUsuario;
 import beans.Profile;
 import controller.GerenciadorGrupo;
@@ -42,10 +41,18 @@ public class SocialNet {
 
 	/**
 	 * Desloga o usuario do sistema
+	 * @throws Exception 
 	 */
-	public void logoff(String email) {
-		usuario.setLoged(false);
-		usersDAO.atualizaUsuario(usuario);
+	public void logoff(String email) throws Exception {
+		ContaUsuario user;
+		try {
+			user = GerenciadorUsuario.getInstance().getUsuario(email);
+		} catch (Exception e) {
+			throw new Exception("Login inválido");
+		}
+		if (!user.isLoged()) throw new Exception("Usuário não logado");
+		user.setLoged(false);
+		usersDAO.atualizaUsuario(user);
 		usuario = null;
 	}
 
