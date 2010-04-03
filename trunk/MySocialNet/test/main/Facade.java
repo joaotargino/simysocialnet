@@ -37,13 +37,13 @@ public class Facade {
 	/**
 	 * Cria um usuario, pode ocorrer os seguintes erros:
 	 * 
-	 * "Nome do usuário deve ser informado"
-	 * "Sobrenome do usuário deve ser informado"
-	 * "E-mail do usuário deve ser informado"
+	 * "Nome do usuï¿½rio deve ser informado"
+	 * "Sobrenome do usuï¿½rio deve ser informado"
+	 * "E-mail do usuï¿½rio deve ser informado"
 	 * "Senha deve ser informada"
-	 * "E-mail inválido"
-	 * "A senha deve ter pelo menos 6 dígitos"
-	 * "Login indisponível"
+	 * "E-mail invï¿½lido"
+	 * "A senha deve ter pelo menos 6 dï¿½gitos"
+	 * "Login indisponï¿½vel"
 	 * 
 	 * @param name - o nome do usuario
 	 * @param lastName - o sobrenome do usuario
@@ -59,7 +59,7 @@ public class Facade {
 	 * Recupera um usuario, pode ocorrer os seguintes erros:
 	 * 
 	 * "Login inexistente"
-	 * "Usuário não logado"
+	 * "Usuï¿½rio nï¿½o logado"
 	 * 
 	 * @param login - o email do usuario
 	 * @return String contendo nome e sobrenome do usuario
@@ -70,10 +70,10 @@ public class Facade {
 	}
 	
 	/**
-	 * Atualiza as informações do usuario,pode ocorrer os seguintes erros:
+	 * Atualiza as informaï¿½ï¿½es do usuario,pode ocorrer os seguintes erros:
 	 * 
 	 * "Login inexistente"
-	 * "Usuário não logado"
+	 * "Usuï¿½rio nï¿½o logado"
 	 * 
 	 * @param login
 	 * @param aboutMe
@@ -102,7 +102,7 @@ public class Facade {
 	}
 	
 	/**
-	 * Diz o que está disponivel no perfil dependendo da visibilidade, pode ocorrer os seguintes erros:
+	 * Diz o que estï¿½ disponivel no perfil dependendo da visibilidade, pode ocorrer os seguintes erros:
 	 * 
 	 * "Perfil inexistente"
 	 * 
@@ -112,9 +112,16 @@ public class Facade {
 	 * 			exemplo: "photo=photo.png,aboutMe=,gender=male"
 	 * @throws Exception 
 	 */
-	public String viewProfile( String login, String visibility) throws Exception {
-		return SocialNet.getInstance().viewProfile(login, visibility);
+	public String checkProfile( String login, String visibility) throws Exception {
+		return SocialNet.getInstance().checkProfile(login, visibility);
 	}
+	
+	public String viewProfile( String viewer, String profileOwner) throws Exception {
+		return SocialNet.getInstance().viewProfile(viewer, profileOwner);
+	}
+	
+	
+	
 	
 	
 	/**
@@ -245,7 +252,7 @@ public class Facade {
 	}
 	
 	/**
-	 * Ver os convites de amizade. que estão pendentes, para o usuario
+	 * Ver os convites de amizade. que estï¿½o pendentes, para o usuario
 	 * 
 	 * @param login
 	 * @return
@@ -256,7 +263,7 @@ public class Facade {
 	
 	/**
 	 * Ver os convites de amizade enviados 
-	 * pelo usuario que estão pendentes
+	 * pelo usuario que estï¿½o pendentes
 	 * 
 	 * @param login
 	 * @return

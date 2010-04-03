@@ -14,10 +14,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import beans.ContaUsuario;
-import beans.Grupo;
 
 /**
- * Classe responsavel pela manipulação com o banco de dados
+ * Classe responsavel pela manipulaÔøΩÔøΩo com o banco de dados
  * 
  */
 public class usersDAO {
@@ -89,8 +88,7 @@ public class usersDAO {
 	 *         contrario.
 	 * @throws IOException
 	 */
-	public static boolean cadastraUsuario(ContaUsuario usuario)
-			throws IOException {
+	public static boolean cadastraUsuario(ContaUsuario usuario)throws IOException {
 		if (usuario == null)
 			return false;
 		List<ContaUsuario> users = getUsuarios();
@@ -107,7 +105,7 @@ public class usersDAO {
 	}
 
 	/**
-	 * Remove o usuário, cujo email eh igual ao passado como parametro, se
+	 * Remove o usuÔøΩrio, cujo email eh igual ao passado como parametro, se
 	 * possivel.
 	 * 
 	 * @param email
@@ -134,7 +132,7 @@ public class usersDAO {
 	}
 
 	/**
-	 * Remove o usuário, cujo nome e sobrenome sao iguais aos passados como
+	 * Remove o usuÔøΩrio, cujo nome e sobrenome sao iguais aos passados como
 	 * parametro, se possivel.
 	 * 
 	 * @param nome
@@ -204,15 +202,15 @@ public class usersDAO {
 	
 	// veio do serializar.java (salvar e recuperar)
 	/**
-	 * Esse método recebe um objeto arquivo e o objeto que será serializado. O
-	 * método irá serializar o objeto passado no arquivo (referenciado pelo
+	 * Esse mÔøΩtodo recebe um objeto arquivo e o objeto que serÔøΩ serializado. O
+	 * mÔøΩtodo irÔøΩ serializar o objeto passado no arquivo (referenciado pelo
 	 * objeto file).
 	 */
 	public static void salvar(File file, Object objeto)
 			throws FileNotFoundException, IOException {
 
 		if (objeto == null) {
-			throw new NullPointerException("Objeto passado é nulo");
+			throw new NullPointerException("Objeto passado ÔøΩ nulo");
 		}
 		XMLEncoder e = null;
 
@@ -222,9 +220,9 @@ public class usersDAO {
 			e.writeObject(objeto);
 
 		} catch (FileNotFoundException ex) {
-			throw new FileNotFoundException("O arquivo não pode ser encontrado");
+			throw new FileNotFoundException("O arquivo nÔøΩo pode ser encontrado");
 		} catch (IOException ex) {
-			throw new IOException("Erro de entrada e saída");
+			throw new IOException("Erro de entrada e saÔøΩda");
 		} finally {
 			if (e != null) {
 				e.close();
@@ -238,8 +236,8 @@ public class usersDAO {
 	}
 
 	/**
-	 * Para ler o objeto serializado, nós somente precisamos no arquivo onde
-	 * esse objeto está salvado. Sabendo o arquivo, nós conseguimos recuperar o
+	 * Para ler o objeto serializado, nÔøΩs somente precisamos no arquivo onde
+	 * esse objeto estÔøΩ salvado. Sabendo o arquivo, nÔøΩs conseguimos recuperar o
 	 * objeto tranquilamente.
 	 */
 	public static Object recuperar(File file) throws FileNotFoundException,
@@ -247,7 +245,7 @@ public class usersDAO {
 		Object obj = null;
 
 		if (file == null) {
-			throw new NullPointerException("Objeto FILE é Nulo.");
+			throw new NullPointerException("Objeto FILE ÔøΩ Nulo.");
 		}
 		XMLDecoder d = null;
 
@@ -258,9 +256,9 @@ public class usersDAO {
 			obj = d.readObject();
 
 		} catch (FileNotFoundException e) {
-			throw new FileNotFoundException("Arquivo não encontrado");
+			throw new FileNotFoundException("Arquivo nÔøΩo encontrado");
 		} catch (IOException e) {
-			throw new IOException("Erro de entrada e saída");
+			throw new IOException("Erro de entrada e saÔøΩda");
 		} finally {
 			if (d != null) {
 				d.close();

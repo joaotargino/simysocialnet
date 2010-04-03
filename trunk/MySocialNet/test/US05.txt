@@ -1,4 +1,4 @@
-# Testes de aceitaÁ„o para a US 05 - Gerenciamento de amigos
+# Testes de aceitaÔøΩÔøΩo para a US 05 - Gerenciamento de amigos
 # Criador: Daniel Bruno
 
 #####Remover dados anteriores do sistema
@@ -6,7 +6,7 @@ clean
 
 ExpectError "Login inexistente" listFriends email="dev@email.com"
 
-#Cadastro de Usu·rio
+#Cadastro de UsuÔøΩrio
 
 createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
 createUser name="Fulano" lastName="de Tal" email="xpto@email.com" passwd="123456"
@@ -15,7 +15,7 @@ createUser name="Beltrano" lastName="Santos" email="xpto123456@email.com" passwd
 
 #Listar amigos - nenhum amigo adicionado
 
-ExpectError "Usu·rio n„o logado" listFriends email="dev@email.com"
+ExpectError "Usu√°rio n√£o logado" listFriends email="dev@email.com"
 login email="dev@email.com" senha="123456"
 ExpectError "Login inexistente" listFriends email="suport@email.com"
 Expect "" listFriends email="dev@email.com"
@@ -24,7 +24,7 @@ logoff email="dev@email.com"
 #Buscar novos amigos
 
 ExpectError "Login inexistente" findNewFriend email="suport@email.com" user="xpto@email.com"
-ExpectError "Usu·rio n„o logado" findNewFriend email="dev@email.com" user="xpto@email.com"
+ExpectError "Usu√°rio n√£o logado" findNewFriend email="dev@email.com" user="xpto@email.com"
 login email="dev@email.com" senha="123456"
 Expect "Fulano de Tal - Profile: photo=,aboutMe=,country=" findNewFriend login="dev@email.com" friend="xpto@email.com"
 Expect "Fulano de Tal - Profile: photo=,aboutMe=,country=" findNewFriend login="dev@email.com" friend="Fulano de Tal"
@@ -36,19 +36,19 @@ logoff email="dev@email.com"
 
 ExpectError "Login inexistente" sendFriendshipRequest login="suport@email.com" user="xpto@email.com" message="" group="familia"
 ExpectError "Contato inexistente" sendFriendshipRequest login="dev@email.com" user="suport@email.com" message="" group="familia"
-ExpectError "Usu·rio n„o logado" sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
+ExpectError "Usu√°rio n√£o logado" sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
 login email="dev@email.com" senha="123456"
-ExpectError "OperaÁ„o n„o permitida" sendFriendshipRequest login="dev@email.com" user="dev@email.com" message="" group="familia"
+ExpectError "Opera√ß√£o n√£o permitida" sendFriendshipRequest login="dev@email.com" user="dev@email.com" message="" group="familia"
 sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
-ExpectError "VocÍ j· enviou um convite para esse usu·rio" sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
+ExpectError "Voc√™ j√° enviou um convite para esse usu√°rio" sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
 logoff email="dev@email.com"
 
 #Visualizar convites pendentes recebidos pelo usu√°rio
 
 ExpectError "Login inexistente" viewPendingFriendship login="suport@email.com"
-ExpectError "Usu·rio n„o logado" viewPendingFriendship login="dev@email.com"
+ExpectError "Usu√°rio n√£o logado" viewPendingFriendship login="dev@email.com"
 login email="dev@email.com" senha="123456"
-Expect "N„o h· nenhuma solicitaÁ„o de amizade pendente" viewPendingFriendship login="dev@email.com"
+Expect "N√£o h√° nenhuma solicita√ß√£o de amizade pendente" viewPendingFriendship login="dev@email.com"
 logoff email="dev@email.com"
 
 login email="xpto@email.com" senha="123456"
@@ -58,41 +58,47 @@ logoff email="xpto@email.com"
 #Visualizar convites pendentes enviados pelo usu√°rio
 
 ExpectError "Login inexistente" viewSentFriendship login="suport@email.com"
-ExpectError "Usu·rio n„o logado" viewSentFriendship login="dev@email.com"
+ExpectError "Usu√°rio n√£o logado" viewSentFriendship login="dev@email.com"
 login email="dev@email.com" senha="123456"
 Expect "xpto@email.com" viewSentFriendship login="dev@email.com"
 logoff email="dev@email.com"
 
 login email="xpto@email.com" senha="123456"
-Expect "N„o h· nenhuma solicitaÁ„o de amizade pendente" viewSentFriendship login="xpto@email.com"
+Expect "N√£o h√° nenhuma solicita√ß√£o de amizade pendente" viewSentFriendship login="xpto@email.com"
 logoff email="xpto@email.com"
 
 #Recusar convite de amizade
 
 ExpectError "Login inexistente" declineFriendshipRequest login="suport@email.com" contact="dev@email.com"
-ExpectError "Usu·rio n„o logado" declineFriendshipRequest login="xpto@email.com" contact="dev@email.com"
+ExpectError "Usu√°rio n√£o logado" declineFriendshipRequest login="xpto@email.com" contact="dev@email.com"
 login email="xpto@email.com" senha="123456"
 declineFriendshipRequest login="xpto@email.com" contact="dev@email.com"
-Expect "N„o h· nenhuma solicitaÁ„o de amizade pendente" viewPendingFriendship login="xpto@email.com"
+Expect "N√£o h√° nenhuma solicita√ß√£o de amizade pendente" viewPendingFriendship login="xpto@email.com"
 logoff email="xpto@email.com"
 
 login email="dev@email.com" senha="123456"
-Expect "N„o h· nenhuma solicitaÁ„o de amizade pendente" viewPendingFriendship login="dev@email.com"
+Expect "N√£o h√° nenhuma solicita√ß√£o de amizade pendente" viewPendingFriendship login="dev@email.com"
 logoff email="dev@email.com"
 
 #Adicionar amigo
 
 login email="dev@email.com" senha="123456"
 sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
-ExpectError "VocÍ j· enviou um convite para esse usu·rio" sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
+ExpectError "Voc√™ j√° enviou um convite para esse usu√°rio" sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
 logoff email="dev@email.com"
 
 ExpectError "Login inexistente" acceptFriendshipRequest login="suport@email.com" contact="dev@email.com" group="familia"
-ExpectError "Usu·rio n„o logado" acceptFriendshipRequest login="xpto@email.com" contact="dev@email.com" group="familia"
+ExpectError "Usu√°rio n√£o logado" acceptFriendshipRequest login="xpto@email.com" contact="dev@email.com" group="familia"
 login email="xpto@email.com" senha="123456"
 acceptFriendshipRequest login="xpto@email.com" contact="dev@email.com" group="familia"
 Expect "Nome=John,Sobrenome=Doe" findGroupMember login="xpto@email.com" friend="dev@email.com" group="familia"
+
+###Verificar que o perfil do usu√°rio adicionado como amigo est√° dispon√≠vel como FRIENDS
+login email="dev@email.com" senha="123456"
+friendVisibility=checkProfile login="dev@email.com" visibility="FRIENDS"
+Expect ${friendVisibility} viewProfile viewer="xpto@email.com" profileOwner="dev@email.com"
 logoff email="xpto@email.com"
+logoff email="dev@email.com"
 
 login email="dev@email.com" senha="123456"
 Expect "Nome=Fulano,Sobrenome=de Tal" findGroupMember login="dev@email.com" friend="xpto@email.com" group="familia"
@@ -101,7 +107,7 @@ logoff email="dev@email.com"
 ####Buscar amigo
 
 ExpectError "Login inexistente" getFriend email="suport@email.com" friend="xpto@email.com"
-ExpectError "Usu·rio n„o logado" getFriend email="dev@email.com" friend="xpto@email.com"
+ExpectError "Usu√°rio n√£o logado" getFriend email="dev@email.com" friend="xpto@email.com"
 login email="dev@email.com" senha="123456"
 Expect null getFriend email="dev@email.com" friend="suport@email.com"
 Expect null getFriend email="dev@email.com" friend="Nome Sobrenome"
@@ -113,10 +119,10 @@ logoff email="dev@email.com"
 #Remover amigo
 
 ExpectError "Login inexistente" removeFriend email="suport@email.com" friend="xpto@email.com"
-ExpectError "Usu·rio n„o logado" removeFriend email="dev@email.com" friend="xpto@email.com"
+ExpectError "Usu√°rio n√£o logado" removeFriend email="dev@email.com" friend="xpto@email.com"
 login email="dev@email.com" senha="123456"
-ExpectError "Amigo n„o existente no sistema" removeFriend login="dev@email.com" friend="suport@email.com"
-ExpectError "Amigo n„o encontrado em nenhum grupo" removeFriend login="dev@email.com" friend="xpto123@email.com"
+ExpectError "Amigo n√£o existente no sistema" removeFriend login="dev@email.com" friend="suport@email.com"
+ExpectError "Amigo n√£o encontrado em nenhum grupo" removeFriend login="dev@email.com" friend="xpto123@email.com"
 removeFriend login="dev@email.com" friend="xpto@email.com"
 Expect null getFriend email="dev@email.com" friend="xpto@email.com"
 Expect null getFriend email="dev@email.com" friend="Fulano de Tal"

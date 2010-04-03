@@ -2,9 +2,7 @@ package controller;
 
 import interfaces.Gerenciavel;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import beans.ContaUsuario;
 import beans.Grupo;
