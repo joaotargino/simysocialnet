@@ -1,5 +1,6 @@
 package beans;
 
+import java.util.Map;
 import java.util.Set;
 
 public class Profile<Preferenciavel> {
@@ -12,9 +13,9 @@ public class Profile<Preferenciavel> {
 	private String contactEmail;
 	private String age;
 	private Preferenciavel tipoDePreferencia;
-	private Set<String> all;
-	private Set<String> justMe;
-	private Set<String> friends;
+	private Map<String,String> all;
+	private Map<String,String> justMe;
+	private Map<String,String> friends;
 
 	public String getPhoto() {
 		return photo;
@@ -79,27 +80,43 @@ public class Profile<Preferenciavel> {
 	
 	public void setFieldPrivacy(String field, String visibility) {
 		if(visibility.toLowerCase().equals("all")) {
-			all.add(field);
-			organizaSet(friends, field);
-			organizaSet(justMe, field);
+			verificaField(all, field);
+			organizaMapa(friends, field);
+			organizaMapa(justMe, field);
 		}else if (visibility.toLowerCase().equals("friends")) {
-			friends.add(field);
-			organizaSet(all, field);
-			organizaSet(justMe, field);
+			verificaField(friends, field);
+			organizaMapa(all, field);
+			organizaMapa(justMe, field);
 		}else if (visibility.toLowerCase().equals("just_me")) {
-			justMe.add(field);
-			organizaSet(friends, field);
-			organizaSet(all, field);
+			verificaField(justMe, field);
+			organizaMapa(friends, field);
+			organizaMapa(all, field);
 		}else{
 			
 		}
 	}
 		
-	private void organizaSet(Set<String> conjunto,String field) {
-		for (String string : conjunto) {
-			if(string.toLowerCase().equals(field)) {
-				conjunto.remove(string);
-			}
+	private void organizaMapa(Map<String,String> conjunto,String field) {
+		if(conjunto.containsKey(field)) {
+			conjunto.remove(field);
+		}
+	}
+	
+	private void verificaField(Map<String, String> mapa, String field ) {
+		if(field.equals("contactEmail")) {
+			mapa.put(field, getContactEmail());
+		}else if(field.equals("photo")) {
+			mapa.put(field, getPhoto());
+		}else if(field.equals("age")) {
+			mapa.put(field, getAge());
+		}else if(field.equals("aboutMe")) {
+			mapa.put(field, getAboutMe());
+		}else if(field.equals("city")) {
+			mapa.put(field, getCity());
+		}else if(field.equals("country")) {
+			mapa.put(field, getCountry());
+		}else if(field.equals("gender")) {
+			mapa.put(field, getGender());
 		}
 	}
 	public Preferenciavel getTipoDePreferencia() {
@@ -107,17 +124,24 @@ public class Profile<Preferenciavel> {
 	}
 
 	public String checkProfile(String visibility) {
+		String resposta = "";
 		if(visibility.toLowerCase().equals("all")) {
-			for (String string : all) {
+			for (String string : all.keySet()) {
+				resposta+= string + "=" + all.get(string)+",";
 			}
 		}else if(visibility.toLowerCase().equals("friends")) {
-			
+			for (String string : friends.keySet()) {
+				resposta+= string + "=" + friends.get(string)+",";
+			}
 		}else if(visibility.toLowerCase().equals("justme")) {
-			
+			for (String string : justMe.keySet()) {
+				resposta+= string + "=" + justMe.get(string)+",";
+			}
 		}else {
 			
 		}
-		return null;
+		resposta = resposta.substring(0, resposta.length()-2);
+		return resposta;
 	}
 	
 }
