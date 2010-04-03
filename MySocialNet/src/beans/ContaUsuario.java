@@ -120,7 +120,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 				return usuario;
 			}
 		}
-		throw new Exception("Amigo não encontrado");
+		throw new Exception("Amigo nï¿½o encontrado");
 	}
 	
 	public void removerAmigo(String email) throws Exception {
@@ -132,7 +132,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 				}
 			}
 		}
-		throw new Exception("Amigo não encontrado");
+		throw new Exception("Amigo nï¿½o encontrado");
 		
 	}
 	
@@ -196,6 +196,15 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 
 	public Profile<Preferenciavel> getProfile() {
 		return profile;
+	}
+	
+	public void setFieldPrivacy(String field, String visibility) {
+		profile.setFieldPrivacy
+		(field, visibility);
+	}
+
+	public String checkProfile(String visibility) {
+		return profile.checkProfile(visibility);
 	}
 
 }

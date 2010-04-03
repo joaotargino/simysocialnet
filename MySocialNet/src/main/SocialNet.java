@@ -160,6 +160,7 @@ public class SocialNet {
 		ContaUsuario user;
 		try {
 			user = GerenciadorUsuario.getInstance().getUsuario(login);
+			user.checkProfile(visibility);
 		} catch (Exception e) {
 			throw new Exception("Perfil inexistente");
 		}

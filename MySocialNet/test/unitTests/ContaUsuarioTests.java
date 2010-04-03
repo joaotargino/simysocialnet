@@ -50,8 +50,8 @@ public class ContaUsuarioTests {
 		}
 		
 		try {
-			usuario = new ContaUsuario("Joao Paulo", "Targino", "1235", "targino@gmail.com");
-			Assert.assertEquals("Joao Paulo Targino", usuario.toString());
+			usuario = new ContaUsuario("Joao Paulo", "Targino", "123456", "targino@gmail.com");
+			Assert.assertEquals("Nome=Joao Paulo,Sobrenome=Targino", usuario.toString());
 		} catch (Exception e) {
 			Assert.fail();
 		}
