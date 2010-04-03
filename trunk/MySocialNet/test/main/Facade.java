@@ -21,8 +21,9 @@ public class Facade {
 	
 	/**
 	 * Desloga o usuario do sistema
+	 * @throws Exception 
 	 */
-	public void logoff(String email) {
+	public void logoff(String email) throws Exception {
 		SocialNet.getInstance().logoff(email);
 		
 	}
