@@ -1,9 +1,8 @@
 package beans;
 
 import java.util.Map;
-import java.util.Set;
 
-public class Profile<Preferenciavel> {
+public class Profile {
 	
 	private String aboutMe; 
 	private String photo; 
@@ -12,7 +11,6 @@ public class Profile<Preferenciavel> {
 	private String gender;
 	private String contactEmail;
 	private String age;
-	private Preferenciavel tipoDePreferencia;
 	private Map<String,String> all;
 	private Map<String,String> justMe;
 	private Map<String,String> friends;
@@ -73,11 +71,6 @@ public class Profile<Preferenciavel> {
 		return aboutMe;
 	}
 	
-		
-	public void setTipoDePreferencia(Preferenciavel tipoDePreferencia) {
-		this.tipoDePreferencia = tipoDePreferencia;
-	}
-	
 	public void setFieldPrivacy(String field, String visibility) {
 		if(visibility.toLowerCase().equals("all")) {
 			verificaField(all, field);
@@ -118,9 +111,6 @@ public class Profile<Preferenciavel> {
 		}else if(field.equals("gender")) {
 			mapa.put(field, getGender());
 		}
-	}
-	public Preferenciavel getTipoDePreferencia() {
-		return tipoDePreferencia;
 	}
 
 	public String checkProfile(String visibility) {
