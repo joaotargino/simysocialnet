@@ -206,5 +206,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	public String checkProfile(String visibility) {
 		return profile.checkProfile(visibility);
 	}
-
+	public static void main(String[] args) {
+//		ContaUsuario usuario = new ContaUsuario("Telles","Nobrega","")
+	}
 }
