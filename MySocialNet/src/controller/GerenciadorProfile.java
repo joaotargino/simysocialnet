@@ -118,13 +118,22 @@ public class GerenciadorProfile {
 	}
 
 	public void updateUserProfile(ContaUsuario usuario, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
-		updateUserProfilePorTipo(usuario.getProfileAll(),aboutMe, age, photo, country, city, gender, contactEmail);
-		updateUserProfilePorTipo(usuario.getProfileFriends(),aboutMe, age, photo, country, city, gender, contactEmail);
-		updateUserProfilePorTipo(usuario.getProfileJustMe(),aboutMe, age, photo, country, city, gender, contactEmail);
+		ProfileIF all = usuario.getProfileAll();
+		ProfileIF justMe = usuario.getProfileJustMe();
+		ProfileIF friends = usuario.getProfileFriends();
+		
+		all = updateUserProfileType(all,aboutMe, age, photo, country, city, gender, contactEmail);
+		friends = updateUserProfileType(friends,aboutMe, age, photo, country, city, gender, contactEmail);
+		justMe = updateUserProfileType(justMe,aboutMe, age, photo, country, city, gender, contactEmail);
+		
+		usuario.setProfileAll(all);
+		usuario.setProfileFriends(friends);
+		usuario.setProfileJustMe(justMe);
+		
 		usersDAO.update(usuario);
 	}
 	
-	private void updateUserProfilePorTipo(ProfileIF profile, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
+	private ProfileIF updateUserProfileType(ProfileIF profile, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
 		profile.setAboutMe(aboutMe);
 		profile.setAge(age);
 		profile.setCity(city);
@@ -132,5 +141,6 @@ public class GerenciadorProfile {
 		profile.setGender(gender);
 		profile.setContactEmail(contactEmail);
 		profile.setPhoto(photo);
+		return profile;
 	}
 }
