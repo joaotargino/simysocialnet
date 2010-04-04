@@ -49,6 +49,12 @@ public class GerenciadorUsuario {
 			usersDAO.update(user);
 		}
 	}
+	
+	public void sendFriendshipRequest(String name, String sobrenome, String login, String user, String message, String group) throws Exception {
+		ContaUsuario usuario = getUsuario(user);
+		usuario.addFriendshipRequest(name, sobrenome, login, message);
+		
+	}
 
 	public void clean() {
 		usersDAO.reset();

@@ -248,7 +248,7 @@ public class Facade {
 	 * @param message
 	 * @param group
 	 */
-	public void sendFriendshipRequest(String login, String user, String message, String group) {
+	public void sendFriendshipRequest(String login, String user, String message, String group) throws Exception {
 		SocialNet.getInstance().sendFriendshipRequest(login, user, message, group);
 	}
 	

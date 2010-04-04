@@ -5,7 +5,10 @@ import interfaces.ProfileIF;
 import java.util.ArrayList;
 import java.util.List;
 
+import sun.text.normalizer.CharTrie.FriendAgent;
+
 import controller.GerenciadorProfile;
+import controller.GerenciadorUsuario;
 
 import Util.Util;
 
@@ -28,6 +31,10 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	private List<String> preferencias;
 	private boolean loged;
 	private GerenciadorProfile gerenciaProfile;
+	private GerenciadorUsuario gerenciaUsuario;
+	private List<String> pendingFriendship;
+	private List<String> sentFriendship;
+	
 	
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
 		if(Util.verificaString(nome,"Nome")) {
@@ -247,6 +254,18 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	
 	public ProfileIF getProfile(ContaUsuario user, String visibility) {
 		return gerenciaProfile.getProfile(user, visibility);
+	}
+	
+	public void sendFriendshipRequest(String user, String message, String group) throws Exception{
+		if(!(sentFriendship.contains(user))) {
+			sentFriendship.add(user);
+			gerenciaUsuario.sendFriendshipRequest(this.nome,this.sobrenome,this.email, user, message, group);
+		}
+		throw new Exception("Você já enviou um convite para esse usuário");
+	}
+	
+	public void addFriendshipRequest(String name, String sobrenome, String email, String message) {
+		pendingFriendship.add(name + " " + sobrenome + "<" + email + "> - mensagem: " + message);
 	}
 	
 	private void createGroups() {
