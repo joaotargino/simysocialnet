@@ -180,9 +180,10 @@ public class Facade {
 	 * @param email
 	 * @param group
 	 * @return
+	 * @throws Exception 
 	 */
-	public List<ContaUsuario> listGroupMembers(String email, String group) {
-		return SocialNet.getInstance().listGroupMembers(email, group);
+	public String listGroupMembers(String email, String group) throws Exception {
+		return SocialNet.getInstance().listGroupMembers(email, group).toString();
 	}
 	
 	/**
@@ -192,8 +193,9 @@ public class Facade {
 	 * @param friend
 	 * @param group
 	 * @return
+	 * @throws Exception 
 	 */
-	public ContaUsuario findGroupMember(String login,String friend, String group) {
+	public ContaUsuario findGroupMember(String login,String friend, String group) throws Exception {
 		return SocialNet.getInstance().findGroupMember(login, friend, group);
 	}
 	

@@ -17,15 +17,15 @@ public class GerenciadorProfile {
 	}
 
 
-	public ProfileIF getProfile(String owner, String visibility) {
+	public ProfileIF getProfile(ContaUsuario user, String visibility) {
 		if (visibility.equals(ProfileConstants.ALL)) {
-			return usersDAO.getUsuario(owner).getProfileAll();
+			return user.getProfileAll();
 		}
 		else if (visibility.equals(ProfileConstants.FRIENDS)) {
-			return usersDAO.getUsuario(owner).getProfileFriends();
+			return user.getProfileFriends();
 		}
 
-		return usersDAO.getUsuario(owner).getProfileJustMe();
+		return user.getProfileJustMe();
 	}
 
 

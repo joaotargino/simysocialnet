@@ -46,6 +46,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
+		createGroups();
 	}
 	
 	public ContaUsuario(String nome, String sobrenome, String senha, String email) throws Exception {
@@ -65,6 +66,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
+		createGroups();
 	}
 
 	public ContaUsuario() {
@@ -72,6 +74,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
+		createGroups();
 	}
 
 	public String getNome() {
@@ -200,26 +203,6 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	public boolean isLoged() {
 		return loged;
 	}
-	
-	public void setFieldPrivacy(String field, String visibility) {
-		Profile.getInstance().setFieldPrivacy(field, visibility);
-	}
-
-	public String checkProfile(String visibility) {
-		return Profile.getInstance().checkProfile(visibility);
-	}
-	public static void main(String[] args) {
-		try {
-			ContaUsuario usuario = new ContaUsuario("Telles","Nobrega","20/08/1990","123456","telles@gmail.com");
-			
-			usuario.setFieldPrivacy("contactEmail", "ALL");
-			usuario.checkProfile("ALL");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 
 	public void setProfileAll(ProfileIF profileAll) {
 		this.profileAll = profileAll;
@@ -243,5 +226,19 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 
 	public ProfileIF getProfileFriends() {
 		return profileFriends;
+	}
+	
+	private void createGroups() {
+		grupos = new ArrayList<Grupo>();
+		Grupo conhecidos = new Grupo("conhecidos");
+		Grupo escola = new Grupo("escola");
+		Grupo familia = new Grupo("familia");
+		Grupo melhoresAmigos = new Grupo ("melhores amigos");
+		Grupo trabalho = new Grupo("trabalho");
+		grupos.add(conhecidos);
+		grupos.add(escola);
+		grupos.add(familia);
+		grupos.add(melhoresAmigos);
+		grupos.add(trabalho);
 	}
 }
