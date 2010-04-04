@@ -12,7 +12,6 @@ import controller.GerenciadorUsuario;
 public class SocialNet {
 
 	private static SocialNet social;
-	private ContaUsuario usuario;
 	private GerenciadorGrupo gerenciadorGrupo;
 	private GerenciadorUsuario gerenciadorUsuario;
 
@@ -29,6 +28,7 @@ public class SocialNet {
 	 * @throws Exception 
 	 */
 	public void login(String login, String senha) throws Exception {
+		ContaUsuario usuario;
 		try {
 			usuario = gerenciadorUsuario.getUsuario(login);
 			if ( usuario == null) throw new Exception("Login inválido ou senha incorreta");
@@ -55,14 +55,16 @@ public class SocialNet {
 		if (!user.isLoged()) throw new Exception("Usuário não logado");
 		user.setLoged(false);
 		gerenciadorUsuario.update(user);
-		usuario = null;
 	}
 
 	/**
 	 * @return true se um usuario estiver logado, falso caso contrario
+	 * @throws Exception 
 	 */
-	public boolean estaLogado() {
-		return (usuario != null);
+	public boolean estaLogado(String login) throws Exception {
+		ContaUsuario usuario;
+		usuario = gerenciadorUsuario.getUsuario(login);
+		return usuario.isLoged();
 	}
 
 	/**
@@ -166,8 +168,8 @@ public class SocialNet {
 			throw new Exception("Perfil inexistente");
 		}
 
-		if (!(estaLogado())) throw new Exception("Usuário não logado");
-		ProfileIF profile = usuario.getProfile(user, visibility);
+		if (!(estaLogado(login))) throw new Exception("Usuário não logado");
+		ProfileIF profile = user.getProfile(user, visibility);
 		return profile;
 	}
 

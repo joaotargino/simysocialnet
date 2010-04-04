@@ -30,9 +30,10 @@ public class Facade {
 	
 	/**
 	 * @return true se um usuario estiver logado, falso caso contrario
+	 * @throws Exception 
 	 */
-	public boolean estaLogado() {
-		return SocialNet.getInstance().estaLogado();
+	public boolean estaLogado(String login) throws Exception {
+		return SocialNet.getInstance().estaLogado(login);
 	}
 	
 	/**
