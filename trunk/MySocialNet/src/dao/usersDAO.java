@@ -88,7 +88,7 @@ public class usersDAO {
 	 *         contrario.
 	 * @throws IOException
 	 */
-	public static boolean cadastraUsuario(ContaUsuario usuario)throws IOException {
+	public static boolean create(ContaUsuario usuario)throws IOException {
 		if (usuario == null)
 			return false;
 		List<ContaUsuario> users = getUsuarios();
@@ -111,7 +111,7 @@ public class usersDAO {
 	 * @param email
 	 * @return true, se for possivel remover o usuario, e false caso contrario.
 	 */
-	public static boolean removeUsuario(String email) {
+	public static boolean delete(String email) {
 		List<ContaUsuario> users = getUsuarios();
 		Iterator<ContaUsuario> it = users.iterator();
 		while (it.hasNext()) {
@@ -141,7 +141,7 @@ public class usersDAO {
 	 *            - o sobrenome do usuario
 	 * @return true, se for possivel remover o usuario, e false caso contrario.
 	 */
-	public static boolean removeUsuario(String nome, String sobrenome) {
+	public static boolean delete(String nome, String sobrenome) {
 		List<ContaUsuario> users = getUsuarios();
 		Iterator<ContaUsuario> it = users.iterator();
 		while (it.hasNext()) {
@@ -169,7 +169,7 @@ public class usersDAO {
 	 * @return true, se for possivel atualizar o usuario, e false caso
 	 *         contrario.
 	 */
-	public static boolean atualizaUsuario(ContaUsuario usuario) {
+	public static boolean update(ContaUsuario usuario) {
 		List<ContaUsuario> users = getUsuarios();
 		Iterator<ContaUsuario> it = users.iterator();
 		while (it.hasNext()) {
@@ -200,7 +200,7 @@ public class usersDAO {
 	}
 
 	
-	// veio do serializar.java (salvar e recuperar)
+	// veio do serializar.java (salvarObjeto e recuperarObjeto)
 	/**
 	 * Esse m�todo recebe um objeto arquivo e o objeto que ser� serializado. O
 	 * m�todo ir� serializar o objeto passado no arquivo (referenciado pelo
@@ -270,29 +270,30 @@ public class usersDAO {
 	}
 
 	// a nivel de teste =P
-//	public static void main(String[] args) throws Exception {
-//		ContaUsuario usuario1 = new ContaUsuario("Joao", "Targino", "123456",
-//				"joaotargino@lsd.ufcg.edu.br");
-//		ContaUsuario usuario2 = new ContaUsuario("Telles", "Nobrega", "123456",
-//				"telles@lsd.ufcg.edu.br");
-//		ContaUsuario usuario3 = new ContaUsuario("Rafael", "Carvalho",
-//				"123456", "rafael@lsd.ufcg.edu.br");
-//		usersDAO dao = new usersDAO();
-//		dao.cadastraUsuario(usuario1);
-//		dao.cadastraUsuario(usuario2);
-//		dao.cadastraUsuario(usuario3);
-//
-//		usuario1.setNome("Joao Paulo");
-//
-//		dao.atualizaUsuario(usuario1);
-//
-//		// dao.reset();
-//		// dao.cadastraUsuario(usuario3);
-//		ContaUsuario userRecuperado = dao
-//				.getUsuario("joaotargino@lsd.ufcg.edu.br");
-//
-//		dao.removeUsuario("telles@lsd.ufcg.edu.br");
-//		System.out.println(dao.getUsuarios());
-//	}
+	public static void main(String[] args) throws Exception {
+		ContaUsuario usuario1 = new ContaUsuario("Joao", "Targino", "123456",
+				"joaotargino@lsd.ufcg.edu.br");
+		ContaUsuario usuario2 = new ContaUsuario("Telles", "Nobrega", "123456",
+				"telles@lsd.ufcg.edu.br");
+		ContaUsuario usuario3 = new ContaUsuario("Rafael", "Carvalho",
+				"123456", "rafael@lsd.ufcg.edu.br");
+		usersDAO dao = new usersDAO();
+		dao.create(usuario1);
+		dao.create(usuario2);
+		dao.create(usuario3);
+		usuario1.adiconarAmigo(usuario2, null);
+
+		usuario1.setNome("Joao Paulo");
+
+		dao.update(usuario1);
+
+		// dao.reset();
+		// dao.cadastraUsuario(usuario3);
+		ContaUsuario userRecuperado = dao
+				.getUsuario("joaotargino@lsd.ufcg.edu.br");
+
+		dao.delete("telles@lsd.ufcg.edu.br");
+		System.out.println(dao.getUsuarios());
+	}
 
 }
