@@ -19,13 +19,13 @@ public class GerenciadorUsuario {
 
 	public void adicionar(ContaUsuario contaUsuario) throws Exception {
 		if (usersDAO.getUsuarios().contains(contaUsuario)) throw new Exception("Login indisponível");
-		usersDAO.cadastraUsuario(contaUsuario);
+		usersDAO.create(contaUsuario);
 	}
 
 	public void remover(String login) throws Exception {
 		ContaUsuario user = new ContaUsuario();
 		user.setEmail(login);
-		usersDAO.removeUsuario(login);
+		usersDAO.delete(login);
 
 	}
 
@@ -43,15 +43,10 @@ public class GerenciadorUsuario {
 		throw new Exception("Login inexistente");
 	}
 
-	public void updateUserProfile(ContaUsuario contaUsuario) {
-		usersDAO.atualizaUsuario(contaUsuario);
-
-	}
-
 	public void addUserPreferences(ContaUsuario user,String preferencia) {
 		if (!user.getPreferencias().contains(preferencia)) {
 			user.getPreferencias().add(preferencia);
-			usersDAO.atualizaUsuario(user);
+			usersDAO.update(user);
 		}
 	}
 

@@ -35,20 +35,20 @@ public class GerenciadorProfile {
 		ProfileIF profileJustMe = usuario.getProfileJustMe();
 		ProfileIF profileFriends = usuario.getProfileFriends();
 		if (visibility.equals(ProfileConstants.ALL)) {
-			setPrivacityPorTipo(owner, field, profileAll, profileJustMe);
+			setPrivacityPorTipo(usuario, field, profileAll, profileJustMe);
+			setPrivacityPorTipo(usuario, field, profileFriends, profileJustMe);
 		}
 		else if (visibility.equals(ProfileConstants.FRIENDS)) {
-			retiraPrivacidade(owner, field, profileAll, null);
-			setPrivacityPorTipo(owner, field, profileFriends, profileJustMe);
+			retiraPrivacidade(usuario, field, profileAll, null);
+			setPrivacityPorTipo(usuario, field, profileFriends, profileJustMe);
 		}
 		else {
-			retiraPrivacidade(owner, field, profileAll, null);
-			retiraPrivacidade(owner, field, profileFriends, null);
+			retiraPrivacidade(usuario, field, profileAll, null);
+			retiraPrivacidade(usuario, field, profileFriends, null);
 		}
-		usersDAO.atualizaUsuario(usuario);
 	}
 	
-	private void retiraPrivacidade(String owner, String field, ProfileIF profile, String valor) {
+	private void retiraPrivacidade(ContaUsuario usuario, String field, ProfileIF profile, String valor) {
 		
 		if(field.equals(ProfileConstants.AGE)) {
 			profile.setAge(valor);
@@ -71,9 +71,19 @@ public class GerenciadorProfile {
 		else {
 			profile.setContactEmail(valor);
 		}
+		
+		if (profile.getTipo().equals(ProfileConstants.ALL)) {
+			usuario.setProfileAll(profile);
+			usersDAO.update(usuario);
+		}
+		else {
+			usuario.setProfileFriends(profile);
+			usersDAO.update(usuario);
+		}
+		
 	}
 
-	private void setPrivacityPorTipo(String owner, String field, ProfileIF profile, ProfileIF justMe) {
+	private void setPrivacityPorTipo(ContaUsuario usuario, String field, ProfileIF profile, ProfileIF justMe) {
 		
 		if(field.equals(ProfileConstants.AGE)) {
 			profile.setAge(justMe.getAge());
@@ -96,13 +106,22 @@ public class GerenciadorProfile {
 		else {
 			profile.setContactEmail(justMe.getContactEmail());
 		}
+		
+		if (profile.getTipo().equals(ProfileConstants.ALL)) {
+			usuario.setProfileAll(profile);
+			usersDAO.update(usuario);
+		}
+		else {
+			usuario.setProfileFriends(profile);
+			usersDAO.update(usuario);
+		}
 	}
 
 	public void updateUserProfile(ContaUsuario usuario, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
 		updateUserProfilePorTipo(usuario.getProfileAll(),aboutMe, age, photo, country, city, gender, contactEmail);
 		updateUserProfilePorTipo(usuario.getProfileFriends(),aboutMe, age, photo, country, city, gender, contactEmail);
 		updateUserProfilePorTipo(usuario.getProfileJustMe(),aboutMe, age, photo, country, city, gender, contactEmail);
-		usersDAO.atualizaUsuario(usuario);
+		usersDAO.update(usuario);
 	}
 	
 	private void updateUserProfilePorTipo(ProfileIF profile, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {

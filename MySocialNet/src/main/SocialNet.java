@@ -38,7 +38,7 @@ public class SocialNet {
 		}
 		if (usuario.isLoged()) throw new Exception("Usuário já logado");
 		usuario.setLoged(true);
-		usersDAO.atualizaUsuario(usuario);
+		usersDAO.update(usuario);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class SocialNet {
 		}
 		if (!user.isLoged()) throw new Exception("Usuário não logado");
 		user.setLoged(false);
-		usersDAO.atualizaUsuario(user);
+		usersDAO.update(user);
 		usuario = null;
 	}
 
@@ -143,7 +143,7 @@ public class SocialNet {
 	public void setFieldPrivacy(String login, String field, String type) throws Exception {
 		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
 		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
-		GerenciadorUsuario.getInstance().updateUserProfile(usuario);
+		GerenciadorProfile.getInstance().setPrivacity(login, type, field);
 	}
 
 	/**
@@ -174,8 +174,18 @@ public class SocialNet {
 
 
 	public String viewProfile(String viewer, String profileOwner) throws Exception {
-		
-		ContaUsuario viewerUser = GerenciadorUsuario.getInstance().getUsuario(viewer);
+		ContaUsuario viewerUser;
+		ContaUsuario ownerUser;
+		try {
+			viewerUser = GerenciadorUsuario.getInstance().getUsuario(viewer);
+		} catch (Exception e) {
+			throw new Exception("Login do viewer não existente no sistema");
+		}
+		try {
+			ownerUser = GerenciadorUsuario.getInstance().getUsuario(profileOwner);
+		} catch (Exception e) {
+			throw new Exception("Perfil inexistente");
+		}
 		if(!viewerUser.isLoged()) throw new Exception("Usuário não logado");
 		return null;
 	}
