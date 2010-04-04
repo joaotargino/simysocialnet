@@ -229,6 +229,7 @@ public class SocialNet {
 		ContaUsuario user = GerenciadorUsuario.getInstance().getUsuario(login);
 		if (!user.isLoged()) throw new Exception("Usuário não logado");
 		user.getPreferencias().remove(preference);
+		usersDAO.update(user);
 	}
 
 	/**
