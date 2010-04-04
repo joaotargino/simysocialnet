@@ -43,9 +43,9 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 			this.email = email;
 		}
 		preferencias = new ArrayList<String>();
-//		profileAll = new ProfileAll();
-//		profileJustMe = new ProfileJustMe();
-//		profileFriends = new ProfileFriends();
+		profileAll = new ProfileAll();
+		profileJustMe = new ProfileJustMe();
+		profileFriends = new ProfileFriends();
 	}
 	
 	public ContaUsuario(String nome, String sobrenome, String senha, String email) throws Exception {
@@ -62,16 +62,16 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 			this.email = email;
 		}
 		preferencias = new ArrayList<String>();
-//		profileAll = new ProfileAll();
-//		profileJustMe = new ProfileJustMe();
-//		profileFriends = new ProfileFriends();
+		profileAll = new ProfileAll();
+		profileJustMe = new ProfileJustMe();
+		profileFriends = new ProfileFriends();
 	}
 
 	public ContaUsuario() {
 		preferencias = new ArrayList<String>();
-//		profileAll = new ProfileAll();
-//		profileJustMe = new ProfileJustMe();
-//		profileFriends = new ProfileFriends();
+		profileAll = new ProfileAll();
+		profileJustMe = new ProfileJustMe();
+		profileFriends = new ProfileFriends();
 	}
 
 	public String getNome() {
