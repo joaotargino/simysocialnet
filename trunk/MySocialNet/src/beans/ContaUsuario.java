@@ -5,12 +5,9 @@ import interfaces.ProfileIF;
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.text.normalizer.CharTrie.FriendAgent;
-
+import Util.Util;
 import controller.GerenciadorProfile;
 import controller.GerenciadorUsuario;
-
-import Util.Util;
 
 /**
  * @author Rafael Aquino
