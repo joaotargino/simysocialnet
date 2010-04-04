@@ -1,11 +1,16 @@
 package controller;
 
-import beans.ContaUsuario;
 import interfaces.ProfileIF;
 import Util.ProfileConstants;
-import dao.usersDAO;
+import beans.ContaUsuario;
 
 public class GerenciadorProfile {
+	
+	private GerenciadorUsuario gerenciadorUsuario;
+	
+	public void init() {
+		gerenciadorUsuario = new GerenciadorUsuario();
+	}
 	
 	public ProfileIF getProfile(ContaUsuario user, String visibility) {
 		if (visibility.equals(ProfileConstants.ALL)) {
@@ -19,8 +24,8 @@ public class GerenciadorProfile {
 	}
 
 
-	public void setPrivacy(String owner, String visibility, String field) {
-		ContaUsuario usuario = usersDAO.getUsuario(owner);
+	public void setPrivacy(String owner, String visibility, String field) throws Exception {
+		ContaUsuario usuario = gerenciadorUsuario.getUsuario(owner);
 		ProfileIF profileAll = usuario.getProfileAll();
 		ProfileIF profileJustMe = usuario.getProfileJustMe();
 		ProfileIF profileFriends = usuario.getProfileFriends();
@@ -64,11 +69,11 @@ public class GerenciadorProfile {
 		
 		if (profile.getTipo().equals(ProfileConstants.ALL)) {
 			usuario.setProfileAll(profile);
-			usersDAO.update(usuario);
+			gerenciadorUsuario.update(usuario);
 		}
 		else {
 			usuario.setProfileFriends(profile);
-			usersDAO.update(usuario);
+			gerenciadorUsuario.update(usuario);
 		}
 		
 	}
@@ -99,11 +104,11 @@ public class GerenciadorProfile {
 		
 		if (profile.getTipo().equals(ProfileConstants.ALL)) {
 			usuario.setProfileAll(profile);
-			usersDAO.update(usuario);
+			gerenciadorUsuario.update(usuario);
 		}
 		else {
 			usuario.setProfileFriends(profile);
-			usersDAO.update(usuario);
+			gerenciadorUsuario.update(usuario);
 		}
 	}
 
@@ -120,7 +125,7 @@ public class GerenciadorProfile {
 		usuario.setProfileFriends(friends);
 		usuario.setProfileJustMe(justMe);
 		
-		usersDAO.update(usuario);
+		gerenciadorUsuario.update(usuario);
 	}
 	
 	private ProfileIF updateUserProfileType(ProfileIF profile, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
