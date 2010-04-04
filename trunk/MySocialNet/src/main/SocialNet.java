@@ -173,7 +173,7 @@ public class SocialNet {
 	}
 
 
-	public String viewProfile(String viewer, String profileOwner) throws Exception {
+	public ProfileIF viewProfile(String viewer, String profileOwner) throws Exception {
 		ContaUsuario viewerUser;
 		ContaUsuario ownerUser;
 		try {
@@ -187,7 +187,8 @@ public class SocialNet {
 			throw new Exception("Perfil inexistente");
 		}
 		if(!viewerUser.isLoged()) throw new Exception("Usuário não logado");
-		return null;
+		if (ownerUser.getAmigos().contains(viewerUser)) return ownerUser.getProfileFriends();
+		return ownerUser.getProfileAll();
 	}
 
 
@@ -429,6 +430,6 @@ public class SocialNet {
 	 * Limpar o banco de dados
 	 */
 	public void clean() {
-		usersDAO.reset();
+		GerenciadorUsuario.getInstance().clean();
 	}
 }
