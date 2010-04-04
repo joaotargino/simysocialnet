@@ -50,4 +50,12 @@ public class GerenciadorUsuario {
 		}
 	}
 
+	public void clean() {
+		usersDAO.reset();
+	}
+	
+	public void update(ContaUsuario user) {
+		usersDAO.update(user);
+	}
+
 }

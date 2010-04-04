@@ -117,13 +117,10 @@ public class Facade {
 		return SocialNet.getInstance().checkProfile(login, visibility).toString();
 	}
 	
+	
 	public String viewProfile( String viewer, String profileOwner) throws Exception {
-		return SocialNet.getInstance().viewProfile(viewer, profileOwner);
+		return SocialNet.getInstance().viewProfile(viewer, profileOwner).toString();
 	}
-	
-	
-	
-	
 	
 	/**
 	 * Adiciona uma preferencia para o usuario
