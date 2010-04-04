@@ -130,7 +130,7 @@ public class SocialNet {
 	public void updateUserProfile(String login, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
 		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
 		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
-		GerenciadorProfile.getInstance().updateUserProfile(usuario, aboutMe, age, photo, country, city,gender, contactEmail);
+		usuario.updateUserProfile(usuario, aboutMe, age, photo, country, city, gender, contactEmail);
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class SocialNet {
 	public void setFieldPrivacy(String login, String field, String type) throws Exception {
 		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
 		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
-		GerenciadorProfile.getInstance().setPrivacity(login, type, field);
+		usuario.setFieldPrivacy(login, type, field);
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class SocialNet {
 		}
 
 		if (!(estaLogado())) throw new Exception("Usuário não logado");
-		ProfileIF profile = GerenciadorProfile.getInstance().getProfile(user, visibility);
+		ProfileIF profile = usuario.getProfile(user, visibility);
 		return profile;
 	}
 
@@ -276,10 +276,9 @@ public class SocialNet {
 	 * @param email
 	 * @param group
 	 * @param user
-	 * @throws Exception 
 	 */
-	public void addGroupMember(String email, String group, String user) throws Exception {
-		gerenciadorGrupo.adicionar(email, group, user);
+	public void addGroupMember(String email, String group, String user) {
+		gerenciadorGrupo.adicionar(user, group);
 	}
 
 	/**

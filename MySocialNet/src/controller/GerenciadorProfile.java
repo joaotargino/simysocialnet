@@ -7,16 +7,6 @@ import dao.usersDAO;
 
 public class GerenciadorProfile {
 	
-	private static GerenciadorProfile instance;
-	
-	public synchronized static GerenciadorProfile getInstance() {
-		if (instance == null) {
-			instance = new GerenciadorProfile();
-		}
-		return instance;
-	}
-
-
 	public ProfileIF getProfile(ContaUsuario user, String visibility) {
 		if (visibility.equals(ProfileConstants.ALL)) {
 			return user.getProfileAll();
@@ -29,7 +19,7 @@ public class GerenciadorProfile {
 	}
 
 
-	public void setPrivacity(String owner, String visibility, String field) {
+	public void setPrivacy(String owner, String visibility, String field) {
 		ContaUsuario usuario = usersDAO.getUsuario(owner);
 		ProfileIF profileAll = usuario.getProfileAll();
 		ProfileIF profileJustMe = usuario.getProfileJustMe();
