@@ -5,6 +5,8 @@ import interfaces.ProfileIF;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.GerenciadorProfile;
+
 import Util.Util;
 
 /**
@@ -25,6 +27,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	private List<ContaUsuario> amigos;
 	private List<String> preferencias;
 	private boolean loged;
+	private GerenciadorProfile gerenciaProfile;
 	
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
 		if(Util.verificaString(nome,"Nome")) {
@@ -46,6 +49,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
+		gerenciaProfile = new GerenciadorProfile();
 		createGroups();
 	}
 	
@@ -66,6 +70,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
+		gerenciaProfile = new GerenciadorProfile();
 		createGroups();
 	}
 
@@ -74,6 +79,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
+		gerenciaProfile = new GerenciadorProfile();
 		createGroups();
 	}
 
@@ -228,6 +234,18 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		return profileFriends;
 	}
 	
+	public void updateUserProfile(ContaUsuario usuario, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
+		gerenciaProfile.updateUserProfile(usuario, aboutMe, age, photo, country, city, gender, contactEmail);
+	}
+	
+	public void setFieldPrivacy(String owner, String visibility, String field) {
+		gerenciaProfile.setPrivacy(owner, visibility, field);
+	}
+	
+	public ProfileIF getProfile(ContaUsuario user, String visibility) {
+		return gerenciaProfile.getProfile(user, visibility);
+	}
+	
 	private void createGroups() {
 		grupos = new ArrayList<Grupo>();
 		Grupo conhecidos = new Grupo("conhecidos");
@@ -241,4 +259,5 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		grupos.add(melhoresAmigos);
 		grupos.add(trabalho);
 	}
+	
 }
