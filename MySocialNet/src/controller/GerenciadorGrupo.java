@@ -2,32 +2,28 @@ package controller;
 
 import java.util.List;
 
-import dao.usersDAO;
-
 import beans.ContaUsuario;
 import beans.Grupo;
 
 public class GerenciadorGrupo {
 	
-	private static GerenciadorGrupo instance;
+	private GerenciadorUsuario gerenciadorUsuario;
 	
-	public static synchronized GerenciadorGrupo getInstance() {
-		if (instance == null) {
-			instance = new GerenciadorGrupo();
-		}
-		return instance;
+	public void init() {
+		gerenciadorUsuario = new GerenciadorUsuario();
 	}
 
 	public void adicionar(String login, String grupo, String loginToAdd) throws Exception {
-		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
-		ContaUsuario usuarioToAdd = GerenciadorUsuario.getInstance().getUsuario(loginToAdd);
+		
+		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
+		ContaUsuario usuarioToAdd = gerenciadorUsuario.getUsuario(loginToAdd);
 		for(int i = 0; i < usuario.getGrupos().size(); i++) {
 			if(usuario.getGrupos().get(i).getNome().equals(grupo) && 
 					(!usuario.getGrupos().get(i).getUsuarios().contains(usuarioToAdd))) {
 				usuario.getGrupos().get(i).getUsuarios().add(usuarioToAdd);
 			}
 		}
-		usersDAO.update(usuario);
+		gerenciadorUsuario.update(usuario);
 	} 
 
 	public void remover(String login, String group) {

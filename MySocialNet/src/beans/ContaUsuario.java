@@ -248,7 +248,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		gerenciaProfile.updateUserProfile(usuario, aboutMe, age, photo, country, city, gender, contactEmail);
 	}
 	
-	public void setFieldPrivacy(String owner, String visibility, String field) {
+	public void setFieldPrivacy(String owner, String visibility, String field) throws Exception {
 		gerenciaProfile.setPrivacy(owner, visibility, field);
 	}
 	

@@ -4,28 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.ContaUsuario;
-import dao.usersDAO;
+import dao.UsersDAO;
 
 public class GerenciadorUsuario {
 
-	private static GerenciadorUsuario gerenciadorUsuario;
-
-	public synchronized static GerenciadorUsuario getInstance() {
-		if (gerenciadorUsuario == null) {
-			gerenciadorUsuario = new GerenciadorUsuario();
-		}
-		return gerenciadorUsuario;
-	}
-
 	public void adicionar(ContaUsuario contaUsuario) throws Exception {
-		if (usersDAO.getUsuarios().contains(contaUsuario)) throw new Exception("Login indisponível");
-		usersDAO.create(contaUsuario);
+		if (UsersDAO.getInstance().getUsuarios().contains(contaUsuario)) throw new Exception("Login indisponível");
+		UsersDAO.getInstance().create(contaUsuario);
 	}
 
 	public void remover(String login) throws Exception {
 		ContaUsuario user = new ContaUsuario();
 		user.setEmail(login);
-		usersDAO.delete(login);
+		UsersDAO.getInstance().delete(login);
 
 	}
 
@@ -37,7 +28,7 @@ public class GerenciadorUsuario {
 		if (login.trim().isEmpty()) throw new Exception("Login não pode ser vazio");
 		ContaUsuario user = new ContaUsuario();
 		user.setEmail(login);
-		for (ContaUsuario usuario : usersDAO.getUsuarios()) {
+		for (ContaUsuario usuario : UsersDAO.getInstance().getUsuarios()) {
 			if (usuario.equals(user)) return usuario;
 		}
 		throw new Exception("Login inexistente");
@@ -46,7 +37,7 @@ public class GerenciadorUsuario {
 	public void addUserPreferences(ContaUsuario user,String preferencia) {
 		if (!user.getPreferencias().contains(preferencia)) {
 			user.getPreferencias().add(preferencia);
-			usersDAO.update(user);
+			UsersDAO.getInstance().update(user);
 		}
 	}
 	
@@ -57,11 +48,11 @@ public class GerenciadorUsuario {
 	}
 
 	public void clean() {
-		usersDAO.reset();
+		UsersDAO.getInstance().reset();
 	}
 	
 	public void update(ContaUsuario user) {
-		usersDAO.update(user);
+		UsersDAO.getInstance().update(user);
 	}
 
 }

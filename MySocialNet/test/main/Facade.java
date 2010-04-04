@@ -300,8 +300,9 @@ public class Facade {
 	 * @param email
 	 * @param friend
 	 * @return
+	 * @throws Exception 
 	 */
-	public ContaUsuario getFriend(String email, String friend) {
+	public ContaUsuario getFriend(String email, String friend) throws Exception {
 		return SocialNet.getInstance().getFriend(email, friend);
 	}
 	
