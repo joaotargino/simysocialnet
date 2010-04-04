@@ -5,6 +5,7 @@ import interfaces.ProfileIF;
 import java.util.List;
 
 import beans.ContaUsuario;
+import beans.Grupo;
 import controller.GerenciadorGrupo;
 import controller.GerenciadorProfile;
 import controller.GerenciadorUsuario;
@@ -162,13 +163,12 @@ public class SocialNet {
 		ContaUsuario user;
 		try {
 			user = GerenciadorUsuario.getInstance().getUsuario(login);
-			user.checkProfile(visibility);
 		} catch (Exception e) {
 			throw new Exception("Perfil inexistente");
 		}
 
 		if (!(estaLogado())) throw new Exception("Usuário não logado");
-		ProfileIF profile = GerenciadorProfile.getInstance().getProfile(login, visibility);
+		ProfileIF profile = GerenciadorProfile.getInstance().getProfile(user, visibility);
 		return profile;
 	}
 
@@ -249,9 +249,12 @@ public class SocialNet {
 	 * @param email
 	 * @param group
 	 * @return
+	 * @throws Exception 
 	 */
-	public List<ContaUsuario> listGroupMembers(String email, String group) {
-		return gerenciadorGrupo.getMembros(group);
+	public Grupo listGroupMembers(String email, String group) throws Exception {
+		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(email);
+		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
+		return GerenciadorGrupo.getInstance().getGrupo(usuario, group);
 	}
 
 	/**
@@ -261,9 +264,12 @@ public class SocialNet {
 	 * @param friend
 	 * @param group
 	 * @return
+	 * @throws Exception 
 	 */
-	public ContaUsuario findGroupMember(String login,String friend, String group) {
-		return gerenciadorGrupo.getMembro(friend, group);
+	public ContaUsuario findGroupMember(String login,String friend, String group) throws Exception {
+		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
+		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
+		return GerenciadorGrupo.getInstance().getMembro(usuario, friend, group);
 	}
 
 	/**
