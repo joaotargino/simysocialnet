@@ -12,6 +12,14 @@ public class ProfileFriends implements ProfileIF{
 	private String gender;
 	private String contactEmail;
 	private String age;
+	private static ProfileFriends profile;
+	
+	public synchronized static ProfileFriends getInstance() { 
+		if(profile == null) {
+			profile = new ProfileFriends();
+		}
+		return profile;
+	}
 
 	public String getPhoto() {
 		return photo;

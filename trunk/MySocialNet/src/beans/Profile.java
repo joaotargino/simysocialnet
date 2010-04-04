@@ -1,9 +1,11 @@
 package beans;
 
-import java.util.Map;
+
+import interfaces.ProfileIF;
 
 public class Profile {
 	
+	private static Profile profile = null;
 	private String aboutMe; 
 	private String photo; 
 	private String country; 
@@ -11,9 +13,13 @@ public class Profile {
 	private String gender;
 	private String contactEmail;
 	private String age;
-	private Map<String,String> all;
-	private Map<String,String> justMe;
-	private Map<String,String> friends;
+	
+	public synchronized static Profile getInstance() {
+		if(profile == null) {
+			profile = new Profile();
+		}
+		return profile;
+	}
 
 	public String getPhoto() {
 		return photo;
@@ -73,64 +79,71 @@ public class Profile {
 	
 	public void setFieldPrivacy(String field, String visibility) {
 		if(visibility.toLowerCase().equals("all")) {
-			verificaField(all, field);
-			organizaMapa(friends, field);
-			organizaMapa(justMe, field);
+			setField(ProfileAll.getInstance(), field);
+			setFieldNull(ProfileFriends.getInstance(), field);
+			setFieldNull(ProfileJustMe.getInstance(), field);
 		}else if (visibility.toLowerCase().equals("friends")) {
-			verificaField(friends, field);
-			organizaMapa(all, field);
-			organizaMapa(justMe, field);
+			setField(ProfileFriends.getInstance(), field);
+			setFieldNull(ProfileAll.getInstance(), field);
+			setFieldNull(ProfileJustMe.getInstance(), field);
 		}else if (visibility.toLowerCase().equals("just_me")) {
-			verificaField(justMe, field);
-			organizaMapa(friends, field);
-			organizaMapa(all, field);
+			setField(ProfileJustMe.getInstance(), field);
+			setFieldNull(ProfileFriends.getInstance(), field);
+			setFieldNull(ProfileAll.getInstance(), field);
 		}else{
 			
 		}
 	}
-		
-	private void organizaMapa(Map<String,String> conjunto,String field) {
-		if(conjunto.containsKey(field)) {
-			conjunto.remove(field);
+	private void setFieldNull(ProfileIF profile, String field ) {
+		if(field.equals("contactEmail")) {
+			profile.setContactEmail(null);
+		}else if(field.equals("photo")) {
+			profile.setPhoto(null);
+		}else if(field.equals("age")) {
+			profile.setAge(null);
+		}else if(field.equals("aboutMe")) {
+			profile.setAboutMe(null);
+		}else if(field.equals("city")) {
+			profile.setCity(null);
+		}else if(field.equals("country")) {
+			profile.setCountry(null);
+		}else if(field.equals("gender")) {
+			profile.setGender(null);
 		}
 	}
+		
 	
-	private void verificaField(Map<String, String> mapa, String field ) {
+	
+	private void setField(ProfileIF profile, String field ) {
 		if(field.equals("contactEmail")) {
-			mapa.put(field, getContactEmail());
+			profile.setContactEmail(this.contactEmail);
 		}else if(field.equals("photo")) {
-			mapa.put(field, getPhoto());
+			profile.setPhoto(this.photo);
 		}else if(field.equals("age")) {
-			mapa.put(field, getAge());
+			profile.setAge(this.age);
 		}else if(field.equals("aboutMe")) {
-			mapa.put(field, getAboutMe());
+			profile.setAboutMe(this.aboutMe);
 		}else if(field.equals("city")) {
-			mapa.put(field, getCity());
+			profile.setCity(this.city);
 		}else if(field.equals("country")) {
-			mapa.put(field, getCountry());
+			profile.setCountry(this.country);
 		}else if(field.equals("gender")) {
-			mapa.put(field, getGender());
+			profile.setGender(this.gender);
 		}
 	}
 
 	public String checkProfile(String visibility) {
 		String resposta = "";
 		if(visibility.toLowerCase().equals("all")) {
-			for (String string : all.keySet()) {
-				resposta+= string + "=" + all.get(string)+",";
-			}
+			resposta += ProfileAll.getInstance().toString();
 		}else if(visibility.toLowerCase().equals("friends")) {
-			for (String string : friends.keySet()) {
-				resposta+= string + "=" + friends.get(string)+",";
-			}
+			resposta += ProfileFriends.getInstance().toString();
 		}else if(visibility.toLowerCase().equals("justme")) {
-			for (String string : justMe.keySet()) {
-				resposta+= string + "=" + justMe.get(string)+",";
-			}
+			resposta += ProfileJustMe.getInstance().toString();
 		}else {
 			
 		}
-		resposta = resposta.substring(0, resposta.length()-2);
+//		resposta = resposta.substring(0, resposta.length()-);
 		return resposta;
 	}
 	

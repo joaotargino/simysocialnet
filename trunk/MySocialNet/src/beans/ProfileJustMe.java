@@ -12,6 +12,14 @@ public class ProfileJustMe implements ProfileIF{
 	private String gender;
 	private String contactEmail;
 	private String age;
+	private static ProfileJustMe profile;
+	
+	public synchronized static ProfileJustMe getInstance() { 
+		if(profile == null) {
+			profile = new ProfileJustMe();
+		}
+		return profile;
+	}
 
 	public String getPhoto() {
 		return photo;
