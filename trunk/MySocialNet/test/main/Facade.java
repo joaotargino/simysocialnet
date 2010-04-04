@@ -203,8 +203,9 @@ public class Facade {
 	 * @param email
 	 * @param group
 	 * @param user
+	 * @throws Exception 
 	 */
-	public void addGroupMember(String email, String group, String user) {
+	public void addGroupMember(String email, String group, String user) throws Exception {
 		SocialNet.getInstance().addGroupMember(email, group, user);
 	}
 	

@@ -2,6 +2,8 @@ package controller;
 
 import java.util.List;
 
+import dao.usersDAO;
+
 import beans.ContaUsuario;
 import beans.Grupo;
 
@@ -16,10 +18,17 @@ public class GerenciadorGrupo {
 		return instance;
 	}
 
-	public void adicionar(String login, String grupo) {
-		// TODO Auto-generated method stub
-
-	}
+	public void adicionar(String login, String grupo, String loginToAdd) throws Exception {
+		ContaUsuario usuario = GerenciadorUsuario.getInstance().getUsuario(login);
+		ContaUsuario usuarioToAdd = GerenciadorUsuario.getInstance().getUsuario(loginToAdd);
+		for(int i = 0; i < usuario.getGrupos().size(); i++) {
+			if(usuario.getGrupos().get(i).getNome().equals(grupo) && 
+					(!usuario.getGrupos().get(i).getUsuarios().contains(usuarioToAdd))) {
+				usuario.getGrupos().get(i).getUsuarios().add(usuarioToAdd);
+			}
+		}
+		usersDAO.update(usuario);
+	} 
 
 	public void remover(String login, String group) {
 		// TODO Auto-generated method stub

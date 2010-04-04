@@ -276,9 +276,10 @@ public class SocialNet {
 	 * @param email
 	 * @param group
 	 * @param user
+	 * @throws Exception 
 	 */
-	public void addGroupMember(String email, String group, String user) {
-		gerenciadorGrupo.adicionar(user, group);
+	public void addGroupMember(String email, String group, String user) throws Exception {
+		gerenciadorGrupo.adicionar(email, group, user);
 	}
 
 	/**
