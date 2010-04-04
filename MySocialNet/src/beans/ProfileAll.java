@@ -12,6 +12,14 @@ public class ProfileAll implements ProfileIF{
 	private String gender;
 	private String contactEmail;
 	private String age;
+	private static ProfileAll profile;
+
+	public synchronized static ProfileAll getInstance() { 
+		if(profile == null) {
+			profile = new ProfileAll();
+		}
+		return profile;
+	}
 
 	public String getPhoto() {
 		return photo;

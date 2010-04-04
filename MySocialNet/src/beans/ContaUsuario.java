@@ -43,10 +43,9 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 			this.email = email;
 		}
 		preferencias = new ArrayList<String>();
-		
-		profileAll = new ProfileAll();
-		profileJustMe = new ProfileJustMe();
-		profileFriends = new ProfileFriends();
+//		profileAll = new ProfileAll();
+//		profileJustMe = new ProfileJustMe();
+//		profileFriends = new ProfileFriends();
 	}
 	
 	public ContaUsuario(String nome, String sobrenome, String senha, String email) throws Exception {
@@ -63,16 +62,16 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 			this.email = email;
 		}
 		preferencias = new ArrayList<String>();
-		profileAll = new ProfileAll();
-		profileJustMe = new ProfileJustMe();
-		profileFriends = new ProfileFriends();
+//		profileAll = new ProfileAll();
+//		profileJustMe = new ProfileJustMe();
+//		profileFriends = new ProfileFriends();
 	}
 
 	public ContaUsuario() {
 		preferencias = new ArrayList<String>();
-		profileAll = new ProfileAll();
-		profileJustMe = new ProfileJustMe();
-		profileFriends = new ProfileFriends();
+//		profileAll = new ProfileAll();
+//		profileJustMe = new ProfileJustMe();
+//		profileFriends = new ProfileFriends();
 	}
 
 	public String getNome() {
@@ -203,15 +202,23 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	}
 	
 	public void setFieldPrivacy(String field, String visibility) {
-//		profile.setFieldPrivacy(field, visibility);
+		Profile.getInstance().setFieldPrivacy(field, visibility);
 	}
 
 	public String checkProfile(String visibility) {
-//		return profile.checkProfile(visibility);
-		return "";
+		return Profile.getInstance().checkProfile(visibility);
 	}
 	public static void main(String[] args) {
-//		ContaUsuario usuario = new ContaUsuario("Telles","Nobrega","")
+		try {
+			ContaUsuario usuario = new ContaUsuario("Telles","Nobrega","20/08/1990","123456","telles@gmail.com");
+			
+			usuario.setFieldPrivacy("contactEmail", "ALL");
+			usuario.checkProfile("ALL");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void setProfileAll(ProfileIF profileAll) {
