@@ -336,8 +336,8 @@ public class SocialNet {
 	public void sendFriendshipRequest(String login, String user, String message, String group) throws Exception{
 		ContaUsuario logado = gerenciadorUsuario.getUsuario(login);
 		if(!(logado.isLoged())) throw new Exception("Usuário não logado");
-		ContaUsuario convidado = gerenciadorUsuario.getUsuario(user);
-
+//		ContaUsuario convidado = gerenciadorUsuario.getUsuario(user);
+		logado.sendFriendshipRequest(user, message, group);
 	}
 
 	/**
