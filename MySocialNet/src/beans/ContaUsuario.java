@@ -253,6 +253,14 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		return profileFriends;
 	}
 	
+	public List<String> getPendingFriendship() {
+		return pendingFriendship;
+	}
+	
+	public List<String> getSentFriendship() {
+		return sentFriendship;
+	}
+	
 	public void updateUserProfile(ContaUsuario usuario, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
 		gerenciaProfile.updateUserProfile(usuario, aboutMe, age, photo, country, city, gender, contactEmail);
 	}

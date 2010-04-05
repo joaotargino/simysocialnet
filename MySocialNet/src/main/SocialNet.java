@@ -345,9 +345,11 @@ public class SocialNet {
 	 * 
 	 * @param login
 	 * @return
+	 * @throws Exception 
 	 */
-	public List<ContaUsuario> viewPendingFriendship(String login) {
-		return null;
+	public List<String> viewPendingFriendship(String login) throws Exception {
+		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
+		return usuario.getPendingFriendship();
 	}
 
 	/**
@@ -356,9 +358,11 @@ public class SocialNet {
 	 * 
 	 * @param login
 	 * @return
+	 * @throws Exception 
 	 */
-	public List<ContaUsuario> viewSentFriendship (String login) {
-		return null;
+	public List<String> viewSentFriendship (String login) throws Exception {
+		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
+		return usuario.getSentFriendship();
 	}
 
 	/**
