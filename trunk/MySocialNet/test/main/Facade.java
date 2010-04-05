@@ -299,8 +299,9 @@ public class Facade {
 	 * 
 	 * @param login
 	 * @return
+	 * @throws Exception 
 	 */
-	public List<ContaUsuario> viewPendingFriendship(String login) {
+	public List<String> viewPendingFriendship(String login) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
 		return socialNet.viewPendingFriendship(login);
@@ -312,8 +313,9 @@ public class Facade {
 	 * 
 	 * @param login
 	 * @return
+	 * @throws Exception 
 	 */
-	public List<ContaUsuario> viewSentFriendship (String login) {
+	public List<String> viewSentFriendship (String login) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
 		return socialNet.viewSentFriendship(login);
