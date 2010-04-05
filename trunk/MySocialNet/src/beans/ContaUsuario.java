@@ -49,6 +49,8 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		if(Util.verificaEmail(email)) {
 			this.email = email;
 		}
+		pendingFriendship = new ArrayList<String>();
+		sentFriendship = new ArrayList<String>();
 		preferencias = new ArrayList<String>();
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
@@ -73,6 +75,8 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		if(Util.verificaEmail(email)) {
 			this.email = email;
 		}
+		pendingFriendship = new ArrayList<String>();
+		sentFriendship = new ArrayList<String>();
 		preferencias = new ArrayList<String>();
 		amigos = new ArrayList<ContaUsuario>();
 		profileAll = new ProfileAll();
@@ -85,6 +89,8 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	}
 
 	public ContaUsuario() {
+		pendingFriendship = new ArrayList<String>();
+		sentFriendship = new ArrayList<String>();
 		preferencias = new ArrayList<String>();
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
@@ -165,7 +171,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 				}
 			}
 		}
-		throw new Exception("Amigo n�o encontrado");
+		throw new Exception("Amigo não encontrado");
 		
 	}
 	
@@ -263,8 +269,9 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		if(!(sentFriendship.contains(user))) {
 			sentFriendship.add(user);
 			gerenciaUsuario.sendFriendshipRequest(this.nome,this.sobrenome,this.email, user, message, group);
+		}else {
+			throw new Exception("Você já enviou um convite para esse usuário");
 		}
-		throw new Exception("Você já enviou um convite para esse usuário");
 	}
 	
 	public void addFriendshipRequest(String name, String sobrenome, String email, String message) {
