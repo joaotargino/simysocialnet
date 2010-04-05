@@ -21,6 +21,12 @@ public class SocialNet {
 		}
 		return social;
 	}
+	
+	public void init() {
+		gerenciadorGrupo = new GerenciadorGrupo();
+		gerenciadorUsuario = new GerenciadorUsuario();
+		gerenciadorGrupo.init();
+	}
 
 	/**
 	 * Loga o usuario ao sistema

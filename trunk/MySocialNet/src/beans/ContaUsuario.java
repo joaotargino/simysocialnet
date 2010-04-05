@@ -53,6 +53,8 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
+		gerenciaUsuario = new GerenciadorUsuario();
+		gerenciaProfile.init();
 		gerenciaProfile = new GerenciadorProfile();
 		amigos = new ArrayList<ContaUsuario>();
 		createGroups();
@@ -76,7 +78,9 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
+		gerenciaUsuario = new GerenciadorUsuario();
 		gerenciaProfile = new GerenciadorProfile();
+		gerenciaProfile.init();
 		createGroups();
 	}
 
@@ -86,6 +90,8 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
 		gerenciaProfile = new GerenciadorProfile();
+		gerenciaProfile.init();
+		gerenciaUsuario = new GerenciadorUsuario();
 		amigos = new ArrayList<ContaUsuario>();
 		createGroups();
 	}
