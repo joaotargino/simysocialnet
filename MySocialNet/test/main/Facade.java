@@ -10,13 +10,16 @@ import beans.ContaUsuario;
  */
 public class Facade {
 	
+	private SocialNet socialNet;
 	
 	/**
 	 * Loga o usuario ao sistema
 	 * @throws Exception 
 	 */
 	public void login(String login, String senha) throws Exception{
-		SocialNet.getInstance().login(login, senha);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.login(login, senha);
 	}
 	
 	/**
@@ -24,7 +27,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public void logoff(String email) throws Exception {
-		SocialNet.getInstance().logoff(email);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.logoff(email);
 		
 	}
 	
@@ -33,7 +38,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public boolean estaLogado(String login) throws Exception {
-		return SocialNet.getInstance().estaLogado(login);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.estaLogado(login);
 	}
 	
 	/**
@@ -54,7 +61,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public void createUser(String name, String lastName, String email, String passwd) throws Exception {
-		SocialNet.getInstance().createUser(name, lastName, email, passwd);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.createUser(name, lastName, email, passwd);
 	}
 	
 	/**
@@ -68,7 +77,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public ContaUsuario getUser (String login) throws Exception {
-		return SocialNet.getInstance().getUser(login);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.getUser(login);
 	}
 	
 	/**
@@ -88,7 +99,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public void updateUserProfile(String login, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
-		SocialNet.getInstance().updateUserProfile(login, aboutMe, age, photo, country, city, gender, contactEmail);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.updateUserProfile(login, aboutMe, age, photo, country, city, gender, contactEmail);
 	}
 	
 	/**
@@ -100,7 +113,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public void setFieldPrivacy(String login, String field, String type) throws Exception {
-		SocialNet.getInstance().setFieldPrivacy(login, field, type);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.setFieldPrivacy(login, field, type);
 	}
 	
 	/**
@@ -115,12 +130,16 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public String checkProfile( String login, String visibility) throws Exception {
-		return SocialNet.getInstance().checkProfile(login, visibility).toString();
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.checkProfile(login, visibility).toString();
 	}
 	
 	
 	public String viewProfile( String viewer, String profileOwner) throws Exception {
-		return SocialNet.getInstance().viewProfile(viewer, profileOwner).toString();
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.viewProfile(viewer, profileOwner).toString();
 	}
 	
 	/**
@@ -131,7 +150,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public void addUserPreference(String login, String preference) throws Exception {
-		SocialNet.getInstance().addUserPreference(login, preference);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.addUserPreference(login, preference);
 	}
 	
 	/**
@@ -143,7 +164,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public String listUserPreferences(String login) throws Exception {
-		List<String> listPreferences = SocialNet.getInstance().listUserPreferences(login);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		List<String> listPreferences = socialNet.listUserPreferences(login);
 		String preferences = listPreferences.get(0);
 		if (preferences == null) return "";
 		for (int i = 1; i < listPreferences.size(); i++) {
@@ -160,7 +183,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public void removeUserPreference (String login, String preference) throws Exception {
-		SocialNet.getInstance().removeUserPreference(login, preference);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.removeUserPreference(login, preference);
 	}
 	
 	/**
@@ -169,7 +194,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public void deleteUser(String login) throws Exception {
-		SocialNet.getInstance().deleteUser(login);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.deleteUser(login);
 	}
 	
 	/**
@@ -181,7 +208,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public String listGroupMembers(String email, String group) throws Exception {
-		return SocialNet.getInstance().listGroupMembers(email, group).toString();
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.listGroupMembers(email, group).toString();
 	}
 	
 	/**
@@ -194,7 +223,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public ContaUsuario findGroupMember(String login,String friend, String group) throws Exception {
-		return SocialNet.getInstance().findGroupMember(login, friend, group);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.findGroupMember(login, friend, group);
 	}
 	
 	/**
@@ -204,7 +235,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public void addGroupMember(String email, String group, String user) throws Exception {
-		SocialNet.getInstance().addGroupMember(email, group, user);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.addGroupMember(email, group, user);
 	}
 	
 	/**
@@ -215,7 +248,9 @@ public class Facade {
 	 * @param user
 	 */
 	public void removeGroupMember(String email, String group, String user) {
-		SocialNet.getInstance().removeGroupMember(email, group, user);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.removeGroupMember(email, group, user);
 	}
 	
 	/**
@@ -226,7 +261,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public List<ContaUsuario> listFriends(String email) throws Exception {
-		return SocialNet.getInstance().listFriends(email);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.listFriends(email);
 	}
 	
 	/**
@@ -238,7 +275,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public ContaUsuario findNewFriend(String login, String friend) throws Exception {
-		return SocialNet.getInstance().findNewFriend(login, friend);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.findNewFriend(login, friend);
 	}
 	
 	/**
@@ -250,7 +289,9 @@ public class Facade {
 	 * @param group
 	 */
 	public void sendFriendshipRequest(String login, String user, String message, String group) throws Exception {
-		SocialNet.getInstance().sendFriendshipRequest(login, user, message, group);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.sendFriendshipRequest(login, user, message, group);
 	}
 	
 	/**
@@ -260,7 +301,9 @@ public class Facade {
 	 * @return
 	 */
 	public List<ContaUsuario> viewPendingFriendship(String login) {
-		return SocialNet.getInstance().viewPendingFriendship(login);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.viewPendingFriendship(login);
 	}
 	
 	/**
@@ -271,7 +314,9 @@ public class Facade {
 	 * @return
 	 */
 	public List<ContaUsuario> viewSentFriendship (String login) {
-		return SocialNet.getInstance().viewSentFriendship(login);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.viewSentFriendship(login);
 	}
 	
 	/**
@@ -281,7 +326,9 @@ public class Facade {
 	 * @param contact
 	 */
 	public void declineFriendshipRequest (String login, String contact){
-		SocialNet.getInstance().declineFriendshipRequest(login, contact);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.declineFriendshipRequest(login, contact);
 	}
 	
 	/**
@@ -292,7 +339,9 @@ public class Facade {
 	 * @param group
 	 */
 	public void acceptFriendshipRequest (String login, String contact, String group){
-		SocialNet.getInstance().acceptFriendshipRequest(login, contact, group);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.acceptFriendshipRequest(login, contact, group);
 	}
 	
 	/**
@@ -304,7 +353,9 @@ public class Facade {
 	 * @throws Exception 
 	 */
 	public ContaUsuario getFriend(String email, String friend) throws Exception {
-		return SocialNet.getInstance().getFriend(email, friend);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.getFriend(email, friend);
 	}
 	
 	/**
@@ -314,7 +365,9 @@ public class Facade {
 	 * @param friend
 	 */
 	public void removeFriend(String login, String friend) {
-		SocialNet.getInstance().removeFriend(login, friend);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.removeFriend(login, friend);
 	}
 	
 	/**
@@ -326,7 +379,9 @@ public class Facade {
 	 * @return
 	 */
 	public List<ContaUsuario> getRecommendFriends(String login) {
-		return SocialNet.getInstance().getRecommendFriends(login);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		return socialNet.getRecommendFriends(login);
 	}
 	
 	/**
@@ -337,7 +392,9 @@ public class Facade {
 	 * @param exportFields
 	 */
 	public void exportFriendList(String login, String fileName, String exportFields) {
-		SocialNet.getInstance().exportFriendList(login, fileName, exportFields);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.exportFriendList(login, fileName, exportFields);
 	}
 	
 	/**
@@ -347,13 +404,17 @@ public class Facade {
 	 * @param file
 	 */
 	public void restoreFriendList(String login, String file) {
-		SocialNet.getInstance().restoreFriendList(login, file);
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.restoreFriendList(login, file);
 	}
 	
 	/**
 	 * Limpa o banco de dados
 	 */
 	public void clean() {
-		SocialNet.getInstance().clean();
+		socialNet = SocialNet.getInstance();
+		socialNet.init();
+		socialNet.clean();
 	}
 }
