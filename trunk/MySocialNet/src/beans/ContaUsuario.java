@@ -217,8 +217,8 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	
 	@Override
 	public int compareTo(ContaUsuario o) {
-		if (o.getEmail().equals(getEmail())) return 0;
-		return -1;
+		String string = getNome() + " " + getSobrenome();
+		return string.compareTo(o.getNome() + " " + o.getSobrenome());
 	}
 
 	public void setLoged(boolean loged) {

@@ -275,9 +275,7 @@ public class SocialNet {
 	 * @throws Exception 
 	 */
 	public ContaUsuario findGroupMember(String login,String friend, String group) throws Exception {
-		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
-		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
-		return gerenciadorGrupo.getMembro(usuario, friend, group);
+		return gerenciadorGrupo.getMembro(login, friend, group);
 	}
 
 	/**
@@ -296,9 +294,10 @@ public class SocialNet {
 	 * @param email
 	 * @param group
 	 * @param user
+	 * @throws Exception 
 	 */
-	public void removeGroupMember(String email, String group, String user) {
-		gerenciadorGrupo.remover(user, group);
+	public void removeGroupMember(String email, String group, String user) throws Exception {
+		gerenciadorGrupo.remover(email, group, user);
 	}
 
 	/**
