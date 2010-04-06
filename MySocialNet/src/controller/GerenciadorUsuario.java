@@ -51,8 +51,10 @@ public class GerenciadorUsuario {
 		if(login.equals(user)) throw new Exception("Operação não permitida");
 		ContaUsuario logado = getUsuario(login);
 		if(!(logado.isLoged())) throw new Exception("Usuário não logado");
-		logado.sendFriendshipRequest(user, message, group);
-		convidado.addFriendshipRequest(logado.getNome(), logado.getSobrenome(), logado.getEmail(), message);
+//		logado.sendFriendshipRequest(user, message, group);
+		logado.getSentFriendship().add(user);
+		convidado.getPendingFriendship().add(login);
+//		convidado.addFriendshipRequest(logado.getNome(), logado.getSobrenome(), logado.getEmail(), message);
 		update(logado);
 		update(convidado);
 
