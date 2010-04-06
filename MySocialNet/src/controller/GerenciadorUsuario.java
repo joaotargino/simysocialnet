@@ -52,13 +52,16 @@ public class GerenciadorUsuario {
 		ContaUsuario logado = getUsuario(login);
 		if(!(logado.isLoged())) throw new Exception("Usuário não logado");
 //		logado.sendFriendshipRequest(user, message, group);
-		logado.getSentFriendship().add(user);
-		convidado.getPendingFriendship().add(login);
+		List<String> sentFriendship = logado.getSentFriendship();
+		List<String> pendingFriendship = convidado.getPendingFriendship();
+		if (sentFriendship.contains(user)) throw new Exception("Você já enviou um convite para esse usuário");
+		sentFriendship.add(user);
+		pendingFriendship.add(login);
 //		convidado.addFriendshipRequest(logado.getNome(), logado.getSobrenome(), logado.getEmail(), message);
+		logado.setSentFriendship(sentFriendship);
+		convidado.setPendingFriendship(pendingFriendship);
 		update(logado);
 		update(convidado);
-
-
 		
 	}
 	

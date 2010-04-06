@@ -281,6 +281,14 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		}
 	}
 	
+	public void setSentFriendship(List<String> sentFriendship) {
+		this.sentFriendship = sentFriendship;
+	}
+	
+	public void setPendingFriendship(List<String> pendingFriendship) {
+		this.pendingFriendship = pendingFriendship;
+	}
+	
 	public void addFriendshipRequest(String name, String sobrenome, String email, String message) {
 		pendingFriendship.add(name + " " + sobrenome + "<" + email + "> - mensagem: " + message);
 	}
