@@ -343,7 +343,7 @@ public class Facade {
 	 * @param contact
 	 * @param group
 	 */
-	public void acceptFriendshipRequest (String login, String contact, String group){
+	public void acceptFriendshipRequest (String login, String contact, String group) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
 		socialNet.acceptFriendshipRequest(login, contact, group);

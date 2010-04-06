@@ -41,10 +41,23 @@ public class GerenciadorUsuario {
 		}
 	}
 	
-	public void sendFriendshipRequest(String name, String sobrenome, String login, String user, String message, String group) throws Exception {
-		ContaUsuario usuario = getUsuario(user);
-		usuario.addFriendshipRequest(name, sobrenome, login, message);
+	public void sendFriendshipRequest(String login, String user, String message, String group) throws Exception {
+		ContaUsuario logado = getUsuario(login);
+		if(!(logado.isLoged())) throw new Exception("Usuário não logado");
+		ContaUsuario convidado = getUsuario(user);
+		convidado.addFriendshipRequest(logado.getNome(), logado.getSobrenome(), logado.getEmail(), message);
 		
+	}
+	
+	public void acceptFriendshipRequest(String login, String contact,String group) throws Exception {
+		ContaUsuario user = getUsuario(login);
+		ContaUsuario contato = getUsuario(contact);
+		if(!(user.isLoged())) throw new Exception("Usuário não logado");
+		for (String string : contato.getSentFriendship()) {
+			if(string.equals(login)) {
+				user.acceptFriendshipRequest(contact,group);
+			}
+		}
 	}
 
 	public void clean() {
@@ -54,5 +67,7 @@ public class GerenciadorUsuario {
 	public void update(ContaUsuario user) {
 		UsersDAO.getInstance().update(user);
 	}
+
+	
 
 }
