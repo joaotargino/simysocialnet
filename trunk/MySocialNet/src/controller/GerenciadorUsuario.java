@@ -68,6 +68,12 @@ public class GerenciadorUsuario {
 		UsersDAO.getInstance().update(user);
 	}
 
+	public List<ContaUsuario> getAmigos(String email) throws Exception {
+		ContaUsuario usuario = getUsuario(email);
+		if(!usuario.isLoged()) throw new Exception("Usuário não logado");
+		return usuario.getAmigos();
+	}
+
 	
 
 }
