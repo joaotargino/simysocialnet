@@ -42,10 +42,21 @@ public class GerenciadorUsuario {
 	}
 	
 	public void sendFriendshipRequest(String login, String user, String message, String group) throws Exception {
+		ContaUsuario convidado; 
+		try {
+			convidado = getUsuario(user);
+		}catch(Exception e) {
+			throw new Exception("Contato inexistente");
+		}
+		if(login.equals(user)) throw new Exception("Operação não permitida");
 		ContaUsuario logado = getUsuario(login);
 		if(!(logado.isLoged())) throw new Exception("Usuário não logado");
-		ContaUsuario convidado = getUsuario(user);
+		logado.sendFriendshipRequest(user, message, group);
 		convidado.addFriendshipRequest(logado.getNome(), logado.getSobrenome(), logado.getEmail(), message);
+		update(logado);
+		update(convidado);
+
+
 		
 	}
 	
@@ -58,6 +69,7 @@ public class GerenciadorUsuario {
 				user.acceptFriendshipRequest(contact,group);
 			}
 		}
+		update(user);
 	}
 
 	public void clean() {
