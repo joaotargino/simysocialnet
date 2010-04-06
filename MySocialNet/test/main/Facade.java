@@ -222,10 +222,12 @@ public class Facade {
 	 * @return
 	 * @throws Exception 
 	 */
-	public ContaUsuario findGroupMember(String login,String friend, String group) throws Exception {
+	public String findGroupMember(String login,String friend, String group) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
-		return socialNet.findGroupMember(login, friend, group);
+		if (socialNet.findGroupMember(login, friend, group) == null) return null;
+		String string = socialNet.findGroupMember(login, friend, group).toString();
+		return socialNet.findGroupMember(login, friend, group).toString();
 	}
 	
 	/**
@@ -246,8 +248,9 @@ public class Facade {
 	 * @param email
 	 * @param group
 	 * @param user
+	 * @throws Exception 
 	 */
-	public void removeGroupMember(String email, String group, String user) {
+	public void removeGroupMember(String email, String group, String user) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
 		socialNet.removeGroupMember(email, group, user);
