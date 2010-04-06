@@ -300,9 +300,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	}
 
 	public void acceptFriendshipRequest(String contact, String group) {
-		for (String string : pendingFriendship) {
-			
-		}
+		
 	}
 	
 }
