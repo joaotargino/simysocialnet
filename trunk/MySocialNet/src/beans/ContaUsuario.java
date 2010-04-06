@@ -276,7 +276,6 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	public void sendFriendshipRequest(String user, String message, String group) throws Exception{
 		if(!(sentFriendship.contains(user))) {
 			sentFriendship.add(user);
-			gerenciaUsuario.sendFriendshipRequest(this.nome,this.sobrenome,this.email, user, message, group);
 		}else {
 			throw new Exception("Você já enviou um convite para esse usuário");
 		}
@@ -298,6 +297,12 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		grupos.add(familia);
 		grupos.add(melhoresAmigos);
 		grupos.add(trabalho);
+	}
+
+	public void acceptFriendshipRequest(String contact, String group) {
+		for (String string : pendingFriendship) {
+			
+		}
 	}
 	
 }

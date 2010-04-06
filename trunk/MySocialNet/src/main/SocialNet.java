@@ -333,10 +333,7 @@ public class SocialNet {
 	 * @param group
 	 */
 	public void sendFriendshipRequest(String login, String user, String message, String group) throws Exception{
-		ContaUsuario logado = gerenciadorUsuario.getUsuario(login);
-		if(!(logado.isLoged())) throw new Exception("Usuário não logado");
-//		ContaUsuario convidado = gerenciadorUsuario.getUsuario(user);
-		logado.sendFriendshipRequest(user, message, group);
+		gerenciadorUsuario.sendFriendshipRequest(login, user, message, group);
 	}
 
 	/**
@@ -381,8 +378,8 @@ public class SocialNet {
 	 * @param contact
 	 * @param group
 	 */
-	public void acceptFriendshipRequest (String login, String contact, String group){
-
+	public void acceptFriendshipRequest (String login, String contact, String group) throws Exception { 
+		gerenciadorUsuario.acceptFriendshipRequest (login, contact, group);
 	}
 
 	/**
