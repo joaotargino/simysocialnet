@@ -51,19 +51,22 @@ public class GerenciadorGrupo {
 
 	public void remover(String login, String grupo, String loginToRemove) throws Exception {
 		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
-		ContaUsuario usuarioToAdd;
+		ContaUsuario usuarioToRemove;
+		String conhecidos = "conhecidos";
 		
 		try {
-			usuarioToAdd = gerenciadorUsuario.getUsuario(loginToRemove);
+			usuarioToRemove = gerenciadorUsuario.getUsuario(loginToRemove);
 		} catch (Exception e) {
 			throw new Exception("Usuário a ser removido inexistente no sistema");
 		}
 		
 		Grupo group = getGrupo(usuario, grupo);
-
+		Grupo grupoConhecidos = getGrupo(usuario, conhecidos);
 		if (! usuario.isLoged()) throw new Exception("Usuário não logado");
-		if (!group.getUsuarios().contains(usuarioToAdd)) throw new Exception("Contato não existente no grupo " + grupo);
-		group.getUsuarios().remove(usuarioToAdd);
+		if (!group.getUsuarios().contains(usuarioToRemove)) throw new Exception("Contato não existente no grupo " + grupo);
+		group.getUsuarios().remove(usuarioToRemove);
+		grupoConhecidos.getUsuarios().add(usuarioToRemove);
+		
 		gerenciadorUsuario.update(usuario);
 	}
 	
