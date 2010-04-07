@@ -263,10 +263,15 @@ public class Facade {
 	 * @return
 	 * @throws Exception 
 	 */
-	public List<ContaUsuario> listFriends(String email) throws Exception {
+	public String listFriends(String email) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
-		return socialNet.listFriends(email);
+		String resposta = "";
+		List<ContaUsuario> string = socialNet.listFriends(email);
+		for (ContaUsuario string2 : string) {
+			resposta += string2;
+		}
+		return resposta;
 	}
 	
 	/**
@@ -277,10 +282,18 @@ public class Facade {
 	 * @return
 	 * @throws Exception 
 	 */
-	public ContaUsuario findNewFriend(String login, String friend) throws Exception {
+	public String findNewFriend(String login, String friend) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
-		return socialNet.findNewFriend(login, friend);
+		ContaUsuario usuario = socialNet.findNewFriend(login, friend);
+		if(usuario != null) {
+			return usuario.getNome() + " " + usuario.getSobrenome() + " - Profile: photo=" +
+			usuario.getProfileJustMe().getPhoto() + ",aboutMe="+ usuario.getProfileJustMe().getAboutMe() + 
+			",country=" + usuario.getProfileJustMe().getCountry();
+		}
+		
+		
+		return "";
 	}
 	
 	/**
@@ -304,10 +317,15 @@ public class Facade {
 	 * @return
 	 * @throws Exception 
 	 */
-	public List<String> viewPendingFriendship(String login) throws Exception {
+	public String viewPendingFriendship(String login) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
-		return socialNet.viewPendingFriendship(login);
+		String resposta = "";
+		List<String> string = socialNet.viewPendingFriendship(login);
+		for (String string2 : string) {
+			resposta += string2;
+		}
+		return resposta;
 	}
 	
 	/**
@@ -318,10 +336,15 @@ public class Facade {
 	 * @return
 	 * @throws Exception 
 	 */
-	public List<String> viewSentFriendship (String login) throws Exception {
+	public String viewSentFriendship (String login) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
-		return socialNet.viewSentFriendship(login);
+		String resposta = "";
+		List<String> string = socialNet.viewSentFriendship(login);
+		for (String string2 : string) {
+			resposta += string2;
+		}
+		return resposta;
 	}
 	
 	/**
@@ -330,7 +353,7 @@ public class Facade {
 	 * @param login
 	 * @param contact
 	 */
-	public void declineFriendshipRequest (String login, String contact){
+	public void declineFriendshipRequest (String login, String contact)throws Exception{
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
 		socialNet.declineFriendshipRequest(login, contact);

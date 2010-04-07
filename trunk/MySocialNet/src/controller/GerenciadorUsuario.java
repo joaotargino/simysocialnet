@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import Util.Util;
 import beans.ContaUsuario;
 import dao.UsersDAO;
 
@@ -51,13 +52,11 @@ public class GerenciadorUsuario {
 		if(login.equals(user)) throw new Exception("Operação não permitida");
 		ContaUsuario logado = getUsuario(login);
 		if(!(logado.isLoged())) throw new Exception("Usuário não logado");
-//		logado.sendFriendshipRequest(user, message, group);
 		List<String> sentFriendship = logado.getSentFriendship();
 		List<String> pendingFriendship = convidado.getPendingFriendship();
 		if (sentFriendship.contains(user)) throw new Exception("Você já enviou um convite para esse usuário");
 		sentFriendship.add(user);
-		pendingFriendship.add(login);
-//		convidado.addFriendshipRequest(logado.getNome(), logado.getSobrenome(), logado.getEmail(), message);
+		pendingFriendship.add(logado.getNome() + " " + logado.getSobrenome() + " <" + login + "> - mensagem: " + message);
 		logado.setSentFriendship(sentFriendship);
 		convidado.setPendingFriendship(pendingFriendship);
 		update(logado);
@@ -74,6 +73,18 @@ public class GerenciadorUsuario {
 				user.acceptFriendshipRequest(contact,group);
 			}
 		}
+		List<String> sent = contato.getSentFriendship();
+		sent.remove(contact);
+		contato.setSentFriendship(sent);
+		List<String> pending = user.getPendingFriendship();
+		for (String string : pending) {
+			String[] array = string.split("<");
+			String[] arrayAux = array[1].split(">");
+			if(arrayAux[0].equals(contact)) {
+				pending.remove(string);
+			}
+		}
+		update(contato);
 		update(user);
 	}
 
@@ -91,6 +102,66 @@ public class GerenciadorUsuario {
 		return usuario.getAmigos();
 	}
 
+	public List<String> viewPendingFriendship(String login) throws Exception{
+		ContaUsuario usuario = getUsuario(login);
+		
+		if(!(usuario.isLoged())) throw new Exception("Usuário não logado");
+		List<String> pending = usuario.getPendingFriendship();
+		if(pending.isEmpty()) pending.add("Não há nenhuma solicitação de amizade pendente");
+		return pending;
+	}
+
+	public List<String> viewSentFriendship(String login)throws Exception {
+		ContaUsuario usuario = getUsuario(login);
+		
+		if(!(usuario.isLoged())) throw new Exception("Usuário não logado");
+		List<String> sent = usuario.getSentFriendship();
+		if(sent.isEmpty()) sent.add("Não há nenhuma solicitação de amizade pendente");;
+		return sent;
+	}
+
+	public ContaUsuario findNewFriend(String login, String friend) throws Exception {
+		ContaUsuario usuario;
+		try{
+			usuario = getUsuario(login);
+		}catch (Exception e) {
+			throw new Exception("Login inexistente");
+		}
+		if(!(usuario.isLoged())) throw new Exception("Usuário não logado");
+		try {
+			if(Util.verificaEmail(friend)) {
+				return getUsuario(friend);
+			}
+		}catch (Exception e) {
+			for (ContaUsuario user : UsersDAO.getInstance().getUsuarios()) {
+				if((user.getNome() + " " + user.getSobrenome()).equalsIgnoreCase(friend)) {
+					return user;
+				}
+			}
+		}
+		return null;
+	}
+
+	public void declineFriendshipRequest(String login, String contact) throws Exception{
+		ContaUsuario usuario;
+		ContaUsuario contato;
+		try{
+			usuario = getUsuario(login);
+			contato = getUsuario(contact);
+		}catch (Exception e) {
+			throw new Exception("Login inexistente");
+		}
+		if(!(usuario.isLoged())) throw new Exception("Usuário não logado");
+		List<String> pending = usuario.getPendingFriendship();
+		pending.clear();
+		usuario.setPendingFriendship(pending);
+		List<String> sent = contato.getSentFriendship();
+		sent.clear();
+		contato.setSentFriendship(sent);
+		update(usuario);
+		update(contato);
+	}
+	
 	
 
 }
