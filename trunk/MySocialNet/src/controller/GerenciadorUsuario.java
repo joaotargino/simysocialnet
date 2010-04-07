@@ -53,11 +53,10 @@ public class GerenciadorUsuario {
 		if(login.equals(user)) throw new Exception("Operação não permitida");
 		ContaUsuario logado = getUsuario(login);
 		if(!(logado.isLoged())) throw new Exception("Usuário não logado");
-		List<String> sentFriendship = logado.getSentFriendship();
+		Map<String,String> sentFriendship = logado.getSentFriendship();
 		Map<String,String> pendingFriendship = convidado.getPendingFriendship();
-		if (sentFriendship.contains(user)) throw new Exception("Você já enviou um convite para esse usuário");
-		sentFriendship.add(user);
-//		logado.getNome() + " " + logado.getSobrenome() + " <" + login + "> - mensagem: " + message
+		if (sentFriendship.keySet().contains(user)) throw new Exception("Você já enviou um convite para esse usuário");
+		sentFriendship.put(user,group);
 		pendingFriendship.put(user, logado.getNome() + " " + logado.getSobrenome() + " <" + login + "> - mensagem: " + message);
 		logado.setSentFriendship(sentFriendship);
 		convidado.setPendingFriendship(pendingFriendship);
@@ -70,20 +69,17 @@ public class GerenciadorUsuario {
 		ContaUsuario user = getUsuario(login);
 		ContaUsuario contato = getUsuario(contact);
 		if(!(user.isLoged())) throw new Exception("Usuário não logado");
-		for (String string : contato.getSentFriendship()) {
+		for (String string : user.getPendingFriendship().keySet()) {
 			if(string.equals(login)) {
 				user.acceptFriendshipRequest(contact,group);
 			}
 		}
-		List<String> sent = contato.getSentFriendship();
-		sent.remove(contact);
+		contato.acceptFriendshipRequest(login, contato.getSentFriendship().get(login));
+		Map<String,String> sent = contato.getSentFriendship();
+		sent.remove(login);
 		contato.setSentFriendship(sent);
 		Map<String,String> pending = user.getPendingFriendship();
-		for (String key : pending.keySet()) {
-			if(key.equals(contact)) {
-				pending.remove(key);
-			}
-		}
+		pending.remove(contact);
 		update(contato);
 		update(user);
 	}
@@ -119,9 +115,13 @@ public class GerenciadorUsuario {
 		ContaUsuario usuario = getUsuario(login);
 		
 		if(!(usuario.isLoged())) throw new Exception("Usuário não logado");
-		List<String> sent = usuario.getSentFriendship();
-		if(sent.isEmpty()) sent.add("Não há nenhuma solicitação de amizade pendente");;
-		return sent;
+		Map<String,String> sent = usuario.getSentFriendship();
+		List<String> resposta = new ArrayList<String>();
+		if(sent.isEmpty()) resposta.add("Não há nenhuma solicitação de amizade pendente");;
+		for (String key : sent.keySet()) {
+			resposta.add(key);
+		}
+		return resposta;
 	}
 
 	public ContaUsuario findNewFriend(String login, String friend) throws Exception {
@@ -156,11 +156,24 @@ public class GerenciadorUsuario {
 			throw new Exception("Login inexistente");
 		}
 		if(!(usuario.isLoged())) throw new Exception("Usuário não logado");
-		Map<String,String> pending = usuario.getPendingFriendship();
-		pending.clear();
+		Map<String,String> pending = contato.getPendingFriendship();
+		String chave = "";
+		for (String key : pending.keySet()) {
+			if(key.equals(contact)) {
+				chave = key;
+			}
+		}
+		pending.remove(chave);
 		usuario.setPendingFriendship(pending);
-		List<String> sent = contato.getSentFriendship();
-		sent.clear();
+
+		Map<String,String> sent = usuario.getSentFriendship();
+		String index = "";
+		for (String string : sent.keySet()) {
+			if(string.equals(login)) {
+				index = string;
+			}
+		}
+		sent.remove(index);
 		contato.setSentFriendship(sent);
 		update(usuario);
 		update(contato);

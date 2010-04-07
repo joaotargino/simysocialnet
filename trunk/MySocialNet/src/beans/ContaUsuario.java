@@ -34,7 +34,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	private GerenciadorUsuario gerenciaUsuario;
 	private GerenciadorGrupo gerenciaGrupo;
 	private Map<String,String> pendingFriendship;
-	private List<String> sentFriendship;
+	private Map<String,String> sentFriendship;
 	
 	
 	public ContaUsuario(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
@@ -56,7 +56,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		gerenciaGrupo = new GerenciadorGrupo();
 		gerenciaGrupo.init();
 		pendingFriendship = new HashMap<String,String>();
-		sentFriendship = new ArrayList<String>();
+		sentFriendship = new HashMap<String,String>();
 		preferencias = new ArrayList<String>();
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
@@ -86,7 +86,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		}
 		gerenciaGrupo = new GerenciadorGrupo();
 		pendingFriendship = new HashMap<String,String>();
-		sentFriendship = new ArrayList<String>();
+		sentFriendship = new HashMap<String,String>();
 		preferencias = new ArrayList<String>();
 		amigos = new ArrayList<ContaUsuario>();
 		profileAll = new ProfileAll();
@@ -105,7 +105,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	public ContaUsuario() {
 		gerenciaGrupo = new GerenciadorGrupo();
 		pendingFriendship = new HashMap<String,String>();
-		sentFriendship = new ArrayList<String>();
+		sentFriendship = new HashMap<String,String>();
 		preferencias = new ArrayList<String>();
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
@@ -276,7 +276,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		return pendingFriendship;
 	}
 	
-	public List<String> getSentFriendship() {
+	public Map<String,String> getSentFriendship() {
 		return sentFriendship;
 	}
 	
@@ -292,25 +292,13 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		return gerenciaProfile.getProfile(user, visibility);
 	}
 	
-	public void sendFriendshipRequest(String user, String message, String group) throws Exception{
-		if(!(sentFriendship.contains(user))) {
-			sentFriendship.add(user);
-		}else {
-			throw new Exception("Você já enviou um convite para esse usuário");
-		}
-	}
-	
-	public void setSentFriendship(List<String> sentFriendship) {
+	public void setSentFriendship(Map<String,String> sentFriendship) {
 		this.sentFriendship = sentFriendship;
 	}
 	
 	public void setPendingFriendship(Map<String,String> pendingFriendship) {
 		this.pendingFriendship = pendingFriendship;
 	}
-	
-//	public void addFriendshipRequest(String name, String sobrenome, String email, String message) {
-//		pendingFriendship.add(name + " " + sobrenome + "<" + email + "> - mensagem: " + message);
-//	}
 	
 	private void createGroups() {
 		grupos = new ArrayList<Grupo>();
