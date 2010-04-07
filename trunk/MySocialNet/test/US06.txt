@@ -18,7 +18,7 @@ sendFriendshipRequest login="dev@email.com" user="xpto123@email.com" message="al
 logoff email="dev@email.com"
 
 login email="xpto@email.com" senha="123456"
-updateUserProfile login="xpto@email.com" aboutMe="algo sobre Fulano de Tal" age="21" photo="photo1.png" country="brazil" city="Joï¿½o Pessoa" gender="male" contactEmail="xpto@email.com"
+updateUserProfile login="xpto@email.com" aboutMe="algo sobre Fulano de Tal" age="21" photo="photo1.png" country="brazil" city="João Pessoa" gender="male" contactEmail="xpto@email.com"
 acceptFriendshipRequest login="xpto@email.com" contact="dev@email.com" group="familia"
 sendFriendshipRequest login="xpto@email.com" user="xpto123@email.com" message="algum texto" group="familia"
 sendFriendshipRequest login="xpto@email.com" user="xpto123456@email.com" message="algum texto" group="familia"
@@ -81,7 +81,7 @@ Expect "John Doe,Sicrano Silva" getRecommendFriends login="xpto123456@email.com"
 logoff email="xpto123456@email.com"
 
 
-# VerificaÃ§Ã£o de similaridade
+# Verificação de similaridade
 clean
 
 createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
@@ -101,7 +101,7 @@ sendFriendshipRequest login="dev@email.com" user="xpto123@email.com" message="al
 logoff email="dev@email.com"
 
 login email="xpto@email.com" senha="123456"
-updateUserProfile login="xpto@email.com" aboutMe="algo sobre Fulano de Tal" age="21" photo="photo1.png" country="brazil" city="Joï¿½o Pessoa" gender="male" contactEmail="xpto@email.com"
+updateUserProfile login="xpto@email.com" aboutMe="algo sobre Fulano de Tal" age="21" photo="photo1.png" country="brazil" city="João Pessoa" gender="male" contactEmail="xpto@email.com"
 addUserPreference login="xpto@email.com" preference="cinema"
 addUserPreference login="xpto@email.com" preference="viajar"
 acceptFriendshipRequest login="xpto@email.com" contact="dev@email.com" group="trabalho"
