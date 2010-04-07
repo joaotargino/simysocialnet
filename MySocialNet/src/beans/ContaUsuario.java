@@ -3,7 +3,9 @@ package beans;
 import interfaces.ProfileIF;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Util.Util;
 import controller.GerenciadorGrupo;
@@ -31,7 +33,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	private GerenciadorProfile gerenciaProfile;
 	private GerenciadorUsuario gerenciaUsuario;
 	private GerenciadorGrupo gerenciaGrupo;
-	private List<String> pendingFriendship;
+	private Map<String,String> pendingFriendship;
 	private List<String> sentFriendship;
 	
 	
@@ -52,7 +54,8 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 			this.email = email;
 		}
 		gerenciaGrupo = new GerenciadorGrupo();
-		pendingFriendship = new ArrayList<String>();
+		gerenciaGrupo.init();
+		pendingFriendship = new HashMap<String,String>();
 		sentFriendship = new ArrayList<String>();
 		preferencias = new ArrayList<String>();
 		profileAll = new ProfileAll();
@@ -79,7 +82,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 			this.email = email;
 		}
 		gerenciaGrupo = new GerenciadorGrupo();
-		pendingFriendship = new ArrayList<String>();
+		pendingFriendship = new HashMap<String,String>();
 		sentFriendship = new ArrayList<String>();
 		preferencias = new ArrayList<String>();
 		amigos = new ArrayList<ContaUsuario>();
@@ -89,12 +92,13 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		gerenciaUsuario = new GerenciadorUsuario();
 		gerenciaProfile = new GerenciadorProfile();
 		gerenciaProfile.init();
+		gerenciaGrupo.init();
 		createGroups();
 	}
 
 	public ContaUsuario() {
 		gerenciaGrupo = new GerenciadorGrupo();
-		pendingFriendship = new ArrayList<String>();
+		pendingFriendship = new HashMap<String,String>();
 		sentFriendship = new ArrayList<String>();
 		preferencias = new ArrayList<String>();
 		profileAll = new ProfileAll();
@@ -104,6 +108,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		gerenciaProfile.init();
 		gerenciaUsuario = new GerenciadorUsuario();
 		amigos = new ArrayList<ContaUsuario>();
+		gerenciaGrupo.init();
 		createGroups();
 	}
 
@@ -258,7 +263,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		return profileFriends;
 	}
 	
-	public List<String> getPendingFriendship() {
+	public Map<String,String> getPendingFriendship() {
 		return pendingFriendship;
 	}
 	
@@ -290,13 +295,13 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		this.sentFriendship = sentFriendship;
 	}
 	
-	public void setPendingFriendship(List<String> pendingFriendship) {
+	public void setPendingFriendship(Map<String,String> pendingFriendship) {
 		this.pendingFriendship = pendingFriendship;
 	}
 	
-	public void addFriendshipRequest(String name, String sobrenome, String email, String message) {
-		pendingFriendship.add(name + " " + sobrenome + "<" + email + "> - mensagem: " + message);
-	}
+//	public void addFriendshipRequest(String name, String sobrenome, String email, String message) {
+//		pendingFriendship.add(name + " " + sobrenome + "<" + email + "> - mensagem: " + message);
+//	}
 	
 	private void createGroups() {
 		grupos = new ArrayList<Grupo>();
