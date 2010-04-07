@@ -1,17 +1,17 @@
-# Testes de aceitaï¿½ï¿½o para a US 02 - Realizar Login
+# Testes de aceitação para a US 02 - Realizar Login
 # Criador: Daniel Bruno
 
 #####Remover dados anteriores do sistema
 clean
 
-#Cadastro de usuï¿½rio
+#Cadastro de usuário
 createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
 
 
 
 #Login
-expectError "Login invÃ¡lido ou senha incorreta" login email="user@mail.com" passwd="12345678"
-expectError "Login invÃ¡lido ou senha incorreta" login email="dev@email.com" passwd="133356"
-expectError "Login invÃ¡lido ou senha incorreta" login email="user@mail.com" passwd="123456"
+expectError "Login inválido ou senha incorreta" login email="user@mail.com" passwd="12345678"
+expectError "Login inválido ou senha incorreta" login email="dev@email.com" passwd="133356"
+expectError "Login inválido ou senha incorreta" login email="user@mail.com" passwd="123456"
 login email="dev@email.com" passwd="123456"
-expectError "UsuÃ¡rio jÃ¡ logado" login email="dev@email.com" passwd="123456"
+expectError "Usuário já logado" login email="dev@email.com" passwd="123456"
