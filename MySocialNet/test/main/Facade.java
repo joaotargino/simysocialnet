@@ -391,8 +391,9 @@ public class Facade {
 	 * 
 	 * @param login
 	 * @param friend
+	 * @throws Exception 
 	 */
-	public void removeFriend(String login, String friend) {
+	public void removeFriend(String login, String friend) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
 		socialNet.removeFriend(login, friend);

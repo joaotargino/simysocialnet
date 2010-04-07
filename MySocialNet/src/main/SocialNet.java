@@ -389,7 +389,21 @@ public class SocialNet {
 	 */
 	public ContaUsuario getFriend(String email, String friend) throws Exception {
 		ContaUsuario user = gerenciadorUsuario.getUsuario(email);
-		ContaUsuario amigo = gerenciadorUsuario.getUsuario(friend);
+		ContaUsuario amigo;
+		if (!user.isLoged()) {
+			try {
+				amigo = gerenciadorUsuario.getUsuario(friend);
+			} catch (Exception e) {
+
+			}
+			throw new Exception("Usuário não logado");
+		}
+		try {
+			amigo = gerenciadorUsuario.getUsuario(friend);
+		} catch (Exception e) {
+			return null;
+		}
+		
 		for(ContaUsuario usuario : user.getAmigos()) {
 			if (usuario.equals(amigo)) return usuario;
 		}
@@ -401,9 +415,16 @@ public class SocialNet {
 	 * 
 	 * @param login
 	 * @param friend
+	 * @throws Exception 
 	 */
-	public void removeFriend(String login, String friend) {
-
+	public void removeFriend(String login, String friend) throws Exception {
+		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
+		try {
+			ContaUsuario usuarioAmigo = gerenciadorUsuario.getUsuario(friend);
+		} catch (Exception e) {
+			throw new Exception("Amigo não existente no sistema");
+		}
+		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
 	}
 
 	/**
