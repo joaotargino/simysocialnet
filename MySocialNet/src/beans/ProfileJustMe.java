@@ -20,11 +20,14 @@ public class ProfileJustMe implements ProfileIF{
 		}
 		return profile;
 	}
-
+	
+	public void init() {
+		aboutMe = "";
+		photo = "";
+		country = "";
+	}
+	
 	public String getPhoto() {
-		if(photo == null) {
-			return "";
-		}
 		return photo;
 	}
 
@@ -33,9 +36,6 @@ public class ProfileJustMe implements ProfileIF{
 	}
 
 	public String getCountry() {
-		if(country == null) {
-			return "";
-		}
 		return country;
 	}
 
@@ -80,9 +80,6 @@ public class ProfileJustMe implements ProfileIF{
 	}
 	
 	public String getAboutMe() {
-//		if(aboutMe== null) {
-//			return "";
-//		}
 		return aboutMe;
 	}
 	

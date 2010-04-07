@@ -33,6 +33,8 @@ public interface ProfileIF {
 	
 	public String getAboutMe();
 	
+	public void init();
+	
 	@Override
 	public String toString();
 }
