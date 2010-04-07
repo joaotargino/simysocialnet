@@ -320,7 +320,7 @@ public class SocialNet {
 	 * @throws Exception 
 	 */
 	public ContaUsuario findNewFriend(String login, String friend) throws Exception {
-		return gerenciadorUsuario.getUsuario(friend);
+		return gerenciadorUsuario.findNewFriend(login,friend);
 	}
 
 	/**
@@ -343,8 +343,7 @@ public class SocialNet {
 	 * @throws Exception 
 	 */
 	public List<String> viewPendingFriendship(String login) throws Exception {
-		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
-		return usuario.getPendingFriendship();
+		return gerenciadorUsuario.viewPendingFriendship(login);
 	}
 
 	/**
@@ -356,8 +355,7 @@ public class SocialNet {
 	 * @throws Exception 
 	 */
 	public List<String> viewSentFriendship (String login) throws Exception {
-		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
-		return usuario.getSentFriendship();
+		return gerenciadorUsuario.viewSentFriendship(login);
 	}
 
 	/**
@@ -366,8 +364,8 @@ public class SocialNet {
 	 * @param login
 	 * @param contact
 	 */
-	public void declineFriendshipRequest (String login, String contact){
-
+	public void declineFriendshipRequest (String login, String contact)throws Exception {
+		gerenciadorUsuario.declineFriendshipRequest(login, contact);
 	}
 
 	/**

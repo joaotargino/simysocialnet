@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Util.Util;
+import controller.GerenciadorGrupo;
 import controller.GerenciadorProfile;
 import controller.GerenciadorUsuario;
 
@@ -29,6 +30,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	private boolean loged;
 	private GerenciadorProfile gerenciaProfile;
 	private GerenciadorUsuario gerenciaUsuario;
+	private GerenciadorGrupo gerenciaGrupo;
 	private List<String> pendingFriendship;
 	private List<String> sentFriendship;
 	
@@ -49,6 +51,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		if(Util.verificaEmail(email)) {
 			this.email = email;
 		}
+		gerenciaGrupo = new GerenciadorGrupo();
 		pendingFriendship = new ArrayList<String>();
 		sentFriendship = new ArrayList<String>();
 		preferencias = new ArrayList<String>();
@@ -75,6 +78,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		if(Util.verificaEmail(email)) {
 			this.email = email;
 		}
+		gerenciaGrupo = new GerenciadorGrupo();
 		pendingFriendship = new ArrayList<String>();
 		sentFriendship = new ArrayList<String>();
 		preferencias = new ArrayList<String>();
@@ -89,6 +93,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 	}
 
 	public ContaUsuario() {
+		gerenciaGrupo = new GerenciadorGrupo();
 		pendingFriendship = new ArrayList<String>();
 		sentFriendship = new ArrayList<String>();
 		preferencias = new ArrayList<String>();
@@ -307,8 +312,8 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		grupos.add(trabalho);
 	}
 
-	public void acceptFriendshipRequest(String contact, String group) {
-		
+	public void acceptFriendshipRequest(String contact, String group)throws Exception {
+		gerenciaGrupo.adicionar(this.email, group, contact);
 	}
 	
 }
