@@ -26,7 +26,7 @@ public class UserController {
 		}
 		if(login.equals(user)) throw new Exception("Operação não permitida");
 		UserAccount logado = this.DBController.getUsers(login);
-		if(!(logado.isLogged())) throw new Exception("Usuário não logado");
+		if(!verifyIfUserIsLogged(logado)) throw new Exception("Usuário não logado");
 		logado.sendFriendshipRequest(user, group);
 		convidado.receiveFriendshipRequest(logado, login, message);
 	}
@@ -34,7 +34,7 @@ public class UserController {
 	public void acceptFriendshipRequest(String login, String contact,String group) throws Exception {
 		UserAccount user = this.DBController.getUsers(login);
 		UserAccount contato = this.DBController.getUsers(contact);
-		if(!(user.isLogged())) throw new Exception("Usuário não logado");
+		if(!verifyIfUserIsLogged(user)) throw new Exception("Usuário não logado");
 		user.acceptFriendshipRequest(contact, group, contato);
 		contato.removeSentFriendshipRequest(login,user);
 	}
@@ -43,23 +43,23 @@ public class UserController {
 		UsersDAO.getInstance().reset();
 	}
 	
-	public List<UserAccount> getAmigos(String email) throws Exception {
+	public List<UserAccount> listFriends(String email) throws Exception {
 		UserAccount usuario = this.DBController.getUsers(email);
-		if(!usuario.isLogged()) throw new Exception("Usuário não logado");
+		if(!verifyIfUserIsLogged(usuario)) throw new Exception("Usuário não logado");
 		return usuario.getFriends();
 	}
 
 	public List<String> viewPendingFriendship(String login) throws Exception{
 		UserAccount usuario = this.DBController.getUsers(login);
 		
-		if(!(usuario.isLogged())) throw new Exception("Usuário não logado");
+		if(!verifyIfUserIsLogged(usuario)) throw new Exception("Usuário não logado");
 		return usuario.viewPendingFriendship();
 	}
 
 	public List<String> viewSentFriendship(String login)throws Exception {
 		UserAccount usuario = this.DBController.getUsers(login);
 		
-		if(!(usuario.isLogged())) throw new Exception("Usuário não logado");
+		if(!verifyIfUserIsLogged(usuario)) throw new Exception("Usuário não logado");
 		return usuario.viewSentFriendship();
 	}
 
@@ -72,7 +72,7 @@ public class UserController {
 		}catch (Exception e) {
 			throw new Exception("Login inexistente");
 		}
-		if(!(usuario.isLogged())) throw new Exception("Usuário não logado");
+		if(!verifyIfUserIsLogged(usuario)) throw new Exception("Usuário não logado");
 		usuario.declineFriendshipRequest(contact, usuario.getPendingFriendship());
 		contato.declineFriendshipRequest(login, contato.getSentFriendship());
 	}
@@ -80,7 +80,7 @@ public class UserController {
 	public UserAccount getFriend(String email, String friend) throws Exception {
 		UserAccount user = this.DBController.getUsers(email);
 		UserAccount amigo;
-		if (!user.isLogged()) {
+		if (!verifyIfUserIsLogged(user)) {
 			amigo = this.DBController.getUsers(friend);
 			throw new Exception("Usuário não logado");
 		}
@@ -92,6 +92,11 @@ public class UserController {
 		return user.getFriend(amigo, friend);
 	}
 	
+	private boolean verifyIfUserIsLogged(UserAccount user) {
+		if(!(user.isLogged())) return false;
+		return true;
+		
+	}
 	
 
 }
