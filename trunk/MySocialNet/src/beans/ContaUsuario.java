@@ -53,6 +53,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		if(Util.verificaEmail(email)) {
 			this.email = email;
 		}
+		loged = false;
 		gerenciaGrupo = new GerenciadorGrupo();
 		gerenciaGrupo.init();
 		pendingFriendship = new HashMap<String,String>();
@@ -84,6 +85,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		if(Util.verificaEmail(email)) {
 			this.email = email;
 		}
+		loged = false;
 		gerenciaGrupo = new GerenciadorGrupo();
 		pendingFriendship = new HashMap<String,String>();
 		sentFriendship = new HashMap<String,String>();
@@ -118,6 +120,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		profileAll.init();
 		profileJustMe.init();
 		profileFriends.init();
+		loged = false;
 		createGroups();
 	}
 
@@ -163,14 +166,14 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 		}
 	}
 	public List<ContaUsuario> getAmigos() {
-		if(amigos == null) {
+		if(amigos.isEmpty()) {
 			return populaListaAmigos();
 		}
 		return this.amigos;
 	}
 	
 	public ContaUsuario getAmigo(String email) throws Exception {
-		if(amigos == null) {
+		if(amigos.isEmpty()) {
 			populaListaAmigos();
 		}
 		for (ContaUsuario usuario : this.amigos) {
@@ -178,7 +181,7 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 				return usuario;
 			}
 		}
-		throw new Exception("Amigo n�o encontrado");
+		throw new Exception("Amigo não encontrado");
 	}
 	
 	public void removerAmigo(String email) throws Exception {
@@ -316,6 +319,10 @@ public class ContaUsuario implements Comparable<ContaUsuario>{
 
 	public void acceptFriendshipRequest(String contact, String group)throws Exception {
 		gerenciaGrupo.adicionar(this.email, group, contact);
+	}
+
+	public Grupo getGrupo(ContaUsuario usuario, String group) throws Exception {
+		return gerenciaGrupo.getGrupo(usuario, group);
 	}
 	
 }

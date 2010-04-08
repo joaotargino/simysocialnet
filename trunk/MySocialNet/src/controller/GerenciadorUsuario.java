@@ -1,11 +1,13 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import Util.Util;
 import beans.ContaUsuario;
+import beans.Grupo;
 import dao.UsersDAO;
 
 public class GerenciadorUsuario {
@@ -28,10 +30,9 @@ public class GerenciadorUsuario {
 
 	public ContaUsuario getUsuario(String login) throws Exception {
 		if (login.trim().isEmpty()) throw new Exception("Login não pode ser vazio");
-		ContaUsuario user = new ContaUsuario();
-		user.setEmail(login);
 		for (ContaUsuario usuario : UsersDAO.getInstance().getUsuarios()) {
-			if (usuario.equals(user)) return usuario;
+			String nomeCompleto = usuario.getNome() + " " + usuario.getSobrenome();
+			if (usuario.getEmail().equals(login) || nomeCompleto.equals(login)) return usuario;
 		}
 		throw new Exception("Login inexistente");
 	}
@@ -71,10 +72,15 @@ public class GerenciadorUsuario {
 		if(!(user.isLoged())) throw new Exception("Usuário não logado");
 		for (String string : user.getPendingFriendship().keySet()) {
 			if(string.equals(login)) {
-				user.acceptFriendshipRequest(contact,group);
+				Grupo grupo = user.getGrupo(user,group);
+				grupo.getUsuarios().add(contato);
+				Collections.sort(grupo.getUsuarios());
 			}
 		}
-		contato.acceptFriendshipRequest(login, contato.getSentFriendship().get(login));
+		Grupo grupo = contato.getGrupo(contato, contato.getSentFriendship().get(login));
+		grupo.getUsuarios().add(user);
+		Collections.sort(grupo.getUsuarios());
+		
 		Map<String,String> sent = contato.getSentFriendship();
 		sent.remove(login);
 		contato.setSentFriendship(sent);
@@ -177,6 +183,26 @@ public class GerenciadorUsuario {
 		contato.setSentFriendship(sent);
 		update(usuario);
 		update(contato);
+	}
+
+	public ContaUsuario getAmigo(String email, String friend) throws Exception {
+		ContaUsuario user = getUsuario(email);
+		ContaUsuario amigo;
+		if (!user.isLoged()) {
+			amigo = getUsuario(friend);
+			throw new Exception("Usuário não logado");
+		}
+		try {
+			amigo = getUsuario(friend);
+		} catch (Exception e) {
+			return null;
+		}
+
+		for(ContaUsuario usuario : user.getAmigos()) {
+			String nomeCompleto = usuario.getNome() + " " + usuario.getSobrenome();
+			if (usuario.equals(amigo) || nomeCompleto.equals(friend)) return usuario;
+		}
+		return null;
 	}
 	
 	

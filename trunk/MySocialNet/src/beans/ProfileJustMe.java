@@ -25,6 +25,10 @@ public class ProfileJustMe implements ProfileIF{
 		aboutMe = "";
 		photo = "";
 		country = "";
+		city = "";
+		gender = "";
+		contactEmail = "";
+		age = "";
 	}
 	
 	public String getPhoto() {
