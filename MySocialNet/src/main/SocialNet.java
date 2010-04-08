@@ -503,6 +503,7 @@ public class SocialNet {
 	 * Limpar o banco de dados
 	 */
 	public void clean() {
+		usuariosLogados = new ArrayList<ContaUsuario>();
 		gerenciadorUsuario.clean();
 	}
 }
