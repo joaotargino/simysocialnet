@@ -380,10 +380,11 @@ public class Facade {
 	 * @return
 	 * @throws Exception 
 	 */
-	public ContaUsuario getFriend(String email, String friend) throws Exception {
+	public String getFriend(String email, String friend) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
-		return socialNet.getFriend(email, friend);
+		if(socialNet.getFriend(email, friend) == null) return null;
+		return socialNet.getFriend(email, friend) + " " + socialNet.getFriend(email, friend).getProfileFriends();
 	}
 	
 	/**

@@ -14,6 +14,7 @@ public class Grupo {
 		this.nome = nome;
 		usuarios = new ArrayList<ContaUsuario>();
 	}
+	
 	public String getNome() {
 		return nome;
 	}

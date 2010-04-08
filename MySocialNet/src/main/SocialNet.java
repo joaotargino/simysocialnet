@@ -2,6 +2,7 @@ package main;
 
 import interfaces.ProfileIF;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import beans.ContaUsuario;
@@ -14,14 +15,15 @@ public class SocialNet {
 	private static SocialNet social;
 	private GerenciadorGrupo gerenciadorGrupo;
 	private GerenciadorUsuario gerenciadorUsuario;
+	private List<ContaUsuario> usuariosLogados = new ArrayList<ContaUsuario>();
 
 	public synchronized static SocialNet getInstance() {
-		if(social == null) {
+		if (social == null) {
 			social = new SocialNet();
 		}
 		return social;
 	}
-	
+
 	public void init() {
 		gerenciadorGrupo = new GerenciadorGrupo();
 		gerenciadorUsuario = new GerenciadorUsuario();
@@ -30,26 +32,33 @@ public class SocialNet {
 
 	/**
 	 * Loga o usuario ao sistema
-	 * @throws Exception 
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
+	 * @throws Exception
 	 */
 	public void login(String login, String senha) throws Exception {
 		ContaUsuario usuario;
 		try {
 			usuario = gerenciadorUsuario.getUsuario(login);
-			if ( usuario == null) throw new Exception("Login inválido ou senha incorreta");
-			else if (!senha.equals(usuario.getSenha())) throw new Exception("Login inválido ou senha incorreta");
+			if (usuario == null)
+				throw new Exception("Login inválido ou senha incorreta");
+			else if (!senha.equals(usuario.getSenha()))
+				throw new Exception("Login inválido ou senha incorreta");
 		} catch (Exception e) {
 			throw new Exception("Login inválido ou senha incorreta");
 		}
-		if (usuario.isLoged()) throw new Exception("Usuário já logado");
+		if (usuariosLogados.contains(usuario)) {
+			throw new Exception("Usuário já logado");
+		}
 		usuario.setLoged(true);
+		usuariosLogados.add(usuario);
 		gerenciadorUsuario.update(usuario);
 	}
 
 	/**
 	 * Desloga o usuario do sistema
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public void logoff(String email) throws Exception {
 		ContaUsuario user;
@@ -58,14 +67,16 @@ public class SocialNet {
 		} catch (Exception e) {
 			throw new Exception("Login inválido");
 		}
-		if (!user.isLoged()) throw new Exception("Usuário não logado");
+		if (!usuariosLogados.contains(user))
+			throw new Exception("Usuário não logado");
 		user.setLoged(false);
+		usuariosLogados.remove(user);
 		gerenciadorUsuario.update(user);
 	}
 
 	/**
 	 * @return true se um usuario estiver logado, falso caso contrario
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean estaLogado(String login) throws Exception {
 		ContaUsuario usuario;
@@ -78,26 +89,30 @@ public class SocialNet {
 	 * 
 	 * "Nome do usu�rio deve ser informado"
 	 * "Sobrenome do usu�rio deve ser informado"
-	 * "E-mail do usu�rio deve ser informado"
-	 * "Senha deve ser informada"
-	 * "E-mail inv�lido"
-	 * "A senha deve ter pelo menos 6 d�gitos"
+	 * "E-mail do usu�rio deve ser informado" "Senha deve ser informada"
+	 * "E-mail inv�lido" "A senha deve ter pelo menos 6 d�gitos"
 	 * "Login indispon�vel"
 	 * 
-	 * @param name - o nome do usuario
-	 * @param lastName - o sobrenome do usuario
-	 * @param email - o email do usuario
-	 * @param passwd - a senha do usuario
-	 * @throws Exception 
+	 * @param name
+	 *            - o nome do usuario
+	 * @param lastName
+	 *            - o sobrenome do usuario
+	 * @param email
+	 *            - o email do usuario
+	 * @param passwd
+	 *            - a senha do usuario
+	 * @throws Exception
 	 */
-	public void createUser(String name, String lastName, String email, String passwd) throws Exception {
+	public void createUser(String name, String lastName, String email,
+			String passwd) throws Exception {
 		ContaUsuario contaUsuario;
 		try {
 			contaUsuario = new ContaUsuario(name, lastName, passwd, email);
-		}
-		catch (Exception e) {
-			if (e.getMessage().equals("String invalida")) throw new Exception("Login indisponível");
-			else throw new Exception(e.getMessage());
+		} catch (Exception e) {
+			if (e.getMessage().equals("String invalida"))
+				throw new Exception("Login indisponível");
+			else
+				throw new Exception(e.getMessage());
 		}
 		gerenciadorUsuario.adicionar(contaUsuario);
 	}
@@ -105,24 +120,24 @@ public class SocialNet {
 	/**
 	 * Recupera um usuario, pode ocorrer os seguintes erros:
 	 * 
-	 * "Login inexistente"
-	 * "Usu�rio n�o logado"
+	 * "Login inexistente" "Usu�rio n�o logado"
 	 * 
-	 * @param login - o email do usuario
+	 * @param login
+	 *            - o email do usuario
 	 * @return String contendo nome e sobrenome do usuario
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public ContaUsuario getUser (String login) throws Exception {
+	public ContaUsuario getUser(String login) throws Exception {
 		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
-		if (!usuario.isLoged()) throw new Exception("Usuário não logado"); 
+		if (!usuario.isLoged())
+			throw new Exception("Usuário não logado");
 		return usuario;
 	}
 
 	/**
 	 * Atualiza as informa��es do usuario,pode ocorrer os seguintes erros:
 	 * 
-	 * "Login inexistente"
-	 * "Usu�rio n�o logado"
+	 * "Login inexistente" "Usu�rio n�o logado"
 	 * 
 	 * @param login
 	 * @param aboutMe
@@ -132,12 +147,16 @@ public class SocialNet {
 	 * @param city
 	 * @param gender
 	 * @param contactEmail
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void updateUserProfile(String login, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
+	public void updateUserProfile(String login, String aboutMe, String age,
+			String photo, String country, String city, String gender,
+			String contactEmail) throws Exception {
 		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
-		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
-		usuario.updateUserProfile(usuario, aboutMe, age, photo, country, city, gender, contactEmail);
+		if (!usuario.isLoged())
+			throw new Exception("Usuário não logado");
+		usuario.updateUserProfile(usuario, aboutMe, age, photo, country, city,
+				gender, contactEmail);
 	}
 
 	/**
@@ -146,26 +165,30 @@ public class SocialNet {
 	 * @param login
 	 * @param field
 	 * @param type
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void setFieldPrivacy(String login, String field, String type) throws Exception {
+	public void setFieldPrivacy(String login, String field, String type)
+			throws Exception {
 		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
-		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
+		if (!usuario.isLoged())
+			throw new Exception("Usuário não logado");
 		usuario.setFieldPrivacy(login, type, field);
 	}
 
 	/**
-	 * Diz o que est� disponivel no perfil dependendo da visibilidade, pode ocorrer os seguintes erros:
+	 * Diz o que est� disponivel no perfil dependendo da visibilidade, pode
+	 * ocorrer os seguintes erros:
 	 * 
 	 * "Perfil inexistente"
 	 * 
 	 * @param login
 	 * @param visibility
 	 * @return Sting no formato campo(1)=valor(1),...,campo(n)=valor(n)]
-	 * 			exemplo: "photo=photo.png,aboutMe=,gender=male"
-	 * @throws Exception 
+	 *         exemplo: "photo=photo.png,aboutMe=,gender=male"
+	 * @throws Exception
 	 */
-	public ProfileIF checkProfile(String login, String visibility) throws Exception {
+	public ProfileIF checkProfile(String login, String visibility)
+			throws Exception {
 
 		ContaUsuario user;
 		try {
@@ -174,13 +197,14 @@ public class SocialNet {
 			throw new Exception("Perfil inexistente");
 		}
 
-		if (!(estaLogado(login))) throw new Exception("Usuário não logado");
+		if (!(estaLogado(login)))
+			throw new Exception("Usuário não logado");
 		ProfileIF profile = user.getProfile(user, visibility);
 		return profile;
 	}
 
-
-	public ProfileIF viewProfile(String viewer, String profileOwner) throws Exception {
+	public ProfileIF viewProfile(String viewer, String profileOwner)
+			throws Exception {
 		ContaUsuario viewerUser;
 		ContaUsuario ownerUser;
 		try {
@@ -193,22 +217,24 @@ public class SocialNet {
 		} catch (Exception e) {
 			throw new Exception("Perfil inexistente");
 		}
-		if(!viewerUser.isLoged()) throw new Exception("Usuário não logado");
-		if (ownerUser.getAmigos().contains(viewerUser)) return ownerUser.getProfileFriends();
+		if (!viewerUser.isLoged())
+			throw new Exception("Usuário não logado");
+		if (ownerUser.getAmigos().contains(viewerUser))
+			return ownerUser.getProfileFriends();
 		return ownerUser.getProfileAll();
 	}
-
 
 	/**
 	 * Adiciona uma preferencia para o usuario
 	 * 
 	 * @param login
 	 * @param preference
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void addUserPreference(String login, String preference) throws Exception {
+	public void addUserPreference(String login, String preference)
+			throws Exception {
 		ContaUsuario user = gerenciadorUsuario.getUsuario(login);
-		if(!user.isLoged()) {
+		if (!user.isLoged()) {
 			throw new Exception("Usuário não logado");
 		}
 		gerenciadorUsuario.addUserPreferences(user, preference);
@@ -218,9 +244,10 @@ public class SocialNet {
 	 * Lista as preferencias do usuario
 	 * 
 	 * @param login
-	 * @return String com as preferencias separada so por virgula (nao sei se isso eh uma re-
-	 * presentacao de lista, mas como la nos testes tava como se fosse string...
-	 * @throws Exception 
+	 * @return String com as preferencias separada so por virgula (nao sei se
+	 *         isso eh uma re- presentacao de lista, mas como la nos testes tava
+	 *         como se fosse string...
+	 * @throws Exception
 	 */
 	public List<String> listUserPreferences(String login) throws Exception {
 		return gerenciadorUsuario.getUsuario(login).getPreferencias();
@@ -231,23 +258,27 @@ public class SocialNet {
 	 * 
 	 * @param login
 	 * @param preference
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void removeUserPreference (String login, String preference) throws Exception {
+	public void removeUserPreference(String login, String preference)
+			throws Exception {
 		ContaUsuario user = gerenciadorUsuario.getUsuario(login);
-		if (!user.isLoged()) throw new Exception("Usuário não logado");
+		if (!user.isLoged())
+			throw new Exception("Usuário não logado");
 		user.getPreferencias().remove(preference);
 		gerenciadorUsuario.update(user);
 	}
 
 	/**
 	 * Deleta a conta do usuario
+	 * 
 	 * @param login
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void deleteUser(String login) throws Exception {
 		ContaUsuario user = gerenciadorUsuario.getUsuario(login);
-		if (!user.isLoged()) throw new Exception("Usuário não logado");
+		if (!user.isLoged())
+			throw new Exception("Usuário não logado");
 		gerenciadorUsuario.remover(login);
 	}
 
@@ -257,11 +288,12 @@ public class SocialNet {
 	 * @param email
 	 * @param group
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public Grupo listGroupMembers(String email, String group) throws Exception {
 		ContaUsuario usuario = gerenciadorUsuario.getUsuario(email);
-		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
+		if (!usuario.isLoged())
+			throw new Exception("Usuário não logado");
 		return gerenciadorGrupo.getGrupo(usuario, group);
 	}
 
@@ -272,9 +304,10 @@ public class SocialNet {
 	 * @param friend
 	 * @param group
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public ContaUsuario findGroupMember(String login,String friend, String group) throws Exception {
+	public ContaUsuario findGroupMember(String login, String friend,
+			String group) throws Exception {
 		return gerenciadorGrupo.getMembro(login, friend, group);
 	}
 
@@ -282,9 +315,10 @@ public class SocialNet {
 	 * @param email
 	 * @param group
 	 * @param user
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void addGroupMember(String email, String group, String user) throws Exception {
+	public void addGroupMember(String email, String group, String user)
+			throws Exception {
 		gerenciadorGrupo.adicionar(email, group, user);
 	}
 
@@ -294,9 +328,10 @@ public class SocialNet {
 	 * @param email
 	 * @param group
 	 * @param user
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void removeGroupMember(String email, String group, String user) throws Exception {
+	public void removeGroupMember(String email, String group, String user)
+			throws Exception {
 		gerenciadorGrupo.remover(email, group, user);
 	}
 
@@ -305,7 +340,7 @@ public class SocialNet {
 	 * 
 	 * @param email
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public List<ContaUsuario> listFriends(String email) throws Exception {
 		return gerenciadorUsuario.getAmigos(email);
@@ -317,10 +352,11 @@ public class SocialNet {
 	 * @param login
 	 * @param friend
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public ContaUsuario findNewFriend(String login, String friend) throws Exception {
-		return gerenciadorUsuario.findNewFriend(login,friend);
+	public ContaUsuario findNewFriend(String login, String friend)
+			throws Exception {
+		return gerenciadorUsuario.findNewFriend(login, friend);
 	}
 
 	/**
@@ -331,7 +367,8 @@ public class SocialNet {
 	 * @param message
 	 * @param group
 	 */
-	public void sendFriendshipRequest(String login, String user, String message, String group) throws Exception{
+	public void sendFriendshipRequest(String login, String user,
+			String message, String group) throws Exception {
 		gerenciadorUsuario.sendFriendshipRequest(login, user, message, group);
 	}
 
@@ -340,21 +377,20 @@ public class SocialNet {
 	 * 
 	 * @param login
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public List<String> viewPendingFriendship(String login) throws Exception {
 		return gerenciadorUsuario.viewPendingFriendship(login);
 	}
 
 	/**
-	 * Ver os convites de amizade enviados 
-	 * pelo usuario que est�o pendentes
+	 * Ver os convites de amizade enviados pelo usuario que est�o pendentes
 	 * 
 	 * @param login
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public List<String> viewSentFriendship (String login) throws Exception {
+	public List<String> viewSentFriendship(String login) throws Exception {
 		return gerenciadorUsuario.viewSentFriendship(login);
 	}
 
@@ -364,7 +400,8 @@ public class SocialNet {
 	 * @param login
 	 * @param contact
 	 */
-	public void declineFriendshipRequest (String login, String contact)throws Exception {
+	public void declineFriendshipRequest(String login, String contact)
+			throws Exception {
 		gerenciadorUsuario.declineFriendshipRequest(login, contact);
 	}
 
@@ -375,8 +412,9 @@ public class SocialNet {
 	 * @param contact
 	 * @param group
 	 */
-	public void acceptFriendshipRequest (String login, String contact, String group) throws Exception { 
-		gerenciadorUsuario.acceptFriendshipRequest (login, contact, group);
+	public void acceptFriendshipRequest(String login, String contact,
+			String group) throws Exception {
+		gerenciadorUsuario.acceptFriendshipRequest(login, contact, group);
 	}
 
 	/**
@@ -385,29 +423,10 @@ public class SocialNet {
 	 * @param email
 	 * @param friend
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public ContaUsuario getFriend(String email, String friend) throws Exception {
-		ContaUsuario user = gerenciadorUsuario.getUsuario(email);
-		ContaUsuario amigo;
-		if (!user.isLoged()) {
-			try {
-				amigo = gerenciadorUsuario.getUsuario(friend);
-			} catch (Exception e) {
-
-			}
-			throw new Exception("Usuário não logado");
-		}
-		try {
-			amigo = gerenciadorUsuario.getUsuario(friend);
-		} catch (Exception e) {
-			return null;
-		}
-		
-		for(ContaUsuario usuario : user.getAmigos()) {
-			if (usuario.equals(amigo)) return usuario;
-		}
-		return null;
+		return gerenciadorUsuario.getAmigo(email, friend);
 	}
 
 	/**
@@ -415,22 +434,40 @@ public class SocialNet {
 	 * 
 	 * @param login
 	 * @param friend
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void removeFriend(String login, String friend) throws Exception {
 		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
+		ContaUsuario amigo;
 		try {
-			ContaUsuario usuarioAmigo = gerenciadorUsuario.getUsuario(friend);
+			amigo = gerenciadorUsuario.getUsuario(friend);
 		} catch (Exception e) {
 			throw new Exception("Amigo não existente no sistema");
 		}
-		if (!usuario.isLoged()) throw new Exception("Usuário não logado");
+		if (!usuario.isLoged())
+			throw new Exception("Usuário não logado");
+		amigo = gerenciadorUsuario.getAmigo(login, friend);
+		if (amigo == null)
+			throw new Exception("Amigo não encontrado em nenhum grupo");
+		for (Grupo grupo : usuario.getGrupos()) {
+			if (grupo.getUsuarios().contains(amigo)) {
+				grupo.getUsuarios().remove(amigo);
+				gerenciadorUsuario.update(usuario);
+				break;
+			}
+		}
+		for (Grupo grupo : amigo.getGrupos()) {
+			if (grupo.getUsuarios().contains(usuario)) {
+				grupo.getUsuarios().remove(usuario);
+				gerenciadorUsuario.update(amigo);
+				break;
+			}
+		}
 	}
 
 	/**
-	 * Recomenda amigos a partir da lista de amigos 
-	 * por grau de similaridade ou se ele estiver nos 
-	 * grupos melhores amigos ou familia
+	 * Recomenda amigos a partir da lista de amigos por grau de similaridade ou
+	 * se ele estiver nos grupos melhores amigos ou familia
 	 * 
 	 * @param login
 	 * @return
@@ -440,13 +477,15 @@ public class SocialNet {
 	}
 
 	/**
-	 * Gera um arquivo a partir da lista de amigos com os campos passados por parametro 
+	 * Gera um arquivo a partir da lista de amigos com os campos passados por
+	 * parametro
 	 * 
 	 * @param login
 	 * @param fileName
 	 * @param exportFields
 	 */
-	public void exportFriendList(String login, String fileName, String exportFields) {
+	public void exportFriendList(String login, String fileName,
+			String exportFields) {
 
 	}
 

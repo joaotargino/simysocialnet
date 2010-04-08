@@ -25,6 +25,7 @@ public class ProfileFriends implements ProfileIF{
 		aboutMe = "";
 		photo = "";
 		country = "";
+		city = "";
 	}
 	
 	public String getPhoto() {
