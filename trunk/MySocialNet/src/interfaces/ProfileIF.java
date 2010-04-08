@@ -3,7 +3,7 @@ package interfaces;
 
 public interface ProfileIF {
 	
-	public String getTipo();
+	public String getType();
 	
 	public String getPhoto();
 

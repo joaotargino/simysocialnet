@@ -5,17 +5,19 @@ import interfaces.ProfileIF;
 import java.util.ArrayList;
 import java.util.List;
 
-import beans.ContaUsuario;
-import beans.Grupo;
-import controller.GerenciadorGrupo;
-import controller.GerenciadorUsuario;
+import beans.UserAccount;
+import beans.Group;
+import controller.DBController;
+import controller.GroupController;
+import controller.UserController;
 
 public class SocialNet {
 
 	private static SocialNet social;
-	private GerenciadorGrupo gerenciadorGrupo;
-	private GerenciadorUsuario gerenciadorUsuario;
-	private List<ContaUsuario> usuariosLogados = new ArrayList<ContaUsuario>();
+	private GroupController gerenciadorGrupo;
+	private UserController gerenciadorUsuario;
+	private DBController DBController;
+	private List<UserAccount> usuariosLogados = new ArrayList<UserAccount>();
 
 	public synchronized static SocialNet getInstance() {
 		if (social == null) {
@@ -25,8 +27,9 @@ public class SocialNet {
 	}
 
 	public void init() {
-		gerenciadorGrupo = new GerenciadorGrupo();
-		gerenciadorUsuario = new GerenciadorUsuario();
+		DBController = new DBController();
+		gerenciadorGrupo = new GroupController();
+		gerenciadorUsuario = new UserController();
 		gerenciadorGrupo.init();
 	}
 
@@ -37,12 +40,12 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public void login(String login, String senha) throws Exception {
-		ContaUsuario usuario;
+		UserAccount usuario;
 		try {
-			usuario = gerenciadorUsuario.getUsuario(login);
+			usuario = this.DBController.getUsers(login);
 			if (usuario == null)
 				throw new Exception("Login inválido ou senha incorreta");
-			else if (!senha.equals(usuario.getSenha()))
+			else if (!senha.equals(usuario.getPassword()))
 				throw new Exception("Login inválido ou senha incorreta");
 		} catch (Exception e) {
 			throw new Exception("Login inválido ou senha incorreta");
@@ -50,9 +53,9 @@ public class SocialNet {
 		if (usuariosLogados.contains(usuario)) {
 			throw new Exception("Usuário já logado");
 		}
-		usuario.setLoged(true);
+		usuario.setLogged(true);
 		usuariosLogados.add(usuario);
-		gerenciadorUsuario.update(usuario);
+		this.DBController.update(usuario);
 	}
 
 	/**
@@ -61,17 +64,17 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public void logoff(String email) throws Exception {
-		ContaUsuario user;
+		UserAccount user;
 		try {
-			user = gerenciadorUsuario.getUsuario(email);
+			user = this.DBController.getUsers(email);
 		} catch (Exception e) {
 			throw new Exception("Login inválido");
 		}
 		if (!usuariosLogados.contains(user))
 			throw new Exception("Usuário não logado");
-		user.setLoged(false);
+		user.setLogged(false);
 		usuariosLogados.remove(user);
-		gerenciadorUsuario.update(user);
+		this.DBController.update(user);
 	}
 
 	/**
@@ -79,9 +82,9 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public boolean estaLogado(String login) throws Exception {
-		ContaUsuario usuario;
-		usuario = gerenciadorUsuario.getUsuario(login);
-		return usuario.isLoged();
+		UserAccount usuario;
+		usuario = this.DBController.getUsers(login);
+		return usuario.isLogged();
 	}
 
 	/**
@@ -105,16 +108,16 @@ public class SocialNet {
 	 */
 	public void createUser(String name, String lastName, String email,
 			String passwd) throws Exception {
-		ContaUsuario contaUsuario;
+		UserAccount contaUsuario;
 		try {
-			contaUsuario = new ContaUsuario(name, lastName, passwd, email);
+			contaUsuario = new UserAccount(name, lastName, passwd, email);
 		} catch (Exception e) {
 			if (e.getMessage().equals("String invalida"))
 				throw new Exception("Login indisponível");
 			else
 				throw new Exception(e.getMessage());
 		}
-		gerenciadorUsuario.adicionar(contaUsuario);
+		this.DBController.addATDB(contaUsuario);
 	}
 
 	/**
@@ -127,9 +130,9 @@ public class SocialNet {
 	 * @return String contendo nome e sobrenome do usuario
 	 * @throws Exception
 	 */
-	public ContaUsuario getUser(String login) throws Exception {
-		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
-		if (!usuario.isLoged())
+	public UserAccount getUser(String login) throws Exception {
+		UserAccount usuario = this.DBController.getUsers(login);
+		if (!usuario.isLogged())
 			throw new Exception("Usuário não logado");
 		return usuario;
 	}
@@ -152,8 +155,8 @@ public class SocialNet {
 	public void updateUserProfile(String login, String aboutMe, String age,
 			String photo, String country, String city, String gender,
 			String contactEmail) throws Exception {
-		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
-		if (!usuario.isLoged())
+		UserAccount usuario = this.DBController.getUsers(login);
+		if (!usuario.isLogged())
 			throw new Exception("Usuário não logado");
 		usuario.updateUserProfile(usuario, aboutMe, age, photo, country, city,
 				gender, contactEmail);
@@ -169,8 +172,8 @@ public class SocialNet {
 	 */
 	public void setFieldPrivacy(String login, String field, String type)
 			throws Exception {
-		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
-		if (!usuario.isLoged())
+		UserAccount usuario = this.DBController.getUsers(login);
+		if (!usuario.isLogged())
 			throw new Exception("Usuário não logado");
 		usuario.setFieldPrivacy(login, type, field);
 	}
@@ -190,9 +193,9 @@ public class SocialNet {
 	public ProfileIF checkProfile(String login, String visibility)
 			throws Exception {
 
-		ContaUsuario user;
+		UserAccount user;
 		try {
-			user = gerenciadorUsuario.getUsuario(login);
+			user = this.DBController.getUsers(login);
 		} catch (Exception e) {
 			throw new Exception("Perfil inexistente");
 		}
@@ -205,21 +208,21 @@ public class SocialNet {
 
 	public ProfileIF viewProfile(String viewer, String profileOwner)
 			throws Exception {
-		ContaUsuario viewerUser;
-		ContaUsuario ownerUser;
+		UserAccount viewerUser;
+		UserAccount ownerUser;
 		try {
-			viewerUser = gerenciadorUsuario.getUsuario(viewer);
+			viewerUser = this.DBController.getUsers(viewer);
 		} catch (Exception e) {
 			throw new Exception("Login do viewer não existente no sistema");
 		}
 		try {
-			ownerUser = gerenciadorUsuario.getUsuario(profileOwner);
+			ownerUser = this.DBController.getUsers(profileOwner);
 		} catch (Exception e) {
 			throw new Exception("Perfil inexistente");
 		}
-		if (!viewerUser.isLoged())
+		if (!viewerUser.isLogged())
 			throw new Exception("Usuário não logado");
-		if (ownerUser.getAmigos().contains(viewerUser))
+		if (ownerUser.getFriends().contains(viewerUser))
 			return ownerUser.getProfileFriends();
 		return ownerUser.getProfileAll();
 	}
@@ -233,8 +236,8 @@ public class SocialNet {
 	 */
 	public void addUserPreference(String login, String preference)
 			throws Exception {
-		ContaUsuario user = gerenciadorUsuario.getUsuario(login);
-		if (!user.isLoged()) {
+		UserAccount user = this.DBController.getUsers(login);
+		if (!user.isLogged()) {
 			throw new Exception("Usuário não logado");
 		}
 		gerenciadorUsuario.addUserPreferences(user, preference);
@@ -250,7 +253,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public List<String> listUserPreferences(String login) throws Exception {
-		return gerenciadorUsuario.getUsuario(login).getPreferencias();
+		return this.DBController.getUsers(login).getPreferences();
 	}
 
 	/**
@@ -262,11 +265,11 @@ public class SocialNet {
 	 */
 	public void removeUserPreference(String login, String preference)
 			throws Exception {
-		ContaUsuario user = gerenciadorUsuario.getUsuario(login);
-		if (!user.isLoged())
+		UserAccount user = this.DBController.getUsers(login);
+		if (!user.isLogged())
 			throw new Exception("Usuário não logado");
-		user.getPreferencias().remove(preference);
-		gerenciadorUsuario.update(user);
+		user.getPreferences().remove(preference);
+		this.DBController.update(user);
 	}
 
 	/**
@@ -276,10 +279,10 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public void deleteUser(String login) throws Exception {
-		ContaUsuario user = gerenciadorUsuario.getUsuario(login);
-		if (!user.isLoged())
+		UserAccount user = this.DBController.getUsers(login);
+		if (!user.isLogged())
 			throw new Exception("Usuário não logado");
-		gerenciadorUsuario.remover(login);
+		this.DBController.removeFromDB(login);
 	}
 
 	/**
@@ -290,11 +293,11 @@ public class SocialNet {
 	 * @return
 	 * @throws Exception
 	 */
-	public Grupo listGroupMembers(String email, String group) throws Exception {
-		ContaUsuario usuario = gerenciadorUsuario.getUsuario(email);
-		if (!usuario.isLoged())
+	public Group listGroupMembers(String email, String group) throws Exception {
+		UserAccount usuario = this.DBController.getUsers(email);
+		if (!usuario.isLogged())
 			throw new Exception("Usuário não logado");
-		return gerenciadorGrupo.getGrupo(usuario, group);
+		return gerenciadorGrupo.getGroup(usuario, group);
 	}
 
 	/**
@@ -306,7 +309,7 @@ public class SocialNet {
 	 * @return
 	 * @throws Exception
 	 */
-	public ContaUsuario findGroupMember(String login, String friend,
+	public UserAccount findGroupMember(String login, String friend,
 			String group) throws Exception {
 		return gerenciadorGrupo.getMembro(login, friend, group);
 	}
@@ -319,7 +322,7 @@ public class SocialNet {
 	 */
 	public void addGroupMember(String email, String group, String user)
 			throws Exception {
-		gerenciadorGrupo.adicionar(email, group, user);
+		gerenciadorGrupo.addToGroup(email, group, user);
 	}
 
 	/**
@@ -332,7 +335,7 @@ public class SocialNet {
 	 */
 	public void removeGroupMember(String email, String group, String user)
 			throws Exception {
-		gerenciadorGrupo.remover(email, group, user);
+		gerenciadorGrupo.removeFromGroup(email, group, user);
 	}
 
 	/**
@@ -342,7 +345,7 @@ public class SocialNet {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<ContaUsuario> listFriends(String email) throws Exception {
+	public List<UserAccount> listFriends(String email) throws Exception {
 		return gerenciadorUsuario.getAmigos(email);
 	}
 
@@ -354,9 +357,9 @@ public class SocialNet {
 	 * @return
 	 * @throws Exception
 	 */
-	public ContaUsuario findNewFriend(String login, String friend)
+	public UserAccount findNewFriend(String login, String friend)
 			throws Exception {
-		return gerenciadorUsuario.findNewFriend(login, friend);
+		return this.DBController.findNewFriend(login, friend);
 	}
 
 	/**
@@ -425,8 +428,8 @@ public class SocialNet {
 	 * @return
 	 * @throws Exception
 	 */
-	public ContaUsuario getFriend(String email, String friend) throws Exception {
-		return gerenciadorUsuario.getAmigo(email, friend);
+	public UserAccount getFriend(String email, String friend) throws Exception {
+		return gerenciadorUsuario.getFriend(email, friend);
 	}
 
 	/**
@@ -437,29 +440,29 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public void removeFriend(String login, String friend) throws Exception {
-		ContaUsuario usuario = gerenciadorUsuario.getUsuario(login);
-		ContaUsuario amigo;
+		UserAccount usuario = this.DBController.getUsers(login);
+		UserAccount amigo;
 		try {
-			amigo = gerenciadorUsuario.getUsuario(friend);
+			amigo = this.DBController.getUsers(friend);
 		} catch (Exception e) {
 			throw new Exception("Amigo não existente no sistema");
 		}
-		if (!usuario.isLoged())
+		if (!usuario.isLogged())
 			throw new Exception("Usuário não logado");
-		amigo = gerenciadorUsuario.getAmigo(login, friend);
+		amigo = gerenciadorUsuario.getFriend(login, friend);
 		if (amigo == null)
 			throw new Exception("Amigo não encontrado em nenhum grupo");
-		for (Grupo grupo : usuario.getGrupos()) {
-			if (grupo.getUsuarios().contains(amigo)) {
-				grupo.getUsuarios().remove(amigo);
-				gerenciadorUsuario.update(usuario);
+		for (Group grupo : usuario.getGroups()) {
+			if (grupo.getUsers().contains(amigo)) {
+				grupo.getUsers().remove(amigo);
+				this.DBController.update(usuario);
 				break;
 			}
 		}
-		for (Grupo grupo : amigo.getGrupos()) {
-			if (grupo.getUsuarios().contains(usuario)) {
-				grupo.getUsuarios().remove(usuario);
-				gerenciadorUsuario.update(amigo);
+		for (Group grupo : amigo.getGroups()) {
+			if (grupo.getUsers().contains(usuario)) {
+				grupo.getUsers().remove(usuario);
+				this.DBController.update(amigo);
 				break;
 			}
 		}
@@ -472,7 +475,7 @@ public class SocialNet {
 	 * @param login
 	 * @return
 	 */
-	public List<ContaUsuario> getRecommendFriends(String login) {
+	public List<UserAccount> getRecommendFriends(String login) {
 		return null;
 	}
 
@@ -503,7 +506,7 @@ public class SocialNet {
 	 * Limpar o banco de dados
 	 */
 	public void clean() {
-		usuariosLogados = new ArrayList<ContaUsuario>();
+		usuariosLogados = new ArrayList<UserAccount>();
 		gerenciadorUsuario.clean();
 	}
 }

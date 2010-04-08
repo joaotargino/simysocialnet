@@ -2,7 +2,7 @@ package main;
 
 import java.util.List;
 
-import beans.ContaUsuario;
+import beans.UserAccount;
 
 /**
  * @author tellesmvn, rafael aquino
@@ -76,7 +76,7 @@ public class Facade {
 	 * @return String contendo nome e sobrenome do usuario
 	 * @throws Exception 
 	 */
-	public ContaUsuario getUser (String login) throws Exception {
+	public UserAccount getUser (String login) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
 		return socialNet.getUser(login);
@@ -267,8 +267,8 @@ public class Facade {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
 		String resposta = "";
-		List<ContaUsuario> string = socialNet.listFriends(email);
-		for (ContaUsuario string2 : string) {
+		List<UserAccount> string = socialNet.listFriends(email);
+		for (UserAccount string2 : string) {
 			resposta += string2;
 		}
 		return resposta;
@@ -285,9 +285,9 @@ public class Facade {
 	public String findNewFriend(String login, String friend) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
-		ContaUsuario usuario = socialNet.findNewFriend(login, friend);
+		UserAccount usuario = socialNet.findNewFriend(login, friend);
 		if(usuario != null) {
-			return usuario.getNome() + " " + usuario.getSobrenome() + " - Profile: photo=" +
+			return usuario.getName() + " " + usuario.getSurname() + " - Profile: photo=" +
 			usuario.getProfileJustMe().getPhoto() + ",aboutMe="+ usuario.getProfileJustMe().getAboutMe() + 
 			",country=" + usuario.getProfileJustMe().getCountry();
 		}
@@ -408,7 +408,7 @@ public class Facade {
 	 * @param login
 	 * @return
 	 */
-	public List<ContaUsuario> getRecommendFriends(String login) {
+	public List<UserAccount> getRecommendFriends(String login) {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
 		return socialNet.getRecommendFriends(login);

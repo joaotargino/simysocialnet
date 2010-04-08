@@ -85,7 +85,7 @@ public class ProfileFriends implements ProfileIF{
 	}
 	
 	@Override
-	public String getTipo() {
+	public String getType() {
 		return ProfileConstants.FRIENDS;
 	}
 	

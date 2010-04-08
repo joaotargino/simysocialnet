@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import beans.ContaUsuario;
+import beans.UserAccount;
 
 /**
  * Classe responsavel pela manipula��o com o banco de dados
@@ -37,12 +37,12 @@ public class UsersDAO {
 	 * 
 	 * @return List<ContaUsuario> lista de usuarios cadastrados no BD
 	 */
-	public List<ContaUsuario> getUsuarios() {
+	public List<UserAccount> getUsuarios() {
 		try {
-			List<ContaUsuario> users = (List) recuperar(USUARIOSBD);
+			List<UserAccount> users = (List) recuperar(USUARIOSBD);
 			return users;
 		} catch (Exception e1) {
-			return new ArrayList<ContaUsuario>();
+			return new ArrayList<UserAccount>();
 		}
 	}
 
@@ -54,11 +54,11 @@ public class UsersDAO {
 	 * @return Um usuario cujo email eh passado como parametro, e null caso o
 	 *         usuario nao seja encontrado
 	 */
-	public ContaUsuario getUsuario(String email) {
-		List<ContaUsuario> users = getUsuarios();
-		Iterator<ContaUsuario> it = users.iterator();
+	public UserAccount getUsuario(String email) {
+		List<UserAccount> users = getUsuarios();
+		Iterator<UserAccount> it = users.iterator();
 		while (it.hasNext()) {
-			ContaUsuario user = it.next();
+			UserAccount user = it.next();
 			if (user.getEmail().equals(email))
 				return user;
 		}
@@ -76,13 +76,13 @@ public class UsersDAO {
 	 * @return Um usuario cujo nome e sobrenome sao passados por parametro, e
 	 *         null caso o usuario nao seja encontrado
 	 */
-	public ContaUsuario getUsuario(String nome, String sobrenome) {
-		List<ContaUsuario> users = getUsuarios();
-		Iterator<ContaUsuario> it = users.iterator();
+	public UserAccount getUsuario(String nome, String sobrenome) {
+		List<UserAccount> users = getUsuarios();
+		Iterator<UserAccount> it = users.iterator();
 		while (it.hasNext()) {
-			ContaUsuario user = it.next();
-			if (user.getNome().equalsIgnoreCase(nome))
-				if (user.getSobrenome().equalsIgnoreCase(sobrenome))
+			UserAccount user = it.next();
+			if (user.getName().equalsIgnoreCase(nome))
+				if (user.getSurname().equalsIgnoreCase(sobrenome))
 					return user;
 		}
 		return null;
@@ -96,13 +96,13 @@ public class UsersDAO {
 	 *         contrario.
 	 * @throws IOException
 	 */
-	public boolean create(ContaUsuario usuario)throws IOException {
+	public boolean create(UserAccount usuario)throws IOException {
 		if (usuario == null)
 			return false;
-		List<ContaUsuario> users = getUsuarios();
-		Iterator<ContaUsuario> it = users.iterator();
+		List<UserAccount> users = getUsuarios();
+		Iterator<UserAccount> it = users.iterator();
 		while (it.hasNext()) {
-			ContaUsuario user = it.next();
+			UserAccount user = it.next();
 			if (user.equals(usuario)) {
 				return false;
 			}
@@ -120,10 +120,10 @@ public class UsersDAO {
 	 * @return true, se for possivel remover o usuario, e false caso contrario.
 	 */
 	public boolean delete(String email) {
-		List<ContaUsuario> users = getUsuarios();
-		Iterator<ContaUsuario> it = users.iterator();
+		List<UserAccount> users = getUsuarios();
+		Iterator<UserAccount> it = users.iterator();
 		while (it.hasNext()) {
-			ContaUsuario user = it.next();
+			UserAccount user = it.next();
 			if (user.getEmail().equals(email)) {
 				users.remove(user);
 				try {
@@ -150,12 +150,12 @@ public class UsersDAO {
 	 * @return true, se for possivel remover o usuario, e false caso contrario.
 	 */
 	public boolean delete(String nome, String sobrenome) {
-		List<ContaUsuario> users = getUsuarios();
-		Iterator<ContaUsuario> it = users.iterator();
+		List<UserAccount> users = getUsuarios();
+		Iterator<UserAccount> it = users.iterator();
 		while (it.hasNext()) {
-			ContaUsuario user = it.next();
-			if ((user.getNome().equalsIgnoreCase(nome))
-					&& (user.getSobrenome().equalsIgnoreCase(sobrenome))) {
+			UserAccount user = it.next();
+			if ((user.getName().equalsIgnoreCase(nome))
+					&& (user.getSurname().equalsIgnoreCase(sobrenome))) {
 				users.remove(user);
 				try {
 					salvar(USUARIOSBD, users);
@@ -177,11 +177,11 @@ public class UsersDAO {
 	 * @return true, se for possivel atualizar o usuario, e false caso
 	 *         contrario.
 	 */
-	public boolean update(ContaUsuario usuario) {
-		List<ContaUsuario> users = getUsuarios();
-		Iterator<ContaUsuario> it = users.iterator();
+	public boolean update(UserAccount usuario) {
+		List<UserAccount> users = getUsuarios();
+		Iterator<UserAccount> it = users.iterator();
 		while (it.hasNext()) {
-			ContaUsuario user = it.next();
+			UserAccount user = it.next();
 			if (user.equals(usuario)) {
 				int indice = users.indexOf(user);
 				// u.setId(user.getId());
@@ -279,25 +279,24 @@ public class UsersDAO {
 
 	// a nivel de teste =P
 	public static void main(String[] args) throws Exception {
-		ContaUsuario usuario1 = new ContaUsuario("Joao", "Targino", "123456",
+		UserAccount usuario1 = new UserAccount("Joao", "Targino", "123456",
 				"joaotargino@lsd.ufcg.edu.br");
-		ContaUsuario usuario2 = new ContaUsuario("Telles", "Nobrega", "123456",
+		UserAccount usuario2 = new UserAccount("Telles", "Nobrega", "123456",
 				"telles@lsd.ufcg.edu.br");
-		ContaUsuario usuario3 = new ContaUsuario("Rafael", "Carvalho",
+		UserAccount usuario3 = new UserAccount("Rafael", "Carvalho",
 				"123456", "rafael@lsd.ufcg.edu.br");
 		UsersDAO dao = new UsersDAO();
 		dao.create(usuario1);
 		dao.create(usuario2);
 		dao.create(usuario3);
-		usuario1.adiconarAmigo(usuario2, null);
 
-		usuario1.setNome("Joao Paulo");
+		usuario1.setName("Joao Paulo");
 
 		dao.update(usuario1);
 
 		// dao.reset();
 		// dao.cadastraUsuario(usuario3);
-		ContaUsuario userRecuperado = dao
+		UserAccount userRecuperado = dao
 				.getUsuario("joaotargino@lsd.ufcg.edu.br");
 
 		dao.delete("telles@lsd.ufcg.edu.br");

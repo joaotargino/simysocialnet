@@ -2,17 +2,17 @@ package controller;
 
 import interfaces.ProfileIF;
 import Util.ProfileConstants;
-import beans.ContaUsuario;
+import beans.UserAccount;
 
-public class GerenciadorProfile {
+public class ProfileController {
 	
-	private GerenciadorUsuario gerenciadorUsuario;
+	private DBController DBController;
 	
 	public void init() {
-		gerenciadorUsuario = new GerenciadorUsuario();
+		this.DBController = new DBController();
 	}
 	
-	public ProfileIF getProfile(ContaUsuario user, String visibility) {
+	public ProfileIF getProfile(UserAccount user, String visibility) {
 		if (visibility.equals(ProfileConstants.ALL)) {
 			return user.getProfileAll();
 		}
@@ -25,7 +25,7 @@ public class GerenciadorProfile {
 
 
 	public void setPrivacy(String owner, String visibility, String field) throws Exception {
-		ContaUsuario usuario = gerenciadorUsuario.getUsuario(owner);
+		UserAccount usuario = this.DBController.getUsers(owner);
 		ProfileIF profileAll = usuario.getProfileAll();
 		ProfileIF profileJustMe = usuario.getProfileJustMe();
 		ProfileIF profileFriends = usuario.getProfileFriends();
@@ -43,7 +43,7 @@ public class GerenciadorProfile {
 		}
 	}
 	
-	private void retiraPrivacidade(ContaUsuario usuario, String field, ProfileIF profile, String valor) {
+	private void retiraPrivacidade(UserAccount usuario, String field, ProfileIF profile, String valor) {
 		
 		if(field.equals(ProfileConstants.AGE)) {
 			profile.setAge(valor);
@@ -67,18 +67,18 @@ public class GerenciadorProfile {
 			profile.setContactEmail(valor);
 		}
 		
-		if (profile.getTipo().equals(ProfileConstants.ALL)) {
+		if (profile.getType().equals(ProfileConstants.ALL)) {
 			usuario.setProfileAll(profile);
-			gerenciadorUsuario.update(usuario);
+			this.DBController.update(usuario);
 		}
 		else {
 			usuario.setProfileFriends(profile);
-			gerenciadorUsuario.update(usuario);
+			this.DBController.update(usuario);
 		}
 		
 	}
 
-	private void setPrivacityPorTipo(ContaUsuario usuario, String field, ProfileIF profile, ProfileIF justMe) {
+	private void setPrivacityPorTipo(UserAccount usuario, String field, ProfileIF profile, ProfileIF justMe) {
 		
 		if(field.equals(ProfileConstants.AGE)) {
 			profile.setAge(justMe.getAge());
@@ -102,17 +102,17 @@ public class GerenciadorProfile {
 			profile.setContactEmail(justMe.getContactEmail());
 		}
 		
-		if (profile.getTipo().equals(ProfileConstants.ALL)) {
+		if (profile.getType().equals(ProfileConstants.ALL)) {
 			usuario.setProfileAll(profile);
-			gerenciadorUsuario.update(usuario);
+			this.DBController.update(usuario);
 		}
 		else {
 			usuario.setProfileFriends(profile);
-			gerenciadorUsuario.update(usuario);
+			this.DBController.update(usuario);
 		}
 	}
 
-	public void updateUserProfile(ContaUsuario usuario, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
+	public void updateUserProfile(UserAccount usuario, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
 		ProfileIF all = usuario.getProfileAll();
 		ProfileIF justMe = usuario.getProfileJustMe();
 		ProfileIF friends = usuario.getProfileFriends();
@@ -125,7 +125,7 @@ public class GerenciadorProfile {
 		usuario.setProfileFriends(friends);
 		usuario.setProfileJustMe(justMe);
 		
-		gerenciadorUsuario.update(usuario);
+		this.DBController.update(usuario);
 	}
 	
 	private ProfileIF updateUserProfileType(ProfileIF profile, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
