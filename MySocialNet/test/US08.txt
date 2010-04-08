@@ -1,4 +1,4 @@
-# Teste de aceitaÁ„o para a US 08 - Importar lista de amigos
+# Teste de aceita√ß√£o para a US 08 - Importar lista de amigos
 # Criador: Daniel Bruno
 
 clean
@@ -9,21 +9,21 @@ createUser name="Sicrano" lastName="Silva" email="xpto123@email.com" passwd="123
 createUser name="Beltrano" lastName="Santos" email="xpto123456@email.com" passwd="123456"
 
 ExpectError "Login inexistente" restoreFriendList login="suport@email.com" file="export/exported1.csv"
-ExpectError "Usu·rio n„o logado" restoreFriendList login="dev@email.com" file="export/exported1.csv"
+ExpectError "Usu√°rio n√£o logado" restoreFriendList login="dev@email.com" file="export/exported1.csv"
 login email="dev@email.com" senha="123456"
-ExpectError "Arquivo n„o encontrado" restoreFriendList login="dev@email.com" fileName="w:/export/exported1.csv"
-ExpectError "Arquivo n„o encontrado" restoreFriendList login="dev@email.com" fileName="../export/exported1.csv"
+ExpectError "Arquivo n√£o encontrado" restoreFriendList login="dev@email.com" fileName="w:/export/exported1.csv"
+ExpectError "Arquivo n√£o encontrado" restoreFriendList login="dev@email.com" fileName="../export/exported1.csv"
 restoreFriendList login="dev@email.com" file="export/exported1.csv"
 Expect "" listFriends login="dev@email.com"
 Expect "xpto@email.com,xpto123@email.com" viewSentFriendship login="dev@email.com"
 logoff email="dev@email.com"
 
 login email="xpto@email.com" senha="123456"
-Expect "John Doe <dev@email.com> - mensagem: Ol·, xpto@email.com me adicione como seu amigo." viewPendingFriendship login="xpto@email.com"
+Expect "John Doe <dev@email.com> - mensagem: Ol√°, xpto@email.com me adicione como seu amigo." viewPendingFriendship login="xpto@email.com"
 logoff email="xpto@email.com"
 
 login email="xpto123@email.com" senha="123456"
-Expect "John Doe <dev@email.com> - mensagem: Ol·, xpto123@email.com me adicione como seu amigo." viewPendingFriendship login="xpto123@email.com"
+Expect "John Doe <dev@email.com> - mensagem: Ol√°, xpto123@email.com me adicione como seu amigo." viewPendingFriendship login="xpto123@email.com"
 Expect "" listFriends login="xpto123@email.com"
 acceptFriendshipRequest login="xpto123@email.com" contact="dev@email.com" group="familia"
 Expect "John Doe" listFriends login="xpto123@email.com"

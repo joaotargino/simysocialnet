@@ -88,7 +88,7 @@ public class ProfileJustMe implements ProfileIF{
 	}
 	
 	@Override
-	public String getTipo() {
+	public String getType() {
 		return ProfileConstants.JUST_ME;
 	}
 	

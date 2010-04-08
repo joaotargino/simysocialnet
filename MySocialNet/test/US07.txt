@@ -1,11 +1,11 @@
-# Testes de aceitaÁ„o para a US 07 - Exportar lista de amigos
+# Testes de aceita√ß√£o para a US 07 - Exportar lista de amigos
 # Criador: Daniel Bruno
 
 ExpectError "Login inexistente" exportFriendList login="suport@email.com" fileName="export/exported1.csv" exportFields="photo,aboutMe,age,gender,contactEmail,country,city"
-ExpectError "Usu·rio n„o logado"  exportFriendList login="dev@email.com" fileName="export/exported1.csv" exportFields="photo,aboutMe,age,gender,contactEmail,country,city"
+ExpectError "Usu√°rio n√£o logado"  exportFriendList login="dev@email.com" fileName="export/exported1.csv" exportFields="photo,aboutMe,age,gender,contactEmail,country,city"
 login email="dev@email.com" senha="123456"
-ExpectError "Falha na exportaÁ„o do arquivo" exportFriendList login="dev@email.com" fileName="w:/export/exported1.csv" exportFields="photo,aboutMe,age,gender,contactEmail,country,city"
-ExpectError "Falha na exportaÁ„o do arquivo" exportFriendList login="dev@email.com" fileName="../export/exported1.csv" exportFields="photo,aboutMe,age,gender,contactEmail,country,city"
+ExpectError "Falha na exporta√ß√£o do arquivo" exportFriendList login="dev@email.com" fileName="w:/export/exported1.csv" exportFields="photo,aboutMe,age,gender,contactEmail,country,city"
+ExpectError "Falha na exporta√ß√£o do arquivo" exportFriendList login="dev@email.com" fileName="../export/exported1.csv" exportFields="photo,aboutMe,age,gender,contactEmail,country,city"
 exportFriendList login="dev@email.com" fileName="export/exported1.csv" exportFields="photo,aboutMe,age,gender,contactEmail,country,city"
 equalFiles file1="export/expected1.csv" file2="export/exported1.csv"
 exportFriendList login="dev@email.com" fileName="export/exported2.csv" exportFields=""
