@@ -346,7 +346,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public List<UserAccount> listFriends(String email) throws Exception {
-		return gerenciadorUsuario.getAmigos(email);
+		return gerenciadorUsuario.listFriends(email);
 	}
 
 	/**

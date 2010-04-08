@@ -206,6 +206,9 @@ public class UserAccount implements Comparable<UserAccount>{
 		this.groups = grupos;
 	}
 	
+	public String stringListFriends() {
+		return name + " " + surname;
+	}
 	@Override
 	public String toString() {
 		return "Nome=" + name + ",Sobrenome=" + surname;
@@ -215,6 +218,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		for (Group grupo : groups) {
 			this.friends.addAll(grupo.getUsers());
 		}
+		Collections.sort(this.friends);
 		return this.friends;
 	}
 

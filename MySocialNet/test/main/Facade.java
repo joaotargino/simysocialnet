@@ -269,9 +269,9 @@ public class Facade {
 		String resposta = "";
 		List<UserAccount> string = socialNet.listFriends(email);
 		for (UserAccount string2 : string) {
-			resposta += string2;
+			resposta += string2.stringListFriends() + ",";
 		}
-		return resposta;
+		return resposta.substring(0, resposta.length()-1);
 	}
 	
 	/**
