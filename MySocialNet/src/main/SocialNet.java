@@ -433,11 +433,17 @@ public class SocialNet {
 		net.sendFriendshipRequest("rafael@rafael.com", "japa@japa.com", "messagem", "familia");
 		net.logoff("rafael@rafael.com");
 		net.login("japa@japa.com", "123456");
-		net.acceptFriendshipRequest("japa@japa.com", "telles@telles.com", "familia");
 		net.acceptFriendshipRequest("japa@japa.com", "rafael@rafael.com", "familia");
+		net.declineFriendshipRequest("japa@japa.com", "telles@telles.com");
 		net.logoff("japa@japa.com");
 		net.login("telles@telles.com", "123456");
+		net.login("japa@japa.com", "123456");
+		net.login("rafael@rafael.com", "123456");
 		System.out.println(net.listFriends("telles@telles.com"));
+//		System.out.println(net.getUser("rafael@rafael.com").getGrupo(net.getUser("rafael@rafael.com"), "conhecidos"));
+		System.out.println(net.listFriends("japa@japa.com"));
+		System.out.println(net.listFriends("rafael@rafael.com"));
+		System.out.println(net.getRecommendFriends("telles@telles.com"));
 		
 	}
 }
