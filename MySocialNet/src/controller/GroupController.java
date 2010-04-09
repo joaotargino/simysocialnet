@@ -36,17 +36,22 @@ public class GroupController {
 		users.add(usuarioToAdd);
 		group.setUsers(users);
 		Collections.sort(group.getUsers());
+		usuario.getGroups().put(grupo, group);
 		this.dbController.update(usuario);
 	} 
 	
-	private void removeFromOtherGroup(UserAccount usuario, UserAccount usuarioToAdd) throws Exception {
-		
-		for(int i = 0; i < usuario.getGroups().size(); i++) {
-			for (int j = 0; j < usuario.getGroups().get(i).getUsers().size(); j++) {
-				if (usuario.getGroups().get(i).getUsers().get(j).equals(usuarioToAdd)) {
-					usuario.getGroups().get(i).getUsers().remove(usuarioToAdd);
+	private void removeFromOtherGroup(UserAccount usuario, UserAccount usuarioToRemove) throws Exception {
+		boolean found = false;
+		for(Group grupo : usuario.getGroups().values()) {
+			for (UserAccount user : grupo.getUsers()) {
+				if (user.equals(usuarioToRemove)) {
+					grupo.getUsers().remove(usuarioToRemove);
+					usuario.getGroups().put(grupo.getName(), grupo);
+					found = true;
+					break;
 				}
 			}
+			if (found) break;
 		}
 		this.dbController.update(usuario);
 	}
@@ -73,9 +78,8 @@ public class GroupController {
 	}
 	
 	public Group getGroup(UserAccount usuario, String group) throws Exception {
-		for(Group grupo : usuario.getGroups()) {
-			if (grupo.getName().equals(group)) return grupo;
-		}
+		Group grupo = usuario.getGroups().get(group);
+		if (grupo != null) return grupo;
 		throw new Exception("Grupo " + group + " não existe");
 	}
 

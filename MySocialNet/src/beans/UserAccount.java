@@ -7,9 +7,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import Util.Util;
 import controller.DBController;
@@ -21,7 +20,7 @@ import controller.ProfileController;
  *
  */
 public class UserAccount implements Comparable<UserAccount>{
-	
+
 	private String name;
 	private ProfileIF profileAll;
 	private ProfileIF profileJustMe;
@@ -30,7 +29,7 @@ public class UserAccount implements Comparable<UserAccount>{
 	private String dayOfBirth;
 	private String password;
 	private String email;
-	private List<Group> groups;
+	private SortedMap<String,Group> groups;
 	private List<UserAccount> friends;
 	private List<String> preferences;
 	private boolean logged;
@@ -39,8 +38,8 @@ public class UserAccount implements Comparable<UserAccount>{
 	private DBController DBController;
 	private Map<String,String> pendingFriendship;
 	private Map<String,String> sentFriendship;
-	
-	
+
+
 	public UserAccount(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
 		if(Util.verificaString(nome,"Nome")) {
 			this.name = nome;
@@ -73,7 +72,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		friends = new ArrayList<UserAccount>();
 		createGroups();
 	}
-	
+
 	public UserAccount(String nome, String sobrenome, String senha, String email) throws Exception {
 		if(Util.verificaString(nome,"Nome")) {
 			this.name = nome;
@@ -153,7 +152,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		if(Util.verificaSenha(senha)) { 
 			this.password = senha;
 		}
-		
+
 	}
 	public String getEmail() {
 		return email;
@@ -164,44 +163,40 @@ public class UserAccount implements Comparable<UserAccount>{
 		}
 	}
 	public List<UserAccount> getFriends() {
-		if(friends.isEmpty()) {
-			return populateFriendsList();
-		}
-		return this.friends;
+		friends = new ArrayList<UserAccount>();
+		return populateFriendsList();
 	}
-	
+
 	public UserAccount getFriend(String email) throws Exception {
-		if(friends.isEmpty()) {
-			populateFriendsList();
-		}
-		for (UserAccount usuario : this.friends) {
+		for (UserAccount usuario : getFriends()) {
 			if(usuario.getEmail().equals(email)) {
 				return usuario;
 			}
 		}
 		throw new Exception("Amigo não encontrado");
 	}
-	
+
 	public void removeFriend(String email) throws Exception {
-		for (Group grupo : this.groups) {
+		for (Group grupo : this.groups.values()) {
 			for (UserAccount usuario : grupo.getUsers()) {
 				if(usuario.getEmail().equals(email)){
 					grupo.getUsers().remove(usuario);
+					this.groups.put(grupo.getName(), grupo);
 					populateFriendsList();
 				}
 			}
 		}
 		throw new Exception("Amigo não encontrado");
-		
+
 	}
-	
-	public List<Group> getGroups() {
+
+	public SortedMap<String,Group> getGroups() {
 		return groups;
 	}
-	public void setGroups(List<Group> grupos) {
+	public void setGroups(SortedMap<String,Group> grupos) {
 		this.groups = grupos;
 	}
-	
+
 	public String toStringFullName() {
 		return name + " " + surname;
 	}
@@ -209,9 +204,9 @@ public class UserAccount implements Comparable<UserAccount>{
 	public String toString() {
 		return "Nome=" + name + ",Sobrenome=" + surname;
 	}
-	
+
 	private List<UserAccount> populateFriendsList() {
-		for (Group grupo : groups) {
+		for (Group grupo : groups.values()) {
 			this.friends.addAll(grupo.getUsers());
 		}
 		Collections.sort(this.friends);
@@ -234,7 +229,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int compareTo(UserAccount o) {
 		String string = getName() + " " + getSurname();
@@ -272,77 +267,79 @@ public class UserAccount implements Comparable<UserAccount>{
 	public ProfileIF getProfileFriends() {
 		return profileFriends;
 	}
-	
+
 	public Map<String,String> getPendingFriendship() {
 		return pendingFriendship;
 	}
-	
+
 	public Map<String,String> getSentFriendship() {
 		return sentFriendship;
 	}
-	
+
 	public void updateUserProfile(UserAccount usuario, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
 		profileController.updateUserProfile(usuario, aboutMe, age, photo, country, city, gender, contactEmail);
 	}
-	
+
 	public void setFieldPrivacy(String owner, String visibility, String field) throws Exception {
 		profileController.setPrivacy(owner, visibility, field);
 	}
-	
+
 	public ProfileIF getProfile(UserAccount user, String visibility) {
 		return profileController.getProfile(user, visibility);
 	}
-	
+
 	public void setSentFriendship(Map<String,String> sentFriendship) {
 		this.sentFriendship = sentFriendship;
 	}
-	
+
 	public void setPendingFriendship(Map<String,String> pendingFriendship) {
 		this.pendingFriendship = pendingFriendship;
 	}
-	
+
 	private void createGroups() {
-		groups = new ArrayList<Group>();
+		groups = new TreeMap<String,Group>();
 		Group conhecidos = new Group("conhecidos");
 		Group escola = new Group("escola");
 		Group familia = new Group("familia");
 		Group melhoresAmigos = new Group ("melhores amigos");
 		Group trabalho = new Group("trabalho");
-		groups.add(conhecidos);
-		groups.add(escola);
-		groups.add(familia);
-		groups.add(melhoresAmigos);
-		groups.add(trabalho);
+		groups.put("conhecidos", conhecidos);
+		groups.put("escola", escola);
+		groups.put("familia", familia);
+		groups.put("melhores amigos", melhoresAmigos);
+		groups.put("trabalho", trabalho);
 	}
 
 	public void acceptFriendshipRequest(String contact, String group,UserAccount contato)throws Exception {
 		for (String string : this.getPendingFriendship().keySet()) {
 			if(string.equals(contact)) {
-				addToGroup(contato, group);
+				this.addToGroup(contato, group);
+				break;
 			}
 		}
 		this.getPendingFriendship().remove(contact);
 		this.updateBD();
+		this.updateFriends();
 	}
 
 	public Group getGrupo(UserAccount usuario, String group) throws Exception {
 		return groupController.getGroup(usuario, group);
 	}
-	
+
 	public void sendFriendshipRequest(String login, String group) throws Exception {
 		populateFriendsList();
 		UserAccount account = this.DBController.getUsers(login);
-		if(friends.contains(account)) throw new Exception ("Ele já é seu amigo");
-		if (sentFriendship.keySet().contains(login)) throw new Exception("Você já enviou um convite para esse usuário");
+		if(friends.contains(account)) throw new Exception ("Usuários " + this.getName() + " " + this.getSurname() + " e " + account.getName() + " " + account.getSurname() + " já são amigos");
+		if (sentFriendship.keySet().contains(login)) throw new Exception("Você já enviou um convite para o usuário " + account.getName() + " " + account.getSurname());
 		sentFriendship.put(login,group);
 		this.updateBD();
 	}
-	
+
 	public void receiveFriendshipRequest(UserAccount logado, String login, String message) {
 		pendingFriendship.put(login, logado.getName() + " " + logado.getSurname() + " <" + login + "> - mensagem: " + message);
 		this.updateBD();
 	}
-	
+
 	public List<String> viewSentFriendship() {
 		List<String> resposta = new ArrayList<String>();
 		if(sentFriendship.isEmpty()) resposta.add("Não há nenhuma solicitação de amizade pendente");;
@@ -350,9 +347,9 @@ public class UserAccount implements Comparable<UserAccount>{
 			resposta.add(key);
 		}
 		return resposta;
-		
+
 	}
-	
+
 	public List<String> viewPendingFriendship() {
 		List<String> resposta = new ArrayList<String>();
 		if(pendingFriendship.isEmpty()) resposta.add("Não há nenhuma solicitação de amizade pendente");
@@ -367,15 +364,16 @@ public class UserAccount implements Comparable<UserAccount>{
 			this.getPreferences().add(preferencia);
 			this.updateBD();
 		}
-		
+
 	}
 
 	public void removeSentFriendshipRequest(String login, UserAccount user) throws Exception{
 		this.addToGroup(user, this.getSentFriendship().get(login));
 		this.getSentFriendship().remove(login);
 		this.updateBD();
+		this.updateFriends();
 	}
-	
+
 	public void declineFriendshipRequest(String login, Map<String,String> map) {
 		String chave = "";
 		for (String key : map.keySet()) {
@@ -386,7 +384,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		map.remove(chave);
 		this.updateBD();
 	}
-	
+
 	public UserAccount getFriend(UserAccount friend, String fullName) {
 		for(UserAccount user : this.getFriends()) {
 			String nomeCompleto = user.getName() + " " + user.getSurname();
@@ -394,43 +392,58 @@ public class UserAccount implements Comparable<UserAccount>{
 		}
 		return null;
 	}
-	
+
 	private void addToGroup(UserAccount user, String group) throws Exception {
 		Group grupo = this.getGrupo(this, group);
 		List<UserAccount> users = grupo.getUsers();
 		users.add(user);
 		grupo.setUsers(users);
 		Collections.sort(grupo.getUsers());
+		this.getGroups().put(grupo.getName(), grupo);
 		this.updateBD();
-		
+
 	}
-	
-	
+
+
 	private void updateBD() {
 		this.DBController.update(this);
 	}
 
-	public Set<UserAccount> getRecommendedFriends() throws Exception{
-		this.populateFriendsList();
-		SortedSet<UserAccount> output = new TreeSet<UserAccount>();
-		Set<UserAccount> tmp = new TreeSet<UserAccount>();
-		List<UserAccount> familiaList = getFriendsFromGroup(this,"familia");
-		List<UserAccount> melhoresAmigosList = getFriendsFromGroup(this,"melhores amigos");
-		
-//		for (UserAccount userAccount : putFriendsIntoList(familiaList)) {
-//			tmp.add(userAccount);
-//		}
-		tmp.addAll(putFriendsIntoList(familiaList));
-		tmp.addAll(putFriendsIntoList(melhoresAmigosList));
-		
-		for (UserAccount userAccount : tmp) {
-			if(!(friends.contains(userAccount)|| userAccount.equals(this))) {
-				output.add(userAccount);
+	public void setFriends(List<UserAccount> friends) {
+		this.friends = friends;
+	}
+
+	public List<UserAccount> getRecommendedFriends() throws Exception{
+		this.setFriends(new ArrayList<UserAccount>());
+		List<UserAccount> output = new ArrayList<UserAccount>();
+		List<UserAccount> friends = this.getGrupo(this, "melhores amigos").getUsers();
+		List<UserAccount> family = this.getGrupo(this, "familia").getUsers();
+		List<UserAccount> recomendedFriends = new ArrayList<UserAccount>();
+		for (UserAccount user : friends) {
+			user.setFriends(new ArrayList<UserAccount>());
+			output.addAll(user.getGrupo(user, "familia").getUsers());
+			output.addAll(user.getGrupo(user, "melhores amigos").getUsers());
+		}
+		for (UserAccount user : family) {
+			user.setFriends(new ArrayList<UserAccount>());
+			output.addAll(user.getGrupo(user, "familia").getUsers());
+			output.addAll(user.getGrupo(user, "melhores amigos").getUsers());
+		}
+		for (int i = 0; i < output.size(); i ++) {
+			if ((!recomendedFriends.contains(output.get(i))) && !(output.get(i).getEmail().equals(getEmail()) || getFriends().contains(output.get(i)))) {
+				recomendedFriends.add(output.get(i));
 			}
 		}
-		return output;
+
+		return recomendedFriends;
 	}
-	
+
+	public void updateFriends() {
+		for (UserAccount user : this.getFriends()) {
+			user.updateBD();
+		}
+	}
+
 	private List<UserAccount> putFriendsIntoList(List<UserAccount>list) throws Exception{
 		List<UserAccount> tmp = new ArrayList<UserAccount>();
 		for (UserAccount userAccount : list) {
@@ -447,12 +460,10 @@ public class UserAccount implements Comparable<UserAccount>{
 		}
 		return tmp;
 	}
-	
+
 	private List<UserAccount> getFriendsFromGroup(UserAccount user, String group) throws Exception {
 		List<UserAccount> output = getGrupo(user, group).getUsers();
 		return output;
 	}
-	
-	public static void main(String[] args) {
-	}
+
 }

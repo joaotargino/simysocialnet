@@ -40,10 +40,10 @@ ExpectError "Usuário não logado" sendFriendshipRequest login="dev@email.com" u
 login email="dev@email.com" senha="123456"
 ExpectError "Operação não permitida" sendFriendshipRequest login="dev@email.com" user="dev@email.com" message="" group="familia"
 sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
-ExpectError "Você já enviou um convite para esse usuário" sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
+ExpectError "Você já enviou um convite para o usuário Fulano de Tal" sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
 logoff email="dev@email.com"
 
-#Visualizar convites pendentes recebidos pelo usuário
+#Visualizar convites pendentes recebidos pelo usu�rio
 
 ExpectError "Login inexistente" viewPendingFriendship login="suport@email.com"
 ExpectError "Usuário não logado" viewPendingFriendship login="dev@email.com"
@@ -55,7 +55,7 @@ login email="xpto@email.com" senha="123456"
 Expect "John Doe <dev@email.com> - mensagem: algum texto" viewPendingFriendship login="xpto@email.com"
 logoff email="xpto@email.com"
 
-#Visualizar convites pendentes enviados pelo usuário
+#Visualizar convites pendentes enviados pelo usu�rio
 
 ExpectError "Login inexistente" viewSentFriendship login="suport@email.com"
 ExpectError "Usuário não logado" viewSentFriendship login="dev@email.com"
@@ -84,7 +84,7 @@ logoff email="dev@email.com"
 
 login email="dev@email.com" senha="123456"
 sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
-ExpectError "Você já enviou um convite para esse usuário" sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
+ExpectError "Você já enviou um convite para o usuário Fulano de Tal" sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
 logoff email="dev@email.com"
 
 ExpectError "Login inexistente" acceptFriendshipRequest login="suport@email.com" contact="dev@email.com" group="familia"
@@ -92,6 +92,11 @@ ExpectError "Usuário não logado" acceptFriendshipRequest login="xpto@email.com
 login email="xpto@email.com" senha="123456"
 acceptFriendshipRequest login="xpto@email.com" contact="dev@email.com" group="familia"
 Expect "Nome=John,Sobrenome=Doe" findGroupMember login="xpto@email.com" friend="dev@email.com" group="familia"
+
+# Verifica que o usuário não pode enviar um convite de amizade para algu�m que j� faz parte de sua lista de contatos 
+login email="dev@email.com" senha="123456"
+expectError "Usuários John Doe e Fulano de Tal já são amigos" sendFriendshipRequest login="dev@email.com" user="xpto@email.com" message="algum texto" group="familia"
+logoff email="dev@email.com"
 
 ###Verificar que o perfil do usuário adicionado como amigo est� dispon�vel como FRIENDS
 login email="dev@email.com" senha="123456"
