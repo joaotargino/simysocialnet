@@ -32,8 +32,9 @@ public class GroupController {
 		if (group.getUsers().contains(usuarioToAdd)) throw new Exception("Contato já existente no grupo " + grupo);
 		
 		removeFromOtherGroup(usuario, usuarioToAdd);
-		
-		group.getUsers().add(usuarioToAdd);
+		List<UserAccount> users = group.getUsers();
+		users.add(usuarioToAdd);
+		group.setUsers(users);
 		Collections.sort(group.getUsers());
 		this.dbController.update(usuario);
 	} 

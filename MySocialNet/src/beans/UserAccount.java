@@ -318,7 +318,7 @@ public class UserAccount implements Comparable<UserAccount>{
 	public void acceptFriendshipRequest(String contact, String group,UserAccount contato)throws Exception {
 		for (String string : this.getPendingFriendship().keySet()) {
 			if(string.equals(contact)) {
-				addAtGroup(contato, group);
+				addToGroup(contato, group);
 			}
 		}
 		this.getPendingFriendship().remove(contact);
@@ -371,7 +371,7 @@ public class UserAccount implements Comparable<UserAccount>{
 	}
 
 	public void removeSentFriendshipRequest(String login, UserAccount user) throws Exception{
-		this.addAtGroup(user, this.getSentFriendship().get(login));
+		this.addToGroup(user, this.getSentFriendship().get(login));
 		this.getSentFriendship().remove(login);
 		this.updateBD();
 	}
@@ -395,9 +395,11 @@ public class UserAccount implements Comparable<UserAccount>{
 		return null;
 	}
 	
-	private void addAtGroup(UserAccount user, String group) throws Exception {
+	private void addToGroup(UserAccount user, String group) throws Exception {
 		Group grupo = this.getGrupo(this, group);
-		grupo.getUsers().add(user);
+		List<UserAccount> users = grupo.getUsers();
+		users.add(user);
+		grupo.setUsers(users);
 		Collections.sort(grupo.getUsers());
 		this.updateBD();
 		
@@ -412,8 +414,8 @@ public class UserAccount implements Comparable<UserAccount>{
 		this.populateFriendsList();
 		SortedSet<UserAccount> output = new TreeSet<UserAccount>();
 		Set<UserAccount> tmp = new TreeSet<UserAccount>();
-		List<UserAccount> familiaList = getFriendsFromGroup("familia");
-		List<UserAccount> melhoresAmigosList = getFriendsFromGroup("melhores amigos");
+		List<UserAccount> familiaList = getFriendsFromGroup(this,"familia");
+		List<UserAccount> melhoresAmigosList = getFriendsFromGroup(this,"melhores amigos");
 		
 //		for (UserAccount userAccount : putFriendsIntoList(familiaList)) {
 //			tmp.add(userAccount);
@@ -433,9 +435,9 @@ public class UserAccount implements Comparable<UserAccount>{
 		List<UserAccount> tmp = new ArrayList<UserAccount>();
 		for (UserAccount userAccount : list) {
 			List<UserAccount> listaFamilia = new ArrayList<UserAccount>();
-			listaFamilia = userAccount.getFriendsFromGroup("familia");
+			listaFamilia = userAccount.getFriendsFromGroup(userAccount,"familia");
 			List<UserAccount> listaMelhoresAmigos = new ArrayList<UserAccount>();
-			listaMelhoresAmigos = userAccount.getFriendsFromGroup("melhores amigos");
+			listaMelhoresAmigos = userAccount.getFriendsFromGroup(userAccount,"melhores amigos");
 			for (UserAccount user : listaFamilia) {
 				tmp.add(user);
 			}
@@ -446,9 +448,9 @@ public class UserAccount implements Comparable<UserAccount>{
 		return tmp;
 	}
 	
-	private List<UserAccount> getFriendsFromGroup(String group) throws Exception {
-		return this.getGrupo(this, group).getUsers();
-		
+	private List<UserAccount> getFriendsFromGroup(UserAccount user, String group) throws Exception {
+		List<UserAccount> output = getGrupo(user, group).getUsers();
+		return output;
 	}
 	
 	public static void main(String[] args) {
