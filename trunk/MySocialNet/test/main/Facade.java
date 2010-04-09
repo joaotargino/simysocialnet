@@ -1,7 +1,6 @@
 package main;
 
 import java.util.List;
-import java.util.Set;
 
 import beans.UserAccount;
 
@@ -388,7 +387,7 @@ public class Facade {
 	public String getRecommendFriends(String login) throws Exception {
 		socialNet = SocialNet.getInstance();
 		String output = "";
-		Set<UserAccount> recommendedFriends = socialNet.getRecommendFriends(login);
+		List<UserAccount> recommendedFriends = socialNet.getRecommendFriends(login);
 		for (UserAccount user : recommendedFriends) {
 			output += user.toStringFullName() + ",";
 		}

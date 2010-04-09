@@ -1,4 +1,4 @@
-# Testes de aceita��o para a US 01 - Criar Usu�rio
+# Testes de aceita��o para a US 01 - Criar usuário
 # Criador: Daniel Bruno
 
 #####Remover dados anteriores do sistema
@@ -93,7 +93,7 @@ ExpectError "Perfil inexistente" viewProfile viewer="dev1@email.com" profileOwne
 ExpectError "Usuário não logado" viewProfile viewer="dev1@email.com" profileOwner="dev@email.com"
 
 login email="dev1@email.com" passwd="123456"
-##Usu�rios n�o s�o amigos - ver campos do perfil com visibilidade ALL
+##usuários não são amigos - ver campos do perfil com visibilidade ALL
 login email="dev@email.com" passwd="123456"
 allVisibility=checkProfile login="dev@email.com" visibility="ALL"
 Expect ${allVisibility} viewProfile viewer="dev1@email.com" profileOwner="dev@email.com"

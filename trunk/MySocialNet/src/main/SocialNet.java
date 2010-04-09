@@ -3,7 +3,6 @@ package main;
 import interfaces.ProfileIF;
 
 import java.util.List;
-import java.util.Set;
 
 import beans.Group;
 import beans.UserAccount;
@@ -155,8 +154,7 @@ public class SocialNet {
 	 * @param preference
 	 * @throws Exception
 	 */
-	public void addUserPreference(String login, String preference)
-			throws Exception {
+	public void addUserPreference(String login, String preference)throws Exception {
 
 		userController.addUserPreferences(login, preference);
 	}
@@ -228,8 +226,7 @@ public class SocialNet {
 	 * @param user
 	 * @throws Exception
 	 */
-	public void addGroupMember(String email, String group, String user)
-			throws Exception {
+	public void addGroupMember(String email, String group, String user) throws Exception {
 		groupController.addToGroup(email, group, user);
 	}
 
@@ -323,8 +320,7 @@ public class SocialNet {
 	 * @param contact
 	 * @param group
 	 */
-	public void acceptFriendshipRequest(String login, String contact,
-			String group) throws Exception {
+	public void acceptFriendshipRequest(String login, String contact, String group) throws Exception {
 		userController.acceptFriendshipRequest(login, contact, group);
 	}
 
@@ -360,17 +356,22 @@ public class SocialNet {
 		amigo = userController.getFriend(login, friend);
 		if (amigo == null)
 			throw new Exception("Amigo não encontrado em nenhum grupo");
-		for (Group grupo : usuario.getGroups()) {
+		
+		for (Group grupo : usuario.getGroups().values()) {
 			if (grupo.getUsers().contains(amigo)) {
 				grupo.getUsers().remove(amigo);
+				usuario.getGroups().put(grupo.getName(), grupo);
 				this.dbController.update(usuario);
+				amigo.updateFriends();
 				break;
 			}
 		}
-		for (Group grupo : amigo.getGroups()) {
+		for (Group grupo : amigo.getGroups().values()) {
 			if (grupo.getUsers().contains(usuario)) {
 				grupo.getUsers().remove(usuario);
+				amigo.getGroups().put(grupo.getName(), grupo);
 				this.dbController.update(amigo);
+				amigo.updateFriends();
 				break;
 			}
 		}
@@ -383,7 +384,7 @@ public class SocialNet {
 	 * @param login
 	 * @return
 	 */
-	public Set<UserAccount> getRecommendFriends(String login) throws Exception {
+	public List<UserAccount> getRecommendFriends(String login) throws Exception {
 		return this.userController.getRecommendedFriends(login);
 	}
 
@@ -429,21 +430,28 @@ public class SocialNet {
 		net.sendFriendshipRequest("telles@telles.com", "japa@japa.com", "messagem", "familia");
 		net.logoff("telles@telles.com");
 		net.login("rafael@rafael.com", "123456");
-		net.acceptFriendshipRequest("rafael@rafael.com", "telles@telles.com", "familia");
 		net.sendFriendshipRequest("rafael@rafael.com", "japa@japa.com", "messagem", "familia");
 		net.logoff("rafael@rafael.com");
 		net.login("japa@japa.com", "123456");
 		net.acceptFriendshipRequest("japa@japa.com", "rafael@rafael.com", "familia");
-		net.declineFriendshipRequest("japa@japa.com", "telles@telles.com");
+//		net.declineFriendshipRequest("japa@japa.com", "telles@telles.com");
 		net.logoff("japa@japa.com");
 		net.login("telles@telles.com", "123456");
 		net.login("japa@japa.com", "123456");
 		net.login("rafael@rafael.com", "123456");
+		net.acceptFriendshipRequest("rafael@rafael.com", "telles@telles.com", "familia");
 		System.out.println(net.listFriends("telles@telles.com"));
 //		System.out.println(net.getUser("rafael@rafael.com").getGrupo(net.getUser("rafael@rafael.com"), "conhecidos"));
 		System.out.println(net.listFriends("japa@japa.com"));
 		System.out.println(net.listFriends("rafael@rafael.com"));
-		System.out.println(net.getRecommendFriends("telles@telles.com"));
+		System.out.println("Recomendado >>> " + net.getRecommendFriends("telles@telles.com"));
+		System.out.println("Recomendado >>> " + net.getRecommendFriends("rafael@rafael.com"));
+		System.out.println("Recomendado >>> " + net.getRecommendFriends("japa@japa.com"));
+		
+		System.out.println("Grupo Familia >>>>  " + net.getUser("telles@telles.com").getGrupo(net.getUser("telles@telles.com"), "familia"));
+		System.out.println("Grupo Familia >>>>  " + net.getUser("rafael@rafael.com").getGrupo(net.getUser("rafael@rafael.com"), "familia"));
+		System.out.println("Grupo Familia >>>>  " + net.getUser("japa@japa.com").getGrupo(net.getUser("japa@japa.com"), "familia"));
+		
 		
 	}
 }
