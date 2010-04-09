@@ -257,10 +257,19 @@ public class UserController {
 		
 	}
 	
-public void exportFriendList(UserAccount usuario, String login, String fileName, String exportFields) throws Exception {
+	
+//	private void criaPastas(String localizacaoArquivo) {
+//		int localizacaoUltimaPasta = localizacaoArquivo.lastIndexOf('/');
+//		String caminhoPastas = localizacaoArquivo.substring(0,localizacaoUltimaPasta);
+//		File pastas = new File(caminhoPastas);
+//		pastas.mkdirs();
+//		System.out.println(caminhoPastas);
+//	}
+	
+	public void exportFriendList(UserAccount usuario, String login, String fileName, String exportFields) throws Exception {
 		
 		String dadosExportados = "";
-		//this.criaPastas(fileName);
+//		this.criaPastas(fileName);
 		File file;
 		FileWriter writer;
 		PrintWriter saida;
