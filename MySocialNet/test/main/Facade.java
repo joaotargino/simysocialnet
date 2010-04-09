@@ -271,6 +271,7 @@ public class Facade {
 		for (UserAccount string2 : string) {
 			resposta += string2.toStringFullName() + ",";
 		}
+		if (resposta.isEmpty()) return resposta;
 		return resposta.substring(0, resposta.length()-1);
 	}
 	
