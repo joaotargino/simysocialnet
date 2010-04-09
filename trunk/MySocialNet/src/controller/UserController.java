@@ -2,7 +2,12 @@ package controller;
 
 import interfaces.ProfileIF;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import beans.UserAccount;
@@ -251,6 +256,49 @@ public class UserController {
 		this.dbController.removeFromDB(login);
 		
 	}
-
+	
+public void exportFriendList(UserAccount usuario, String login, String fileName, String exportFields) throws Exception {
+		
+		String dadosExportados = "";
+		//this.criaPastas(fileName);
+		File file;
+		FileWriter writer;
+		PrintWriter saida;
+		try {
+			file = new File(fileName);
+			writer = new FileWriter(file);
+			saida = new PrintWriter(writer,true);
+		} catch(Exception erro) {
+			throw new Exception("Falha na exportação do arquivo");
+		}
+		String sep = System.getenv("line.separator");
+		if (exportFields.trim().equals("")) dadosExportados += "name,lastName";
+		else dadosExportados += "name,lastName,";
+		
+		dadosExportados += exportFields + sep;
+		List<UserAccount> listaDosAmigos = usuario.getFriends();
+		Collections.sort(listaDosAmigos);
+		Iterator<UserAccount> IteradorDaListaDeAmigos = listaDosAmigos.iterator();
+		while (IteradorDaListaDeAmigos.hasNext()) {
+			UserAccount amigoIterado = IteradorDaListaDeAmigos.next();
+			dadosExportados += this.organizeStringToExport(amigoIterado, exportFields);			
+			if (IteradorDaListaDeAmigos.hasNext()) dadosExportados += sep;
+		}
+		saida.println(dadosExportados);
+	}
+	
+	private String organizeStringToExport(UserAccount usuario,String exportFields) {
+		ProfileIF profile = usuario.getProfileAll();
+		String dadosDoUsuario = "";
+		dadosDoUsuario += usuario.getName() + "," + usuario.getSurname();
+		if (exportFields.contains("photo"))  dadosDoUsuario += "," + profile.getPhoto();
+		if (exportFields.contains("aboutMe"))  dadosDoUsuario += "," + profile.getAboutMe();
+		if (exportFields.contains("age"))  dadosDoUsuario += "," + profile.getAge();
+		if (exportFields.contains("gender"))  dadosDoUsuario += "," + profile.getGender();
+		if (exportFields.contains("contactEmail"))  dadosDoUsuario += "," + profile.getContactEmail();
+		if (exportFields.contains("country"))  dadosDoUsuario += "," + profile.getCountry();
+		if (exportFields.contains("city"))  dadosDoUsuario += "," + profile.getCity();
+		return dadosDoUsuario;
+	}
 
 }

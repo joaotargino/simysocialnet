@@ -404,7 +404,7 @@ public class Facade {
 	 * @param fileName
 	 * @param exportFields
 	 */
-	public void exportFriendList(String login, String fileName, String exportFields) {
+	public void exportFriendList(String login, String fileName, String exportFields) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.exportFriendList(login, fileName, exportFields);
 	}

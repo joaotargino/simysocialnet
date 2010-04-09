@@ -1,4 +1,4 @@
-# Teste de aceitação para a US 08 - Importar lista de amigos
+# Teste de aceitaï¿½ï¿½o para a US 08 - Importar lista de amigos
 # Criador: Daniel Bruno
 
 clean
@@ -7,48 +7,48 @@ createUser name="John" lastName="Doe" email="dev@email.com" passwd="123456"
 createUser name="Beltrano" lastName="Santos" email="xpto123456@email.com" passwd="123456"
 
 ExpectError "Login inexistente" restoreFriendList login="suport@email.com" file="export/exported1.csv"
-ExpectError "Usuário não logado" restoreFriendList login="dev@email.com" file="export/exported1.csv"
+ExpectError "UsuÃ¡rio nÃ£o logado" restoreFriendList login="dev@email.com" file="export/exported1.csv"
 login email="dev@email.com" senha="123456"
-ExpectError "Arquivo não encontrado" restoreFriendList login="dev@email.com" fileName="w:/export/exported1.csv"
-ExpectError "Arquivo não encontrado" restoreFriendList login="dev@email.com" fileName="../export/exported1.csv"
+ExpectError "Arquivo nÃ£o encontrado" restoreFriendList login="dev@email.com" fileName="w:/export/exported1.csv"
+ExpectError "Arquivo nÃ£o encontrado" restoreFriendList login="dev@email.com" fileName="../export/exported1.csv"
 
-#conteúdo com quantidade de colunas menor do que a quantidade do cabeçalho do arquivo
-ExpectError "Arquivo não suportado pelo sistema" restoreFriendList login="dev@email.com" fileName="export/invalidFile1.csv"
+#conteï¿½do com quantidade de colunas menor do que a quantidade do cabeï¿½alho do arquivo
+ExpectError "Arquivo nÃ£o suportado pelo sistema" restoreFriendList login="dev@email.com" fileName="export/invalidFile1.csv"
 
-#cabeçalho sem name e lastName ou faltando um dos dois
-ExpectError "Arquivo não suportado pelo sistema" restoreFriendList login="dev@email.com" fileName="export/invalidFile2.csv"
+#cabeï¿½alho sem name e lastName ou faltando um dos dois
+ExpectError "Arquivo nÃ£o suportado pelo sistema" restoreFriendList login="dev@email.com" fileName="export/invalidFile2.csv"
 
-#cabeçalho com quantidade de colunas menor do que a quantidade do conteúdo do arquivo
-ExpectError "Arquivo não suportado pelo sistema" restoreFriendList login="dev@email.com" fileName="export/invalidFile3.csv"
+#cabeï¿½alho com quantidade de colunas menor do que a quantidade do conteï¿½do do arquivo
+ExpectError "Arquivo nÃ£o suportado pelo sistema" restoreFriendList login="dev@email.com" fileName="export/invalidFile3.csv"
 
-#contatos a serem importados não existem no sistema
-expect "Contatos não importados: Fulano de Tal,Sicrano Silva" restoreFriendList login="dev@email.com" file="export/exported1.csv"
+#contatos a serem importados nï¿½o existem no sistema
+expect "Contatos nÃ£o importados: Fulano de Tal,Sicrano Silva" restoreFriendList login="dev@email.com" file="export/exported1.csv"
 
 createUser name="Fulano" lastName="de Tal" email="xpto@email.com" passwd="123456"
-expect "Contatos não importados: Sicrano Silva" restoreFriendList login="dev@email.com" file="export/exported1.csv"
+expect "Contatos nÃ£o importados: Sicrano Silva" restoreFriendList login="dev@email.com" file="export/exported1.csv"
 Expect "xpto@email.com" viewSentFriendship login="dev@email.com"
 createUser name="Sicrano" lastName="Silva" email="xpto123@email.com" passwd="123456"
 
-#contato já foi importado anteriormente
-expect "Contatos não importados: Você já enviou um convite para o usuário Fulano de Tal" restoreFriendList login="dev@email.com" file="export/exported1.csv"
+#contato jï¿½ foi importado anteriormente
+expect "Contatos nÃ£o importados: VocÃª jÃ¡ enviou um convite para o usuÃ¡rio Fulano de Tal" restoreFriendList login="dev@email.com" file="export/exported1.csv"
 
 Expect "" listFriends login="dev@email.com"
 Expect "xpto@email.com,xpto123@email.com" viewSentFriendship login="dev@email.com"
 
-#contatos já foram importados
-saida=echo "Contatos não importados: Você já enviou um convite para o usuário Fulano de Tal,Você já enviou um convite para o usuário Sicrano Silva"
+#contatos jï¿½ foram importados
+saida=echo "Contatos nÃ£o importados: VocÃª jÃ¡ enviou um convite para o usuÃ¡rio Fulano de Tal,VocÃª jÃ¡ enviou um convite para o usuÃ¡rio Sicrano Silva"
 expect ${saida} restoreFriendList login="dev@email.com" file="export/exported1.csv"
 logoff email="dev@email.com"
 
 login email="xpto@email.com" senha="123456"
-Expect "John Doe <dev@email.com> - mensagem: Olá, xpto@email.com me adicione como seu amigo." viewPendingFriendship login="xpto@email.com"
+Expect "John Doe <dev@email.com> - mensagem: OlÃ¡, xpto@email.com me adicione como seu amigo." viewPendingFriendship login="xpto@email.com"
 Expect "" listFriends login="xpto@email.com"
 acceptFriendshipRequest login="xpto@email.com" contact="dev@email.com" group="familia"
 Expect "John Doe" listFriends login="xpto@email.com"
 logoff email="xpto@email.com"
 
 login email="xpto123@email.com" senha="123456"
-Expect "John Doe <dev@email.com> - mensagem: Olá, xpto123@email.com me adicione como seu amigo." viewPendingFriendship login="xpto123@email.com"
+Expect "John Doe <dev@email.com> - mensagem: OlÃ¡, xpto123@email.com me adicione como seu amigo." viewPendingFriendship login="xpto123@email.com"
 Expect "" listFriends login="xpto123@email.com"
 acceptFriendshipRequest login="xpto123@email.com" contact="dev@email.com" group="familia"
 Expect "John Doe" listFriends login="xpto123@email.com"
@@ -57,8 +57,8 @@ logoff email="xpto123@email.com"
 login email="dev@email.com" senha="123456"
 Expect "Fulano de Tal,Sicrano Silva" listFriends login="dev@email.com"
 Expect "Fulano de Tal,Sicrano Silva" listGroupMembers email="dev@email.com" group="conhecidos"
-Expect "Não há nenhuma solicitação de amizade pendente" viewSentFriendship login="dev@email.com"
-saida2=echo "Contatos não importados: Usuários John Doe e Fulano de Tal já são amigos,Usuários John Doe e Sicrano Silva já são amigos"
+Expect "NÃ£o hÃ¡ nenhuma solicitaÃ§Ã£o de amizade pendente" viewSentFriendship login="dev@email.com"
+saida2=echo "Contatos nÃ£o importados: UsuÃ¡rios John Doe e Fulano de Tal jÃ¡ sÃ£o amigos,UsuÃ¡ios John Doe e Sicrano Silva jÃ¡ sÃ£o amigos"
 expect ${saida2} restoreFriendList login="dev@email.com" file="export/exported1.csv"
 expect ${saida2} restoreFriendList login="dev@email.com" file="export/exported2.csv"
 logoff email="dev@email.com"
