@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import Util.Util;
 import controller.DBController;
@@ -167,7 +170,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		return this.friends;
 	}
 	
-	public UserAccount getAmigo(String email) throws Exception {
+	public UserAccount getFriend(String email) throws Exception {
 		if(friends.isEmpty()) {
 			populateFriendsList();
 		}
@@ -179,7 +182,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		throw new Exception("Amigo não encontrado");
 	}
 	
-	public void removerAmigo(String email) throws Exception {
+	public void removeFriend(String email) throws Exception {
 		for (Group grupo : this.groups) {
 			for (UserAccount usuario : grupo.getUsers()) {
 				if(usuario.getEmail().equals(email)){
@@ -327,6 +330,9 @@ public class UserAccount implements Comparable<UserAccount>{
 	}
 	
 	public void sendFriendshipRequest(String login, String group) throws Exception {
+		populateFriendsList();
+		UserAccount account = this.DBController.getUsers(login);
+		if(friends.contains(account)) throw new Exception ("Ele já é seu amigo");
 		if (sentFriendship.keySet().contains(login)) throw new Exception("Você já enviou um convite para esse usuário");
 		sentFriendship.put(login,group);
 		this.updateBD();
@@ -402,22 +408,49 @@ public class UserAccount implements Comparable<UserAccount>{
 		this.DBController.update(this);
 	}
 
-	public List<UserAccount> getRecommendedFriends() {
+	public Set<UserAccount> getRecommendedFriends() throws Exception{
 		this.populateFriendsList();
-		List<UserAccount> output = new ArrayList<UserAccount>();
-		for (Group group : groups) {
-			if(group.getName().equalsIgnoreCase("familia") || group.getName().equalsIgnoreCase("melhores amigos")) {
-				for (UserAccount user : group.getUsers()) {
-					for (Group groupAux : user.getGroups()) {
-						if(groupAux.getName().equalsIgnoreCase("familia") || groupAux.getName().equalsIgnoreCase("melhores amigos")) {
-							for (UserAccount userAccount : group.getUsers()) {
-								output.add(userAccount);
-							}
-						}
-					}
-				}
+		SortedSet<UserAccount> output = new TreeSet<UserAccount>();
+		Set<UserAccount> tmp = new TreeSet<UserAccount>();
+		List<UserAccount> familiaList = getFriendsFromGroup("familia");
+		List<UserAccount> melhoresAmigosList = getFriendsFromGroup("melhores amigos");
+		
+//		for (UserAccount userAccount : putFriendsIntoList(familiaList)) {
+//			tmp.add(userAccount);
+//		}
+		tmp.addAll(putFriendsIntoList(familiaList));
+		tmp.addAll(putFriendsIntoList(melhoresAmigosList));
+		
+		for (UserAccount userAccount : tmp) {
+			if(!(friends.contains(userAccount)|| userAccount.equals(this))) {
+				output.add(userAccount);
 			}
 		}
 		return output;
+	}
+	
+	private List<UserAccount> putFriendsIntoList(List<UserAccount>list) throws Exception{
+		List<UserAccount> tmp = new ArrayList<UserAccount>();
+		for (UserAccount userAccount : list) {
+			List<UserAccount> listaFamilia = new ArrayList<UserAccount>();
+			listaFamilia = userAccount.getFriendsFromGroup("familia");
+			List<UserAccount> listaMelhoresAmigos = new ArrayList<UserAccount>();
+			listaMelhoresAmigos = userAccount.getFriendsFromGroup("melhores amigos");
+			for (UserAccount user : listaFamilia) {
+				tmp.add(user);
+			}
+			for (UserAccount user : listaMelhoresAmigos) {
+				tmp.add(user);
+			}
+		}
+		return tmp;
+	}
+	
+	private List<UserAccount> getFriendsFromGroup(String group) throws Exception {
+		return this.getGrupo(this, group).getUsers();
+		
+	}
+	
+	public static void main(String[] args) {
 	}
 }

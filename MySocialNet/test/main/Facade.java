@@ -1,6 +1,7 @@
 package main;
 
 import java.util.List;
+import java.util.Set;
 
 import beans.UserAccount;
 
@@ -247,13 +248,15 @@ public class Facade {
 	 */
 	public String listFriends(String email) throws Exception {
 		socialNet = SocialNet.getInstance();
-		String resposta = "";
+		String output = "";
 		List<UserAccount> string = socialNet.listFriends(email);
 		for (UserAccount string2 : string) {
-			resposta += string2.toStringFullName() + ",";
+			output += string2.toStringFullName() + ",";
 		}
-		if (resposta.isEmpty()) return resposta;
-		return resposta.substring(0, resposta.length()-1);
+		if(output.length() > 0) {
+			output = output.substring(0, output.length()-1);
+		}
+		return output;
 	}
 	
 	/**
@@ -385,11 +388,14 @@ public class Facade {
 	public String getRecommendFriends(String login) throws Exception {
 		socialNet = SocialNet.getInstance();
 		String output = "";
-		List<UserAccount> recommendedFriends = socialNet.getRecommendFriends(login);
+		Set<UserAccount> recommendedFriends = socialNet.getRecommendFriends(login);
 		for (UserAccount user : recommendedFriends) {
 			output += user.toStringFullName() + ",";
 		}
-		return output.substring(0, output.length()-1);
+		if(output.length() > 0) {
+			output = output.substring(0, output.length()-1);
+		}
+		return output;
 	}
 	
 	/**
