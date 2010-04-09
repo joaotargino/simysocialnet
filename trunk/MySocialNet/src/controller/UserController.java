@@ -4,6 +4,7 @@ import interfaces.ProfileIF;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import beans.UserAccount;
 import dao.UsersDAO;
@@ -145,7 +146,7 @@ public class UserController {
 		return user.getFriend(amigo, friend);
 	}
 
-	public List<UserAccount> getRecommendedFriends(String login) throws Exception{
+	public Set<UserAccount> getRecommendedFriends(String login) throws Exception{
 		UserAccount user;
 		try {
 			user = this.dbController.getUsers(login);
@@ -174,7 +175,7 @@ public class UserController {
 			else
 				throw new Exception(e.getMessage());
 		}
-		this.dbController.addATDB(contaUsuario);
+		this.dbController.addToDB(contaUsuario);
 
 	}
 

@@ -6,7 +6,7 @@ import dao.UsersDAO;
 
 public class DBController {
 	
-	public void addATDB(UserAccount contaUsuario) throws Exception {
+	public void addToDB(UserAccount contaUsuario) throws Exception {
 		if (UsersDAO.getInstance().getUsuarios().contains(contaUsuario)) throw new Exception("Login indisponível");
 		UsersDAO.getInstance().create(contaUsuario);
 	}

@@ -3,6 +3,7 @@ package main;
 import interfaces.ProfileIF;
 
 import java.util.List;
+import java.util.Set;
 
 import beans.Group;
 import beans.UserAccount;
@@ -72,7 +73,6 @@ public class SocialNet {
 	 */
 	public void createUser(String name, String lastName, String email,
 			String passwd) throws Exception {
-		
 		userController.createUser(name, lastName, email, passwd);
 	}
 
@@ -383,7 +383,7 @@ public class SocialNet {
 	 * @param login
 	 * @return
 	 */
-	public List<UserAccount> getRecommendFriends(String login) throws Exception {
+	public Set<UserAccount> getRecommendFriends(String login) throws Exception {
 		return this.userController.getRecommendedFriends(login);
 	}
 
@@ -415,5 +415,29 @@ public class SocialNet {
 	 */
 	public void clean() {
 		userController.clean();
+	}
+	
+	public static void main(String[] args) throws Exception {
+		SocialNet net = new SocialNet();
+		net.clean();
+		
+		net.createUser("Telles", "Nobrega", "telles@telles.com","123456");
+		net.createUser("Japa","Hideo", "japa@japa.com", "123456");
+		net.createUser("Rafael","Aquino","rafael@rafael.com","123456");
+		net.login("telles@telles.com", "123456");
+		net.sendFriendshipRequest("telles@telles.com", "rafael@rafael.com", "messagem", "familia");
+		net.sendFriendshipRequest("telles@telles.com", "japa@japa.com", "messagem", "familia");
+		net.logoff("telles@telles.com");
+		net.login("rafael@rafael.com", "123456");
+		net.acceptFriendshipRequest("rafael@rafael.com", "telles@telles.com", "familia");
+		net.sendFriendshipRequest("rafael@rafael.com", "japa@japa.com", "messagem", "familia");
+		net.logoff("rafael@rafael.com");
+		net.login("japa@japa.com", "123456");
+		net.acceptFriendshipRequest("japa@japa.com", "telles@telles.com", "familia");
+		net.acceptFriendshipRequest("japa@japa.com", "rafael@rafael.com", "familia");
+		net.logoff("japa@japa.com");
+		net.login("telles@telles.com", "123456");
+		System.out.println(net.listFriends("telles@telles.com"));
+		
 	}
 }
