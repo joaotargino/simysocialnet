@@ -12,7 +12,6 @@ import Util.Util;
 import controller.DBController;
 import controller.GroupController;
 import controller.ProfileController;
-import controller.UserController;
 
 /**
  * @author Rafael Aquino
@@ -57,7 +56,6 @@ public class UserAccount implements Comparable<UserAccount>{
 		}
 		logged = false;
 		groupController = new GroupController();
-		groupController.init();
 		pendingFriendship = new HashMap<String,String>();
 		sentFriendship = new HashMap<String,String>();
 		preferences = new ArrayList<String>();
@@ -68,7 +66,6 @@ public class UserAccount implements Comparable<UserAccount>{
 		profileJustMe.init();
 		profileFriends.init();
 		DBController = new DBController();
-		profileController.init();
 		profileController = new ProfileController();
 		friends = new ArrayList<UserAccount>();
 		createGroups();
@@ -98,8 +95,6 @@ public class UserAccount implements Comparable<UserAccount>{
 		profileFriends = new ProfileFriends();
 		DBController = new DBController();
 		profileController = new ProfileController();
-		profileController.init();
-		groupController.init();
 		profileAll.init();
 		profileJustMe.init();
 		profileFriends.init();
@@ -115,10 +110,8 @@ public class UserAccount implements Comparable<UserAccount>{
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
 		profileController = new ProfileController();
-		profileController.init();
 		DBController = new DBController();
 		friends = new ArrayList<UserAccount>();
-		groupController.init();
 		profileAll.init();
 		profileJustMe.init();
 		profileFriends.init();

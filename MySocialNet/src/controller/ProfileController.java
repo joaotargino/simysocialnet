@@ -8,7 +8,7 @@ public class ProfileController {
 	
 	private DBController DBController;
 	
-	public void init() {
+	public ProfileController() {
 		this.DBController = new DBController();
 	}
 	

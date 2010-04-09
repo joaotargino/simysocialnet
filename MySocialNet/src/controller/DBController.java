@@ -53,4 +53,11 @@ public class DBController {
 		UsersDAO.getInstance().update(user);
 	}
 
+	public UserAccount getUser(String login) throws Exception {
+		UserAccount usuario = getUsers(login);
+		if (!usuario.isLogged())
+			throw new Exception("Usuário não logado");
+		return usuario;
+	}
+
 }
