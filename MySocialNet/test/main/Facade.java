@@ -269,7 +269,7 @@ public class Facade {
 		String resposta = "";
 		List<UserAccount> string = socialNet.listFriends(email);
 		for (UserAccount string2 : string) {
-			resposta += string2.stringListFriends() + ",";
+			resposta += string2.toStringFullName() + ",";
 		}
 		return resposta.substring(0, resposta.length()-1);
 	}
@@ -408,10 +408,15 @@ public class Facade {
 	 * @param login
 	 * @return
 	 */
-	public List<UserAccount> getRecommendFriends(String login) {
+	public String getRecommendFriends(String login) throws Exception {
 		socialNet = SocialNet.getInstance();
 		socialNet.init();
-		return socialNet.getRecommendFriends(login);
+		String output = "";
+		List<UserAccount> recommendedFriends = socialNet.getRecommendFriends(login);
+		for (UserAccount user : recommendedFriends) {
+			output += user.toStringFullName() + ",";
+		}
+		return output.substring(0, output.length()-1);
 	}
 	
 	/**

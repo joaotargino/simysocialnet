@@ -475,8 +475,8 @@ public class SocialNet {
 	 * @param login
 	 * @return
 	 */
-	public List<UserAccount> getRecommendFriends(String login) {
-		return null;
+	public List<UserAccount> getRecommendFriends(String login) throws Exception {
+		return this.gerenciadorUsuario.getRecommendedFriends(login);
 	}
 
 	/**

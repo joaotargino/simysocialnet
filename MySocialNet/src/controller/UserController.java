@@ -92,6 +92,17 @@ public class UserController {
 		return user.getFriend(amigo, friend);
 	}
 	
+	public List<UserAccount> getRecommendedFriends(String login) throws Exception{
+		UserAccount user;
+		try {
+			user = this.DBController.getUsers(login);
+		}catch (Exception e) {
+			throw new Exception("Usuário inexistente");
+		}
+		
+		return user.getRecommendedFriends();
+	}
+	
 	private boolean verifyIfUserIsLogged(UserAccount user) {
 		if(!(user.isLogged())) return false;
 		return true;
