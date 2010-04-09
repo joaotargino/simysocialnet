@@ -18,7 +18,6 @@ public class Facade {
 	 */
 	public void login(String login, String senha) throws Exception{
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.login(login, senha);
 	}
 	
@@ -28,7 +27,6 @@ public class Facade {
 	 */
 	public void logoff(String email) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.logoff(email);
 		
 	}
@@ -39,8 +37,7 @@ public class Facade {
 	 */
 	public boolean estaLogado(String login) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
-		return socialNet.estaLogado(login);
+		return socialNet.isLoged(login);
 	}
 	
 	/**
@@ -62,7 +59,6 @@ public class Facade {
 	 */
 	public void createUser(String name, String lastName, String email, String passwd) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.createUser(name, lastName, email, passwd);
 	}
 	
@@ -78,7 +74,6 @@ public class Facade {
 	 */
 	public UserAccount getUser (String login) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		return socialNet.getUser(login);
 	}
 	
@@ -100,7 +95,6 @@ public class Facade {
 	 */
 	public void updateUserProfile(String login, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.updateUserProfile(login, aboutMe, age, photo, country, city, gender, contactEmail);
 	}
 	
@@ -114,7 +108,6 @@ public class Facade {
 	 */
 	public void setFieldPrivacy(String login, String field, String type) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.setFieldPrivacy(login, field, type);
 	}
 	
@@ -131,14 +124,12 @@ public class Facade {
 	 */
 	public String checkProfile( String login, String visibility) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		return socialNet.checkProfile(login, visibility).toString();
 	}
 	
 	
 	public String viewProfile( String viewer, String profileOwner) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		return socialNet.viewProfile(viewer, profileOwner).toString();
 	}
 	
@@ -151,7 +142,6 @@ public class Facade {
 	 */
 	public void addUserPreference(String login, String preference) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.addUserPreference(login, preference);
 	}
 	
@@ -165,7 +155,6 @@ public class Facade {
 	 */
 	public String listUserPreferences(String login) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		List<String> listPreferences = socialNet.listUserPreferences(login);
 		String preferences = listPreferences.get(0);
 		if (preferences == null) return "";
@@ -184,7 +173,6 @@ public class Facade {
 	 */
 	public void removeUserPreference (String login, String preference) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.removeUserPreference(login, preference);
 	}
 	
@@ -195,7 +183,6 @@ public class Facade {
 	 */
 	public void deleteUser(String login) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.deleteUser(login);
 	}
 	
@@ -209,7 +196,6 @@ public class Facade {
 	 */
 	public String listGroupMembers(String email, String group) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		return socialNet.listGroupMembers(email, group).toString();
 	}
 	
@@ -224,9 +210,7 @@ public class Facade {
 	 */
 	public String findGroupMember(String login,String friend, String group) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		if (socialNet.findGroupMember(login, friend, group) == null) return null;
-		String string = socialNet.findGroupMember(login, friend, group).toString();
 		return socialNet.findGroupMember(login, friend, group).toString();
 	}
 	
@@ -238,7 +222,6 @@ public class Facade {
 	 */
 	public void addGroupMember(String email, String group, String user) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.addGroupMember(email, group, user);
 	}
 	
@@ -252,7 +235,6 @@ public class Facade {
 	 */
 	public void removeGroupMember(String email, String group, String user) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.removeGroupMember(email, group, user);
 	}
 	
@@ -265,7 +247,6 @@ public class Facade {
 	 */
 	public String listFriends(String email) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		String resposta = "";
 		List<UserAccount> string = socialNet.listFriends(email);
 		for (UserAccount string2 : string) {
@@ -285,7 +266,6 @@ public class Facade {
 	 */
 	public String findNewFriend(String login, String friend) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		UserAccount usuario = socialNet.findNewFriend(login, friend);
 		if(usuario != null) {
 			return usuario.getName() + " " + usuario.getSurname() + " - Profile: photo=" +
@@ -307,7 +287,6 @@ public class Facade {
 	 */
 	public void sendFriendshipRequest(String login, String user, String message, String group) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.sendFriendshipRequest(login, user, message, group);
 	}
 	
@@ -320,7 +299,6 @@ public class Facade {
 	 */
 	public String viewPendingFriendship(String login) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		String resposta = "";
 		List<String> string = socialNet.viewPendingFriendship(login);
 		for (String string2 : string) {
@@ -339,7 +317,6 @@ public class Facade {
 	 */
 	public String viewSentFriendship (String login) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		String resposta = "";
 		List<String> string = socialNet.viewSentFriendship(login);
 		for (String string2 : string) {
@@ -356,7 +333,6 @@ public class Facade {
 	 */
 	public void declineFriendshipRequest (String login, String contact)throws Exception{
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.declineFriendshipRequest(login, contact);
 	}
 	
@@ -369,7 +345,6 @@ public class Facade {
 	 */
 	public void acceptFriendshipRequest (String login, String contact, String group) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.acceptFriendshipRequest(login, contact, group);
 	}
 	
@@ -383,7 +358,6 @@ public class Facade {
 	 */
 	public String getFriend(String email, String friend) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		if(socialNet.getFriend(email, friend) == null) return null;
 		return socialNet.getFriend(email, friend) + " " + socialNet.getFriend(email, friend).getProfileFriends();
 	}
@@ -397,7 +371,6 @@ public class Facade {
 	 */
 	public void removeFriend(String login, String friend) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.removeFriend(login, friend);
 	}
 	
@@ -411,7 +384,6 @@ public class Facade {
 	 */
 	public String getRecommendFriends(String login) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		String output = "";
 		List<UserAccount> recommendedFriends = socialNet.getRecommendFriends(login);
 		for (UserAccount user : recommendedFriends) {
@@ -429,7 +401,6 @@ public class Facade {
 	 */
 	public void exportFriendList(String login, String fileName, String exportFields) {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.exportFriendList(login, fileName, exportFields);
 	}
 	
@@ -441,7 +412,6 @@ public class Facade {
 	 */
 	public void restoreFriendList(String login, String file) {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.restoreFriendList(login, file);
 	}
 	
@@ -450,7 +420,6 @@ public class Facade {
 	 */
 	public void clean() {
 		socialNet = SocialNet.getInstance();
-		socialNet.init();
 		socialNet.clean();
 	}
 }
