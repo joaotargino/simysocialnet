@@ -396,8 +396,10 @@ public class SocialNet {
 	 * @param fileName
 	 * @param exportFields
 	 */
-	public void exportFriendList(String login, String fileName,
-			String exportFields) {
+	public void exportFriendList(String login, String fileName, String exportFields) throws Exception {
+		UserAccount usuario = this.dbController.getUser(login);
+		if (!usuario.isLogged())	throw new Exception("Usuário não logado");
+		userController.exportFriendList(usuario, login, fileName, exportFields);
 
 	}
 

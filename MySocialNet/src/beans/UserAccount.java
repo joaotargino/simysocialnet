@@ -181,8 +181,9 @@ public class UserAccount implements Comparable<UserAccount>{
 			for (UserAccount usuario : grupo.getUsers()) {
 				if(usuario.getEmail().equals(email)){
 					grupo.getUsers().remove(usuario);
-					this.groups.put(grupo.getName(), grupo);
+//					this.groups.put(grupo.getName(), grupo);
 					populateFriendsList();
+					this.updateBD();
 				}
 			}
 		}
