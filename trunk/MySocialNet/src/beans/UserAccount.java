@@ -206,7 +206,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		this.groups = grupos;
 	}
 	
-	public String stringListFriends() {
+	public String toStringFullName() {
 		return name + " " + surname;
 	}
 	@Override
@@ -407,5 +407,24 @@ public class UserAccount implements Comparable<UserAccount>{
 	
 	private void updateBD() {
 		this.DBController.update(this);
+	}
+
+	public List<UserAccount> getRecommendedFriends() {
+		this.populateFriendsList();
+		List<UserAccount> output = new ArrayList<UserAccount>();
+		for (Group group : groups) {
+			if(group.getName().equalsIgnoreCase("familia") || group.getName().equalsIgnoreCase("melhores amigos")) {
+				for (UserAccount user : group.getUsers()) {
+					for (Group groupAux : user.getGroups()) {
+						if(groupAux.getName().equalsIgnoreCase("familia") || groupAux.getName().equalsIgnoreCase("melhores amigos")) {
+							for (UserAccount userAccount : group.getUsers()) {
+								output.add(userAccount);
+							}
+						}
+					}
+				}
+			}
+		}
+		return output;
 	}
 }

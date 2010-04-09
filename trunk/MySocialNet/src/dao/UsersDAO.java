@@ -277,30 +277,4 @@ public class UsersDAO {
 		return obj;
 	}
 
-	// a nivel de teste =P
-	public static void main(String[] args) throws Exception {
-		UserAccount usuario1 = new UserAccount("Joao", "Targino", "123456",
-				"joaotargino@lsd.ufcg.edu.br");
-		UserAccount usuario2 = new UserAccount("Telles", "Nobrega", "123456",
-				"telles@lsd.ufcg.edu.br");
-		UserAccount usuario3 = new UserAccount("Rafael", "Carvalho",
-				"123456", "rafael@lsd.ufcg.edu.br");
-		UsersDAO dao = new UsersDAO();
-		dao.create(usuario1);
-		dao.create(usuario2);
-		dao.create(usuario3);
-
-		usuario1.setName("Joao Paulo");
-
-		dao.update(usuario1);
-
-		// dao.reset();
-		// dao.cadastraUsuario(usuario3);
-		UserAccount userRecuperado = dao
-				.getUsuario("joaotargino@lsd.ufcg.edu.br");
-
-		dao.delete("telles@lsd.ufcg.edu.br");
-		System.out.println(dao.getUsuarios());
-	}
-
 }
