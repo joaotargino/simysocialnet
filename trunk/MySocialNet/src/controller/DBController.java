@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.Iterator;
 import java.util.List;
 
 import Util.Util;
@@ -65,5 +66,17 @@ public class DBController {
 			throw new Exception("Usuário não logado");
 		return usuario;
 	}
-
+	
+	public UserAccount getUserFromCompleteName(String completeName) throws Exception {
+		List<UserAccount> allUsers = this.getAllUsers();
+		Iterator<UserAccount> allUsersIterator = allUsers.iterator();
+		UserAccount iteratedUser;
+		while (allUsersIterator.hasNext()) {
+			iteratedUser = allUsersIterator.next();
+			String iteratedUserCompleteName = iteratedUser.getName() + " " +iteratedUser.getSurname();
+			if (iteratedUserCompleteName.equals(completeName)) return iteratedUser;
+		}
+		throw new Exception(completeName);
+	}
+	
 }

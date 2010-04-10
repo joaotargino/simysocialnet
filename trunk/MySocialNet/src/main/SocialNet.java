@@ -1,3 +1,14 @@
+//package main;
+//
+//import interfaces.ProfileIF;
+//
+//import java.util.List;
+//
+//import beans.Group;
+//import beans.UserAccount;
+//import controller.DBController;
+//import controller.GroupController;
+//import controller.UserController;
 package main;
 
 import interfaces.ProfileIF;
@@ -378,9 +389,12 @@ public class SocialNet {
 	 * 
 	 * @param login
 	 * @param file
+	 * @throws Exception 
 	 */
-	public void restoreFriendList(String login, String file) {
-
+	public String restoreFriendList(String login, String file) throws Exception {
+		UserAccount usuario = this.dbController.getUser(login);
+		if (!usuario.isLogged())	throw new Exception("Usuário não logado");
+		return userController.restoreFriendList(usuario, file);
 	}
 
 	/**
@@ -390,40 +404,4 @@ public class SocialNet {
 		userController.clean();
 	}
 	
-	public static void main(String[] args) throws Exception {
-		SocialNet net = new SocialNet();
-		net.clean();
-		
-		net.createUser("Telles", "Nobrega", "telles@telles.com","123456");
-		net.createUser("Japa","Hideo", "japa@japa.com", "123456");
-		net.createUser("Rafael","Aquino","rafael@rafael.com","123456");
-		net.login("telles@telles.com", "123456");
-		net.sendFriendshipRequest("telles@telles.com", "rafael@rafael.com", "messagem", "familia");
-		net.sendFriendshipRequest("telles@telles.com", "japa@japa.com", "messagem", "familia");
-		net.logoff("telles@telles.com");
-		net.login("rafael@rafael.com", "123456");
-		net.sendFriendshipRequest("rafael@rafael.com", "japa@japa.com", "messagem", "familia");
-		net.logoff("rafael@rafael.com");
-		net.login("japa@japa.com", "123456");
-		net.acceptFriendshipRequest("japa@japa.com", "rafael@rafael.com", "familia");
-//		net.declineFriendshipRequest("japa@japa.com", "telles@telles.com");
-		net.logoff("japa@japa.com");
-		net.login("telles@telles.com", "123456");
-		net.login("japa@japa.com", "123456");
-		net.login("rafael@rafael.com", "123456");
-		net.acceptFriendshipRequest("rafael@rafael.com", "telles@telles.com", "familia");
-		System.out.println(net.listFriends("telles@telles.com"));
-//		System.out.println(net.getUser("rafael@rafael.com").getGrupo(net.getUser("rafael@rafael.com"), "conhecidos"));
-		System.out.println(net.listFriends("japa@japa.com"));
-		System.out.println(net.listFriends("rafael@rafael.com"));
-		System.out.println("Recomendado >>> " + net.getRecommendFriends("telles@telles.com"));
-		System.out.println("Recomendado >>> " + net.getRecommendFriends("rafael@rafael.com"));
-		System.out.println("Recomendado >>> " + net.getRecommendFriends("japa@japa.com"));
-		
-		System.out.println("Grupo Familia >>>>  " + net.getUser("telles@telles.com").getGrupo(net.getUser("telles@telles.com"), "familia"));
-		System.out.println("Grupo Familia >>>>  " + net.getUser("rafael@rafael.com").getGrupo(net.getUser("rafael@rafael.com"), "familia"));
-		System.out.println("Grupo Familia >>>>  " + net.getUser("japa@japa.com").getGrupo(net.getUser("japa@japa.com"), "familia"));
-		
-		
-	}
 }

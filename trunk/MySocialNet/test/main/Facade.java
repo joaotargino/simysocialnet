@@ -1,5 +1,11 @@
+//package main;
+//
+//import java.util.List;
+//
+//import beans.UserAccount;
 package main;
 
+import java.util.Collections;
 import java.util.List;
 
 import beans.UserAccount;
@@ -321,8 +327,9 @@ public class Facade {
 		socialNet = SocialNet.getInstance();
 		String resposta = "";
 		List<String> string = socialNet.viewSentFriendship(login);
-		for (String string2 : string) {
-			resposta += string2;
+		for (int i=0;i<string.size();i++) {
+			resposta += string.get(i);
+			if (i != string.size() - 1) resposta += ",";
 		}
 		return resposta;
 	}
@@ -414,10 +421,11 @@ public class Facade {
 	 * 
 	 * @param login
 	 * @param file
+	 * @throws Exception 
 	 */
-	public void restoreFriendList(String login, String file) {
+	public String restoreFriendList(String login, String file) throws Exception {
 		socialNet = SocialNet.getInstance();
-		socialNet.restoreFriendList(login, file);
+		return socialNet.restoreFriendList(login, file);
 	}
 	
 	/**
