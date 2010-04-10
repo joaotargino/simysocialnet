@@ -280,7 +280,7 @@ public class UserController {
 		} catch(Exception erro) {
 			throw new Exception("Falha na exportação do arquivo");
 		}
-		String sep = System.getenv("line.separator");
+		String sep = System.getProperty("line.separator");
 		if (exportFields.trim().equals("")) dadosExportados += "name,lastName";
 		else dadosExportados += "name,lastName,";
 		
