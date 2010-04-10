@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import Util.Util;
 import beans.UserAccount;
 import dao.UsersDAO;
@@ -25,6 +27,10 @@ public class DBController {
 			if (usuario.getEmail().equals(login) || nomeCompleto.equals(login)) return usuario;
 		}
 		throw new Exception("Login inexistente");
+	}
+	
+	public List<UserAccount> getAllUsers() {
+		return UsersDAO.getInstance().getUsuarios();
 	}
 	
 	public UserAccount findNewFriend(String login, String friend) throws Exception {
