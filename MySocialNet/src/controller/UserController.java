@@ -158,7 +158,6 @@ public class UserController {
 		}catch (Exception e) {
 			throw new Exception("Usuário inexistente");
 		}
-
 		return user.getRecommendedFriends();
 	}
 

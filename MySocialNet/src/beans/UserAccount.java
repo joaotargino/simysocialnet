@@ -7,8 +7,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import Util.Util;
 import controller.DBController;
@@ -432,6 +434,10 @@ public class UserAccount implements Comparable<UserAccount>{
 			output.addAll(user.getGrupo(user, "familia").getUsers());
 			output.addAll(user.getGrupo(user, "melhores amigos").getUsers());
 		}
+		for (UserAccount user : DBController.getAllUsers()) {
+			output.addAll(user.getSimilarityFriends(this));
+		}
+		
 		for (int i = 0; i < output.size(); i ++) {
 			if ((!recomendedFriends.contains(output.get(i))) && !(output.get(i).getEmail().equals(getEmail()) || getFriends().contains(output.get(i)))) {
 				recomendedFriends.add(output.get(i));
@@ -439,6 +445,22 @@ public class UserAccount implements Comparable<UserAccount>{
 		}
 
 		return recomendedFriends;
+	}
+
+	private List<UserAccount> getSimilarityFriends(UserAccount userAccount) {
+		List<UserAccount> similarityFriends = new ArrayList<UserAccount>();
+		for (UserAccount user : this.getFriends()) {
+			Set<String> commumPreferences = new TreeSet<String>();
+			Set<String> allPreferences = new TreeSet<String>();
+			commumPreferences.addAll(user.getPreferences());
+			allPreferences.addAll(user.getPreferences());
+			commumPreferences.retainAll(userAccount.getPreferences());
+			allPreferences.retainAll(userAccount.getPreferences());
+			if (((double) commumPreferences.size()/(double) allPreferences.size()) >= 0.35) {
+				similarityFriends.add(user);
+			}
+		}
+		return similarityFriends;
 	}
 
 	public void updateFriends() {
