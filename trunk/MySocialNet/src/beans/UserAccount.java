@@ -334,11 +334,13 @@ public class UserAccount implements Comparable<UserAccount>{
 		if (sentFriendship.keySet().contains(login)) throw new Exception("Você já enviou um convite para o usuário " + account.getName() + " " + account.getSurname());
 		sentFriendship.put(login,group);
 		this.updateBD();
+		this.updateFriends();
 	}
 
 	public void receiveFriendshipRequest(UserAccount logado, String login, String message) {
 		pendingFriendship.put(login, logado.getName() + " " + logado.getSurname() + " <" + login + "> - mensagem: " + message);
 		this.updateBD();
+		this.updateFriends();
 	}
 
 	public List<String> viewSentFriendship() {
@@ -395,7 +397,7 @@ public class UserAccount implements Comparable<UserAccount>{
 	}
 
 	private void addToGroup(UserAccount user, String group) throws Exception {
-		Group grupo = this.getGrupo(this, group);
+		Group grupo = this.getGroups().get(group);
 		List<UserAccount> users = grupo.getUsers();
 		users.add(user);
 		grupo.setUsers(users);

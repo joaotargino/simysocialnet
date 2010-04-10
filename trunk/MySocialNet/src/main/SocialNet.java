@@ -344,37 +344,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public void removeFriend(String login, String friend) throws Exception {
-		UserAccount usuario = this.dbController.getUsers(login);
-		UserAccount amigo;
-		try {
-			amigo = this.dbController.getUsers(friend);
-		} catch (Exception e) {
-			throw new Exception("Amigo não existente no sistema");
-		}
-		if (!usuario.isLogged())
-			throw new Exception("Usuário não logado");
-		amigo = userController.getFriend(login, friend);
-		if (amigo == null)
-			throw new Exception("Amigo não encontrado em nenhum grupo");
-		
-		for (Group grupo : usuario.getGroups().values()) {
-			if (grupo.getUsers().contains(amigo)) {
-				grupo.getUsers().remove(amigo);
-				usuario.getGroups().put(grupo.getName(), grupo);
-				this.dbController.update(usuario);
-				amigo.updateFriends();
-				break;
-			}
-		}
-		for (Group grupo : amigo.getGroups().values()) {
-			if (grupo.getUsers().contains(usuario)) {
-				grupo.getUsers().remove(usuario);
-				amigo.getGroups().put(grupo.getName(), grupo);
-				this.dbController.update(amigo);
-				amigo.updateFriends();
-				break;
-			}
-		}
+		userController.removeFriend(login, friend);
 	}
 
 	/**
