@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import beans.Group;
 import beans.UserAccount;
 import dao.UsersDAO;
 
@@ -310,4 +311,33 @@ public class UserController {
 		return dadosDoUsuario;
 	}
 
+	public void removeFriend(String login, String friend) throws Exception {
+		UserAccount usuario = this.dbController.getUsers(login);
+		UserAccount amigo;
+		try {
+			amigo = this.dbController.getUsers(friend);
+		} catch (Exception e) {
+			throw new Exception("Amigo não existente no sistema");
+		}
+		if (!usuario.isLogged())
+			throw new Exception("Usuário não logado");
+		amigo = getFriend(login, friend);
+		if (amigo == null)
+			throw new Exception("Amigo não encontrado em nenhum grupo");
+		
+		removeFriendFromGroup(usuario, amigo);
+		removeFriendFromGroup(amigo, usuario);
+	}
+	
+	private void removeFriendFromGroup(UserAccount user, UserAccount friend) {
+		for (Group grupo : user.getGroups().values()) {
+			if (grupo.getUsers().contains(friend)) {
+				grupo.getUsers().remove(friend);
+				user.getGroups().put(grupo.getName(), grupo);
+				this.dbController.update(user);
+				user.updateFriends();
+				break;
+			}
+		}
+	}
 }
