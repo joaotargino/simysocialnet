@@ -347,7 +347,7 @@ public class UserAccount implements Comparable<UserAccount>{
 
 	public List<String> viewSentFriendship() {
 		List<String> resposta = new ArrayList<String>();
-		if(sentFriendship.isEmpty()) resposta.add("Não há nenhuma solicitação de amizade pendente");;
+		if(sentFriendship.isEmpty()) resposta.add("Não há nenhuma solicitação de amizade pendente");
 		for (String key : sentFriendship.keySet()) {
 			resposta.add(key);
 		}
@@ -424,16 +424,9 @@ public class UserAccount implements Comparable<UserAccount>{
 		List<UserAccount> friends = this.getGrupo(this, "melhores amigos").getUsers();
 		List<UserAccount> family = this.getGrupo(this, "familia").getUsers();
 		List<UserAccount> recomendedFriends = new ArrayList<UserAccount>();
-		for (UserAccount user : friends) {
-			user.setFriends(new ArrayList<UserAccount>());
-			output.addAll(user.getGrupo(user, "familia").getUsers());
-			output.addAll(user.getGrupo(user, "melhores amigos").getUsers());
-		}
-		for (UserAccount user : family) {
-			user.setFriends(new ArrayList<UserAccount>());
-			output.addAll(user.getGrupo(user, "familia").getUsers());
-			output.addAll(user.getGrupo(user, "melhores amigos").getUsers());
-		}
+
+		output.addAll(putFriendsIntoList(family));
+		output.addAll(putFriendsIntoList(friends));
 		for (UserAccount user : DBController.getAllUsers()) {
 			output.addAll(user.getSimilarityFriends(this));
 		}
@@ -470,20 +463,13 @@ public class UserAccount implements Comparable<UserAccount>{
 	}
 
 	private List<UserAccount> putFriendsIntoList(List<UserAccount>list) throws Exception{
-		List<UserAccount> tmp = new ArrayList<UserAccount>();
-		for (UserAccount userAccount : list) {
-			List<UserAccount> listaFamilia = new ArrayList<UserAccount>();
-			listaFamilia = userAccount.getFriendsFromGroup(userAccount,"familia");
-			List<UserAccount> listaMelhoresAmigos = new ArrayList<UserAccount>();
-			listaMelhoresAmigos = userAccount.getFriendsFromGroup(userAccount,"melhores amigos");
-			for (UserAccount user : listaFamilia) {
-				tmp.add(user);
-			}
-			for (UserAccount user : listaMelhoresAmigos) {
-				tmp.add(user);
-			}
+		List<UserAccount> output = new ArrayList<UserAccount>();
+		for (UserAccount user : list) {
+			user.setFriends(new ArrayList<UserAccount>());
+			output.addAll(user.getGrupo(user, "familia").getUsers());
+			output.addAll(user.getGrupo(user, "melhores amigos").getUsers());
 		}
-		return tmp;
+		return output;
 	}
 
 	private List<UserAccount> getFriendsFromGroup(UserAccount user, String group) throws Exception {

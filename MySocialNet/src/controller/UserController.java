@@ -1,14 +1,33 @@
+//package controller;
+//
+//import interfaces.ProfileIF;
+//
+//import java.io.File;
+//import java.io.FileWriter;
+//import java.io.PrintWriter;
+//import java.util.ArrayList;
+//import java.util.Collections;
+//import java.util.Iterator;
+//import java.util.List;
+//
+//import beans.Group;
+//import beans.UserAccount;
+//import dao.UsersDAO;
 package controller;
 
 import interfaces.ProfileIF;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.SortedMap;
 
 import beans.Group;
 import beans.UserAccount;
@@ -246,7 +265,7 @@ public class UserController {
 			throw new Exception("Usuário não logado");
 		user.getPreferences().remove(preference);
 		this.dbController.update(user);
-		
+
 	}
 
 	public void deleteUser(String login) throws Exception {
@@ -254,22 +273,22 @@ public class UserController {
 		if (!user.isLogged())
 			throw new Exception("Usuário não logado");
 		this.dbController.removeFromDB(login);
-		
+
 	}
-	
-	
-//	private void criaPastas(String localizacaoArquivo) {
-//		int localizacaoUltimaPasta = localizacaoArquivo.lastIndexOf('/');
-//		String caminhoPastas = localizacaoArquivo.substring(0,localizacaoUltimaPasta);
-//		File pastas = new File(caminhoPastas);
-//		pastas.mkdirs();
-//		System.out.println(caminhoPastas);
-//	}
-	
+
+
+	//	private void criaPastas(String localizacaoArquivo) {
+	//		int localizacaoUltimaPasta = localizacaoArquivo.lastIndexOf('/');
+	//		String caminhoPastas = localizacaoArquivo.substring(0,localizacaoUltimaPasta);
+	//		File pastas = new File(caminhoPastas);
+	//		pastas.mkdirs();
+	//		System.out.println(caminhoPastas);
+	//	}
+
 	public void exportFriendList(UserAccount usuario, String login, String fileName, String exportFields) throws Exception {
-		
+
 		String dadosExportados = "";
-//		this.criaPastas(fileName);
+		//		this.criaPastas(fileName);
 		File file;
 		FileWriter writer;
 		PrintWriter saida;
@@ -283,7 +302,7 @@ public class UserController {
 		String sep = System.getProperty("line.separator");
 		if (exportFields.trim().equals("")) dadosExportados += "name,lastName";
 		else dadosExportados += "name,lastName,";
-		
+
 		dadosExportados += exportFields + sep;
 		List<UserAccount> listaDosAmigos = usuario.getFriends();
 		Collections.sort(listaDosAmigos);
@@ -294,8 +313,10 @@ public class UserController {
 			if (IteradorDaListaDeAmigos.hasNext()) dadosExportados += sep;
 		}
 		saida.println(dadosExportados);
+		writer.close();
+		saida.close();
 	}
-	
+
 	private String organizeStringToExport(UserAccount usuario,String exportFields) {
 		ProfileIF profile = usuario.getProfileAll();
 		String dadosDoUsuario = "";
@@ -308,6 +329,75 @@ public class UserController {
 		if (exportFields.contains("country"))  dadosDoUsuario += "," + profile.getCountry();
 		if (exportFields.contains("city"))  dadosDoUsuario += "," + profile.getCity();
 		return dadosDoUsuario;
+	}
+
+	public String restoreFriendList(UserAccount usuario, String fileName) throws Exception{
+		List<String> notImportedContacts = new ArrayList<String>();
+		FileReader fileReader;
+		BufferedReader reader;
+		try {
+			fileReader  = new FileReader(fileName);
+			reader = new BufferedReader(fileReader);
+		} catch (Exception erro) {
+			throw new Exception("Arquivo não encontrado");
+		}
+		testValidFile(reader);
+		fileReader  = new FileReader(fileName);
+		reader = new BufferedReader(fileReader);
+		String friendInformation = reader.readLine();
+		String linhaLida = reader.readLine();
+		while (linhaLida != null) {
+			String errorInRestore = restoreSingleFriend(usuario, linhaLida);
+			if (!errorInRestore.equals("")) notImportedContacts.add(errorInRestore);
+			linhaLida = reader.readLine();
+		}
+		if (notImportedContacts.size() == 0) return "Todos os contatos foram importados";
+		return ("Contatos não importados: "+organizeNotImportedContacts(notImportedContacts));
+		
+
+	}
+	
+	private String organizeNotImportedContacts(List<String> notImportedContacts) {
+		Iterator<String> notImportedContactsIterator = notImportedContacts.iterator();
+		String notImportedNames = "";
+		while (notImportedContactsIterator.hasNext()) {
+			String IteratedName = notImportedContactsIterator.next();
+			notImportedNames += IteratedName;
+			if (notImportedContactsIterator.hasNext()) notImportedNames += ",";
+		}
+		return notImportedNames;
+	}
+
+	private void testValidFile(BufferedReader reader) throws Exception{
+		String linhaLida = reader.readLine();
+		if (!linhaLida.contains("name,lastName")) throw new Exception("Arquivo não suportado pelo sistema");
+		int numberOfColumns = linhaLida.split(",").length;
+		while (linhaLida != null) {
+			if (linhaLida.split(",").length != numberOfColumns ) throw new Exception("Arquivo não suportado pelo sistema");
+			linhaLida = reader.readLine();
+		}
+	}
+
+	public String restoreSingleFriend(UserAccount usuario,String friendInformation) {
+		String[] separatedFriendInformation = friendInformation.split(",");
+		String completeName = separatedFriendInformation[0] + " " + separatedFriendInformation[1];
+		String errorMessage = "";
+		try {
+			UserAccount newFriend = dbController.getUserFromCompleteName(completeName);
+			try {
+				usuario.getFriend(newFriend.getEmail());
+				errorMessage += "Usuários "+usuario.getName()+" "+usuario.getSurname()+" e "+completeName+" já são amigos";
+				return errorMessage;
+			} catch(Exception e){}
+			if (newFriend.getPendingFriendship().containsKey(usuario.getEmail())) errorMessage = "Você já enviou um convite para o usuário "+completeName;
+			else {
+				String message = "Olá, "+newFriend.getEmail()+" me adicione como seu amigo.";
+				this.sendFriendshipRequest(usuario.getEmail(), newFriend.getEmail(), message, "conhecidos");
+			}
+		} catch(Exception erro) {
+			errorMessage += completeName;
+		}
+		return errorMessage;
 	}
 
 	public void removeFriend(String login, String friend) throws Exception {
@@ -323,11 +413,11 @@ public class UserController {
 		amigo = getFriend(login, friend);
 		if (amigo == null)
 			throw new Exception("Amigo não encontrado em nenhum grupo");
-		
+
 		removeFriendFromGroup(usuario, amigo);
 		removeFriendFromGroup(amigo, usuario);
 	}
-	
+
 	private void removeFriendFromGroup(UserAccount user, UserAccount friend) {
 		for (Group grupo : user.getGroups().values()) {
 			if (grupo.getUsers().contains(friend)) {
@@ -339,4 +429,9 @@ public class UserController {
 			}
 		}
 	}
+	
+	public static void main(String[] args) {
+//		SortedMap<String,String> map = new HashMap<String,String>();
+	}
 }
+
