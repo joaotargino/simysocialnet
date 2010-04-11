@@ -45,6 +45,8 @@ public class GroupController {
 		Collections.sort(group.getUsers());
 		usuario.getGroups().put(grupo, group);
 		this.dbController.update(usuario);
+		usuario.updateFriends();
+		this.dbController.update();
 	} 
 	
 	/**
