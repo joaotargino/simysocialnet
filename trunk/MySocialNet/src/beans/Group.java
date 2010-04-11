@@ -3,6 +3,10 @@ package beans;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Rafael Aquino
+ *
+ */
 public class Group {
 	
 	private String name;

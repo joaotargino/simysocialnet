@@ -38,6 +38,9 @@ public class UserController {
 	private List<UserAccount> usuariosLogados;
 
 
+	/**
+	 * Construtor do obejto
+	 */
 	public UserController() {
 		usuariosLogados = new ArrayList<UserAccount>();
 		dbController = new DBController();
@@ -53,6 +56,12 @@ public class UserController {
 		return getUsuariosLogados().contains(user);
 	}
 
+	/**
+	 * Faz o login no sistema
+	 * @param login
+	 * @param senha
+	 * @throws Exception
+	 */
 	public void login(String login, String senha) throws Exception {
 		UserAccount usuario;
 		try {
@@ -72,6 +81,11 @@ public class UserController {
 		this.dbController.update(usuario);
 	}
 
+	/**
+	 * Desloga do sistema
+	 * @param login
+	 * @throws Exception
+	 */
 	public void logoff(String login) throws Exception {
 		UserAccount user;
 		try {
@@ -86,6 +100,12 @@ public class UserController {
 		dbController.update(user);
 	}
 
+	/**
+	 * Adiciona as preferências do usuário
+	 * @param login
+	 * @param preferencia
+	 * @throws Exception
+	 */
 	public void addUserPreferences(String login,String preferencia) throws Exception {
 		UserAccount user = this.dbController.getUsers(login);
 		if (!user.isLogged()) {
@@ -94,6 +114,14 @@ public class UserController {
 		user.addUserPreferences(preferencia);
 	}
 
+	/**
+	 * Envia um convite para um amigo
+	 * @param login
+	 * @param user
+	 * @param message
+	 * @param group
+	 * @throws Exception
+	 */
 	public void sendFriendshipRequest(String login, String user, String message, String group) throws Exception {
 		UserAccount convidado; 
 		try {
@@ -108,6 +136,13 @@ public class UserController {
 		convidado.receiveFriendshipRequest(logado, login, message);
 	}
 
+	/**
+	 * Aceita convite do usuário
+	 * @param login
+	 * @param contact
+	 * @param group
+	 * @throws Exception
+	 */
 	public void acceptFriendshipRequest(String login, String contact,String group) throws Exception {
 		UserAccount user = this.dbController.getUsers(login);
 		UserAccount contato = this.dbController.getUsers(contact);
@@ -116,17 +151,32 @@ public class UserController {
 		contato.removeSentFriendshipRequest(login,user);
 	}
 
+	/**
+	 * Limpa o DB
+	 */
 	public void clean() {
 		usuariosLogados = new ArrayList<UserAccount>();
 		UsersDAO.getInstance().reset();
 	}
 
+	/**
+	 * Lista os amigos
+	 * @param email
+	 * @return
+	 * @throws Exception
+	 */
 	public List<UserAccount> listFriends(String email) throws Exception {
 		UserAccount usuario = this.dbController.getUsers(email);
 		if(!verifyIfUserIsLogged(usuario)) throw new Exception("Usuário não logado");
 		return usuario.getFriends();
 	}
 
+	/**
+	 * Ver lista de convites recebidos
+	 * @param login
+	 * @return a lista de convites recebidos
+	 * @throws Exception
+	 */
 	public List<String> viewPendingFriendship(String login) throws Exception{
 		UserAccount usuario = this.dbController.getUsers(login);
 
@@ -134,6 +184,12 @@ public class UserController {
 		return usuario.viewPendingFriendship();
 	}
 
+	/**
+	 * Ver lista de convites enviados
+	 * @param login
+	 * @return a lista de convites enviados
+	 * @throws Exception
+	 */
 	public List<String> viewSentFriendship(String login)throws Exception {
 		UserAccount usuario = this.dbController.getUsers(login);
 
@@ -141,6 +197,12 @@ public class UserController {
 		return usuario.viewSentFriendship();
 	}
 
+	/**
+	 * Rejeita um convite enviado
+	 * @param login
+	 * @param contact
+	 * @throws Exception
+	 */
 	public void declineFriendshipRequest(String login, String contact) throws Exception{
 		UserAccount usuario;
 		UserAccount contato;
@@ -180,12 +242,25 @@ public class UserController {
 		return user.getRecommendedFriends();
 	}
 
+	/**
+	 * Verifica se usuário está logado
+	 * @param user
+	 * @return true se tiver logado, false caso contrário
+	 */
 	private boolean verifyIfUserIsLogged(UserAccount user) {
 		if(!(user.isLogged())) return false;
 		return true;
 
 	}
 
+	/**
+	 * Cria um novo usuário
+	 * @param name
+	 * @param lastName
+	 * @param email
+	 * @param passwd
+	 * @throws Exception
+	 */
 	public void createUser(String name, String lastName, String email,
 			String passwd) throws Exception {
 
@@ -202,6 +277,18 @@ public class UserController {
 
 	}
 
+	/**
+	 * Atualiza profile do usuário
+	 * @param login
+	 * @param aboutMe
+	 * @param age
+	 * @param photo
+	 * @param country
+	 * @param city
+	 * @param gender
+	 * @param contactEmail
+	 * @throws Exception
+	 */
 	public void updateUserProfile(String login, String aboutMe, String age,
 			String photo, String country, String city, String gender,
 			String contactEmail) throws Exception {
@@ -214,6 +301,13 @@ public class UserController {
 
 	}
 
+	/**
+	 * Seta a privacidade de um campo
+	 * @param login
+	 * @param field
+	 * @param type
+	 * @throws Exception
+	 */
 	public void setFieldPrivacy(String login, String field, String type) throws Exception {
 		UserAccount usuario = this.dbController.getUsers(login);
 		if (!usuario.isLogged())
@@ -222,6 +316,13 @@ public class UserController {
 
 	}
 
+	/**
+	 * Checa um profile
+	 * @param login
+	 * @param visibility a visibilidade que se deseja checar
+	 * @return o profile
+	 * @throws Exception
+	 */
 	public ProfileIF checkProfile(String login, String visibility) throws Exception {
 
 		UserAccount user;
@@ -238,6 +339,13 @@ public class UserController {
 
 	}
 
+	/**
+	 * Mostra o profile
+	 * @param viewer
+	 * @param profileOwner
+	 * @return
+	 * @throws Exception
+	 */
 	public ProfileIF viewProfile(String viewer, String profileOwner) throws Exception {
 		UserAccount viewerUser;
 		UserAccount ownerUser;
@@ -259,6 +367,12 @@ public class UserController {
 
 	}
 
+	/**
+	 * Remove preferência de um usuário
+	 * @param login
+	 * @param preference
+	 * @throws Exception
+	 */
 	public void removeUserPreference(String login, String preference) throws Exception {
 		UserAccount user = this.dbController.getUsers(login);
 		if (!user.isLogged())
@@ -268,6 +382,11 @@ public class UserController {
 
 	}
 
+	/**
+	 * Remove um usuário
+	 * @param login
+	 * @throws Exception
+	 */
 	public void deleteUser(String login) throws Exception {
 		UserAccount user = this.dbController.getUsers(login);
 		if (!user.isLogged())
@@ -277,14 +396,14 @@ public class UserController {
 	}
 
 
-	//	private void criaPastas(String localizacaoArquivo) {
-	//		int localizacaoUltimaPasta = localizacaoArquivo.lastIndexOf('/');
-	//		String caminhoPastas = localizacaoArquivo.substring(0,localizacaoUltimaPasta);
-	//		File pastas = new File(caminhoPastas);
-	//		pastas.mkdirs();
-	//		System.out.println(caminhoPastas);
-	//	}
-
+	/**
+	 * Exporta lista de amigos
+	 * @param usuario
+	 * @param login
+	 * @param fileName
+	 * @param exportFields
+	 * @throws Exception
+	 */
 	public void exportFriendList(UserAccount usuario, String login, String fileName, String exportFields) throws Exception {
 
 		String dadosExportados = "";
@@ -317,6 +436,12 @@ public class UserController {
 		saida.close();
 	}
 
+	/**
+	 * Organiza string para ser exportada
+	 * @param usuario
+	 * @param exportFields
+	 * @return a string organizada
+	 */
 	private String organizeStringToExport(UserAccount usuario,String exportFields) {
 		ProfileIF profile = usuario.getProfileAll();
 		String dadosDoUsuario = "";
@@ -331,6 +456,13 @@ public class UserController {
 		return dadosDoUsuario;
 	}
 
+	/**
+	 * Recupera lista de amigos de um arquivo
+	 * @param usuario
+	 * @param fileName
+	 * @return
+	 * @throws Exception
+	 */
 	public String restoreFriendList(UserAccount usuario, String fileName) throws Exception{
 		List<String> notImportedContacts = new ArrayList<String>();
 		FileReader fileReader;
@@ -357,6 +489,11 @@ public class UserController {
 
 	}
 	
+	/**
+	 * Organiza contatos não importados
+	 * @param notImportedContacts
+	 * @return
+	 */
 	private String organizeNotImportedContacts(List<String> notImportedContacts) {
 		Iterator<String> notImportedContactsIterator = notImportedContacts.iterator();
 		String notImportedNames = "";
@@ -368,6 +505,11 @@ public class UserController {
 		return notImportedNames;
 	}
 
+	/**
+	 * Verifica se o arquivo é válido
+	 * @param reader
+	 * @throws Exception
+	 */
 	private void testValidFile(BufferedReader reader) throws Exception{
 		String linhaLida = reader.readLine();
 		if (!linhaLida.contains("name,lastName")) throw new Exception("Arquivo não suportado pelo sistema");
@@ -378,6 +520,12 @@ public class UserController {
 		}
 	}
 
+	/**
+	 * Recupera um único amigo
+	 * @param usuario
+	 * @param friendInformation
+	 * @return
+	 */
 	public String restoreSingleFriend(UserAccount usuario,String friendInformation) {
 		String[] separatedFriendInformation = friendInformation.split(",");
 		String completeName = separatedFriendInformation[0] + " " + separatedFriendInformation[1];
@@ -400,6 +548,12 @@ public class UserController {
 		return errorMessage;
 	}
 
+	/**
+	 * Remove amigo
+	 * @param login
+	 * @param friend
+	 * @throws Exception
+	 */
 	public void removeFriend(String login, String friend) throws Exception {
 		UserAccount usuario = this.dbController.getUsers(login);
 		UserAccount amigo;
@@ -418,6 +572,11 @@ public class UserController {
 		removeFriendFromGroup(amigo, usuario);
 	}
 
+	/**
+	 * Remove amigo do grupo
+	 * @param user
+	 * @param friend
+	 */
 	private void removeFriendFromGroup(UserAccount user, UserAccount friend) {
 		for (Group grupo : user.getGroups().values()) {
 			if (grupo.getUsers().contains(friend)) {

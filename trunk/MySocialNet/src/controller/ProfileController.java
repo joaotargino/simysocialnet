@@ -24,26 +24,40 @@ public class ProfileController {
 	}
 
 
+	/**
+	 * Seta a privacidade de um campo
+	 * @param owner
+	 * @param visibility
+	 * @param field
+	 * @throws Exception
+	 */
 	public void setPrivacy(String owner, String visibility, String field) throws Exception {
 		UserAccount usuario = this.DBController.getUsers(owner);
 		ProfileIF profileAll = usuario.getProfileAll();
 		ProfileIF profileJustMe = usuario.getProfileJustMe();
 		ProfileIF profileFriends = usuario.getProfileFriends();
 		if (visibility.equals(ProfileConstants.ALL)) {
-			setPrivacityPorTipo(usuario, field, profileAll, profileJustMe);
-			setPrivacityPorTipo(usuario, field, profileFriends, profileJustMe);
+			setPrivacityByType(usuario, field, profileAll, profileJustMe);
+			setPrivacityByType(usuario, field, profileFriends, profileJustMe);
 		}
 		else if (visibility.equals(ProfileConstants.FRIENDS)) {
-			retiraPrivacidade(usuario, field, profileAll, null);
-			setPrivacityPorTipo(usuario, field, profileFriends, profileJustMe);
+			removePrivacy(usuario, field, profileAll, null);
+			setPrivacityByType(usuario, field, profileFriends, profileJustMe);
 		}
 		else {
-			retiraPrivacidade(usuario, field, profileAll, null);
-			retiraPrivacidade(usuario, field, profileFriends, null);
+			removePrivacy(usuario, field, profileAll, null);
+			removePrivacy(usuario, field, profileFriends, null);
 		}
 	}
 	
-	private void retiraPrivacidade(UserAccount usuario, String field, ProfileIF profile, String valor) {
+	/**
+	 * Retira a privacidade
+	 * @param usuario
+	 * @param field
+	 * @param profile
+	 * @param valor
+	 */
+	private void removePrivacy(UserAccount usuario, String field, ProfileIF profile, String valor) {
 		
 		if(field.equals(ProfileConstants.AGE)) {
 			profile.setAge(valor);
@@ -78,7 +92,14 @@ public class ProfileController {
 		
 	}
 
-	private void setPrivacityPorTipo(UserAccount usuario, String field, ProfileIF profile, ProfileIF justMe) {
+	/**
+	 * Seta privacidade pelo tipo
+	 * @param usuario
+	 * @param field
+	 * @param profile
+	 * @param justMe
+	 */
+	private void setPrivacityByType(UserAccount usuario, String field, ProfileIF profile, ProfileIF justMe) {
 		
 		if(field.equals(ProfileConstants.AGE)) {
 			profile.setAge(justMe.getAge());
@@ -112,6 +133,17 @@ public class ProfileController {
 		}
 	}
 
+	/**
+	 * Atualiza o perfil do usuário
+	 * @param usuario
+	 * @param aboutMe
+	 * @param age
+	 * @param photo
+	 * @param country
+	 * @param city
+	 * @param gender
+	 * @param contactEmail
+	 */
 	public void updateUserProfile(UserAccount usuario, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
 		ProfileIF all = usuario.getProfileAll();
 		ProfileIF justMe = usuario.getProfileJustMe();
@@ -128,6 +160,18 @@ public class ProfileController {
 		this.DBController.update(usuario);
 	}
 	
+	/**
+	 * Atualiza o profile pelo tipo
+	 * @param profile
+	 * @param aboutMe
+	 * @param age
+	 * @param photo
+	 * @param country
+	 * @param city
+	 * @param gender
+	 * @param contactEmail
+	 * @return
+	 */
 	private ProfileIF updateUserProfileType(ProfileIF profile, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
 		profile.setAboutMe(aboutMe);
 		profile.setAge(age);

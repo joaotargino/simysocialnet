@@ -5,7 +5,14 @@ import java.util.regex.Pattern;
 
 public class Util {
 	
-	public static boolean verificaString(String texto, String campo) throws Exception {
+	/**
+	 * Verifica se a string é válida
+	 * @param texto
+	 * @param campo
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean verifyString(String texto, String campo) throws Exception {
 		
 		if (texto == null) throw new Exception(campo + " null");
 		else if (texto.isEmpty()) throw new Exception(campo + " do usuário deve ser informado");
@@ -26,7 +33,13 @@ public class Util {
 		return true;
 	}
 	
-	public static boolean verificaSenha(String senha) throws Exception {
+	/**
+	 * Verifica se a senha é válida
+	 * @param senha
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean verifyPassword(String senha) throws Exception {
 		
 		if (senha == null) throw new Exception("Senha null");
 		else if (senha.isEmpty()) throw new Exception("Senha deve ser informada");
@@ -37,7 +50,13 @@ public class Util {
 		return true;
 	}
 	
-	public static boolean verificaEmail(String email) throws Exception {
+	/**
+	 * Verifica se email é válido
+	 * @param email
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean verifyEmail(String email) throws Exception {
 		if (email == null) throw new Exception("E-mail null");
 		else if (email.isEmpty()) throw new Exception("E-mail do usuário deve ser informado");
 		else if (email.trim().isEmpty()) throw new Exception ("E-mail só com espaço");
@@ -49,7 +68,13 @@ public class Util {
 		return true;
 	}
 	
-	public static boolean verificaData(String data) throws Exception {
+	/**
+	 * Verifica se a data é válida
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean verifyDate(String data) throws Exception {
 		if (data == null) throw new Exception("Data null");
 		else if (data.isEmpty()) throw new Exception("Data vazia");
 		else if (data.trim().isEmpty()) throw new Exception ("Data só com espaço");
@@ -64,7 +89,7 @@ public class Util {
 	}
 	public static void main(String[] args) {
 		try {
-			System.out.println(Util.verificaData("10102010"));
+			System.out.println(Util.verifyDate("10102010"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

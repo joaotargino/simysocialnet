@@ -15,6 +15,13 @@ public class GroupController {
 		this.dbController = new DBController();
 	}
 
+	/**
+	 * Adiciona usuário ao grupo
+	 * @param login
+	 * @param grupo
+	 * @param loginToAdd
+	 * @throws Exception
+	 */
 	public void addToGroup(String login, String grupo, String loginToAdd) throws Exception {
 		
 		UserAccount usuario = this.dbController.getUsers(login);
@@ -40,6 +47,12 @@ public class GroupController {
 		this.dbController.update(usuario);
 	} 
 	
+	/**
+	 * Remove usuário de um grupo
+	 * @param usuario
+	 * @param usuarioToRemove
+	 * @throws Exception
+	 */
 	private void removeFromOtherGroup(UserAccount usuario, UserAccount usuarioToRemove) throws Exception {
 		boolean found = false;
 		for(Group grupo : usuario.getGroups().values()) {
@@ -56,6 +69,13 @@ public class GroupController {
 		this.dbController.update(usuario);
 	}
 
+	/**
+	 * Remove usuário do grupo
+	 * @param login
+	 * @param grupo
+	 * @param loginToRemove
+	 * @throws Exception
+	 */
 	public void removeFromGroup(String login, String grupo, String loginToRemove) throws Exception {
 		UserAccount usuario = this.dbController.getUsers(login);
 		UserAccount usuarioToRemove;
@@ -98,6 +118,13 @@ public class GroupController {
 		return null;
 	}
 
+	/**
+	 * Lista todos os membros do grupo
+	 * @param email
+	 * @param group
+	 * @return
+	 * @throws Exception
+	 */
 	public Group listGroupMembers(String email, String group) throws Exception {
 		UserAccount usuario = this.dbController.getUsers(email);
 		if (!usuario.isLogged())

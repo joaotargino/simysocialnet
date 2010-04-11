@@ -9,11 +9,21 @@ import dao.UsersDAO;
 
 public class DBController {
 	
+	/**
+	 * Adiciona um amigo ao DB
+	 * @param contaUsuario
+	 * @throws Exception
+	 */
 	public void addToDB(UserAccount contaUsuario) throws Exception {
 		if (UsersDAO.getInstance().getUsuarios().contains(contaUsuario)) throw new Exception("Login indisponível");
 		UsersDAO.getInstance().create(contaUsuario);
 	}
 
+	/**
+	 * Remove amigo do DB
+	 * @param login
+	 * @throws Exception
+	 */
 	public void removeFromDB(String login) throws Exception {
 		UserAccount user = new UserAccount();
 		user.setEmail(login);
@@ -21,6 +31,12 @@ public class DBController {
 
 	}	
 	
+	/**
+	 * Retorna um usuário do bd
+	 * @param login o login do usuário
+	 * @return o usuário
+	 * @throws Exception
+	 */
 	public UserAccount getUsers(String login) throws Exception {
 		if (login.trim().isEmpty()) throw new Exception("Login não pode ser vazio");
 		for (UserAccount usuario : UsersDAO.getInstance().getUsuarios()) {
@@ -30,10 +46,20 @@ public class DBController {
 		throw new Exception("Login inexistente");
 	}
 	
+	/**
+	 * @return todos os usuários 
+	 */
 	public List<UserAccount> getAllUsers() {
 		return UsersDAO.getInstance().getUsuarios();
 	}
 	
+	/**
+	 * Procura um usuário no DB
+ 	 * @param login o login do usuário
+	 * @param friend o login do amigo
+	 * @return o amigo
+	 * @throws Exception 
+	 */
 	public UserAccount findNewFriend(String login, String friend) throws Exception {
 		UserAccount usuario;
 		try{
@@ -43,7 +69,7 @@ public class DBController {
 		}
 		if(!(usuario.isLogged())) throw new Exception("Usuário não logado");
 		try {
-			if(Util.verificaEmail(friend)) {
+			if(Util.verifyEmail(friend)) {
 				return getUsers(friend);
 			}
 		}catch (Exception e) {
@@ -56,10 +82,20 @@ public class DBController {
 		return null;
 	}
 	
+	/**
+	 * Atualiza o DB
+	 * @param user
+	 */
 	public void update(UserAccount user) {
 		UsersDAO.getInstance().update(user);
 	}
 
+	/**
+	 * Retorna usuário
+	 * @param login
+	 * @return
+	 * @throws Exception
+	 */
 	public UserAccount getUser(String login) throws Exception {
 		UserAccount usuario = getUsers(login);
 		if (!usuario.isLogged())
@@ -67,6 +103,12 @@ public class DBController {
 		return usuario;
 	}
 	
+	/**
+	 * Procura um usuário pelo nome completo dele
+	 * @param completeName
+	 * @return o usário, se encontrar
+	 * @throws Exception
+	 */
 	public UserAccount getUserFromCompleteName(String completeName) throws Exception {
 		List<UserAccount> allUsers = this.getAllUsers();
 		Iterator<UserAccount> allUsersIterator = allUsers.iterator();
