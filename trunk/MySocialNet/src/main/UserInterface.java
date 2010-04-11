@@ -21,6 +21,16 @@ public class UserInterface {
 		telaInicial();
 	}
 
+	private static int printOpcoes(final String OPCOES) {
+		int opcao;
+		System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
+		System.out.print(OPCOES + FIM_DE_LINHA
+				+ "Informe a opção desejada: ");
+		opcao = scan.nextInt();
+		scan.nextLine();
+		return opcao;
+	}
+
 	public static void telaInicial() throws Exception {
 		String login, senha, name = null, lastName = null, email = null, passwd = null;
 		int opcao;
@@ -28,11 +38,7 @@ public class UserInterface {
 		final String OPCOES = "1. Criar nova conta" + FIM_DE_LINHA
 				+ "2. Fazer Login" + FIM_DE_LINHA + "0. Sair" + FIM_DE_LINHA;
 		do {
-			System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
-			System.out.print(OPCOES + FIM_DE_LINHA
-					+ "Informe a opção desejada: ");
-			opcao = scan.nextInt();
-			scan.nextLine();
+			opcao = printOpcoes(OPCOES);
 
 			switch (opcao) {
 			case CRIAR:
@@ -83,7 +89,7 @@ public class UserInterface {
 				ProfileConstants.ALL);
 		socialNet.setFieldPrivacy(login, ProfileConstants.CONTACT_EMAIL,
 				ProfileConstants.ALL);
-		// socialNet.viewProfile(login, login).setAboutMe("* @ JP");
+		socialNet.viewProfile(login, login).setAboutMe("* @ JP");
 		// socialNet.viewProfile(login, login).setCountry("BR");
 		// socialNet.viewProfile(login, login).setPhoto("xD");
 		// socialNet.sendFriendshipRequest(login, "joao@lcc.ufcg.edu.br", "oi",
@@ -118,16 +124,12 @@ public class UserInterface {
 				+ FIM_DE_LINHA;
 
 		do {
-			System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
-			System.out.print(OPCOES + FIM_DE_LINHA
-					+ "Informe a opção desejada: ");
-			opcao = scan.nextInt();
-			scan.nextLine();
+			opcao = printOpcoes(OPCOES);
 
 			switch (opcao) {
 			case MEU_PERFIL:
 				meuPerfil(login);
-//				opcao = LOGOFF;
+				opcao = LOGOFF;
 				break;
 			case AMIGOS:
 				menuAmigos(login);
@@ -161,11 +163,114 @@ public class UserInterface {
 	}
 
 	public static void meuPerfil(String login) throws Exception {
-		try {
-			System.out.println(socialNet.viewProfile(login, login).toString());
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		int opcao;
+		String friend, contact, group, message;
+		final int MENU_PRINCIPAL = 0;
+		final int VISUALIZAR = 1;
+		final int ALTERAR = 2;
+		final int SETAR_PRIVACIDADE = 3;
+		final int PROCURAR = 4;
+		final int VISUALIZAR_CONVITES_PENDENTES = 5;
+		final int VISUALIZAR_MEUS_PEDIDOS_AMIZADE = 6;
+		final int ACEITAR = 7;
+		final int RECUSAR = 8;
+		final int RECOMENDACOES = 9;
+		final String OPCOES = "1. Visualizar meu perfil" + FIM_DE_LINHA + "2. Alterar dados do meu perfil"
+				+ FIM_DE_LINHA + "3. Setar Privacidade" + FIM_DE_LINHA + "4. Procurar"
+				+ FIM_DE_LINHA + "5. Visualizar Convites Pendentes"
+				+ FIM_DE_LINHA + "6. Visualizar Meus Pedidos Pendentes"
+				+ FIM_DE_LINHA + "7. Aceitar Convite" + FIM_DE_LINHA
+				+ "8. Recusar Convite" + FIM_DE_LINHA
+				+ "9. Visualizar Recomendações" + FIM_DE_LINHA
+				+ "0. Menu Principal" + FIM_DE_LINHA;
+		do {
+
+			opcao = printOpcoes(OPCOES);
+
+			switch (opcao) {
+			case VISUALIZAR:
+				try {
+					System.out.println(socialNet.viewProfile(login, login)
+							.toString());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+
+			case ALTERAR:
+				alterarPerfil(login);
+				opcao = MENU_PRINCIPAL;
+				break;
+			case SETAR_PRIVACIDADE:
+				break;
+			case MENU_PRINCIPAL:
+				menuPrincipal(login);
+				opcao = MENU_PRINCIPAL;
+				break;
+			default:
+				System.out.println("Opção Inválida");
+				break;
+			}
+		} while (opcao != MENU_PRINCIPAL);
+
+	}
+
+	public static void alterarPerfil(String login) throws Exception {
+		int opcao;
+		final int VOLTAR = 0;
+		final int ABOUT_ME = 1;
+		final int AGE = 2;
+		final int CITY = 3;
+		final int COUNTRY = 4;
+		final int CONTACT_MAIL = 5;
+		final int GENDER = 6;
+		final int PHOTO = 7;
+		final String OPCOES = "1. About Me" + FIM_DE_LINHA + "2. Idade"
+				+ FIM_DE_LINHA + "3. Cidade" + FIM_DE_LINHA + "4. País"
+				+ FIM_DE_LINHA + "5. E-mail de contato" + FIM_DE_LINHA
+				+ "6. Sexo" + FIM_DE_LINHA + "7. Foto" + FIM_DE_LINHA
+
+				+ "0. Voltar" + FIM_DE_LINHA;
+		do {
+
+			System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
+			System.out.print(OPCOES + FIM_DE_LINHA
+					+ "Informe a opção que deseja alterar: ");
+			opcao = scan.nextInt();
+			scan.nextLine();
+
+			switch (opcao) {
+			case ABOUT_ME:
+				System.out.print("About Me: ");
+				String aboutMe = scan.nextLine();
+				try {
+					socialNet.viewProfile(login, login).setAboutMe(aboutMe);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+
+			case AGE:
+				break;
+			case CITY:
+				break;
+			case CONTACT_MAIL:
+				break;
+			case COUNTRY:
+				break;
+			case GENDER:
+				break;
+			case PHOTO:
+				break;
+			case VOLTAR:
+				meuPerfil(login);
+				opcao = VOLTAR;
+				break;
+			default:
+				System.out.println("Opção Inválida");
+				break;
+			}
+		} while (opcao != VOLTAR);
 	}
 
 	// TODO colocar um view perfil pra amigo ae...
@@ -177,26 +282,24 @@ public class UserInterface {
 		final int REMOVER = 2;
 		final int LISTAR = 3;
 		final int PROCURAR = 4;
-		final int VISUALIZAR_CONVITES_PENDENTES = 5;
-		final int VISUALIZAR_MEUS_PEDIDOS_AMIZADE = 6;
-		final int ACEITAR = 7;
-		final int RECUSAR = 8;
-		final int RECOMENDACOES = 9;
+		final int VISITAR = 5;
+		final int VISUALIZAR_CONVITES_PENDENTES = 6;
+		final int VISUALIZAR_MEUS_PEDIDOS_AMIZADE = 7;
+		final int ACEITAR = 8;
+		final int RECUSAR = 9;
+		final int RECOMENDACOES = 10;
 		final String OPCOES = "1. Adicionar" + FIM_DE_LINHA + "2. Remover"
 				+ FIM_DE_LINHA + "3. Listar" + FIM_DE_LINHA + "4. Procurar"
-				+ FIM_DE_LINHA + "5. Visualizar Convites Pendentes"
-				+ FIM_DE_LINHA + "6. Visualizar Meus Pedidos Pendentes"
-				+ FIM_DE_LINHA + "7. Aceitar Convite" + FIM_DE_LINHA
-				+ "8. Recusar Convite" + FIM_DE_LINHA
-				+ "9. Visualizar Recomendações" + FIM_DE_LINHA
+				+ FIM_DE_LINHA + "5. Visitar perfil"
+				+ FIM_DE_LINHA + "6. Visualizar Convites Pendentes"
+				+ FIM_DE_LINHA + "7. Visualizar Meus Pedidos Pendentes"
+				+ FIM_DE_LINHA + "8. Aceitar Convite" + FIM_DE_LINHA
+				+ "9. Recusar Convite" + FIM_DE_LINHA
+				+ "10. Visualizar Recomendações" + FIM_DE_LINHA
 				+ "0. Menu Principal" + FIM_DE_LINHA;
 
 		do {
-			System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
-			System.out.print(OPCOES + FIM_DE_LINHA
-					+ "Informe a opção desejada: ");
-			opcao = scan.nextInt();
-			scan.nextLine();
+			opcao = printOpcoes(OPCOES);
 
 			switch (opcao) {
 			case ADICIONAR:
@@ -233,10 +336,21 @@ public class UserInterface {
 				break;
 			case PROCURAR:
 				System.out
-						.print("Informe o login do usuario a ser procurado: ");
+						.print("Informe o login ou nome completo do usuario a ser procurado: ");
 				friend = scan.nextLine();
 				try {
 					System.out.println(socialNet.findNewFriend(login, friend)
+							.toString());
+				} catch (Exception e1) {
+					System.out.println(e1.getMessage());
+				}
+				break;
+			case VISITAR:
+				System.out
+						.print("Informe o login do usuario: ");
+				friend = scan.nextLine();
+				try {
+					System.out.println(socialNet.viewProfile(login, friend)
 							.toString());
 				} catch (Exception e1) {
 					System.out.println(e1.getMessage());
@@ -304,11 +418,7 @@ public class UserInterface {
 				+ "2. Importar Lista De Amigs" + FIM_DE_LINHA
 				+ "0. Menu Principal" + FIM_DE_LINHA;
 		do {
-			System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
-			System.out.print(OPCOES + FIM_DE_LINHA
-					+ "Informe a opção desejada: ");
-			opcao = scan.nextInt();
-			scan.nextLine();
+			opcao = printOpcoes(OPCOES);
 
 			switch (opcao) {
 			case EXPORTAR:
@@ -339,11 +449,7 @@ public class UserInterface {
 				+ "3. Listar Grupo" + FIM_DE_LINHA + "4. Procurar Grupo"
 				+ FIM_DE_LINHA + "0. Menu Principal" + FIM_DE_LINHA;
 		do {
-			System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
-			System.out.print(OPCOES + FIM_DE_LINHA
-					+ "Informe a opção desejada: ");
-			opcao = scan.nextInt();
-			scan.nextLine();
+			opcao = printOpcoes(OPCOES);
 
 			switch (opcao) {
 			case ADICIONAR:
@@ -413,11 +519,7 @@ public class UserInterface {
 				+ "2. Deletar Minha Conta" + FIM_DE_LINHA + "0. Menu Principal"
 				+ FIM_DE_LINHA;
 		do {
-			System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
-			System.out.print(OPCOES + FIM_DE_LINHA
-					+ "Informe a opção desejada: ");
-			opcao = scan.nextInt();
-			scan.nextLine();
+			opcao = printOpcoes(OPCOES);
 
 			switch (opcao) {
 			case SETAR_PRIVACIDADE:
@@ -462,11 +564,7 @@ public class UserInterface {
 				+ FIM_DE_LINHA + "3. Visualizar" + FIM_DE_LINHA
 				+ "0. Menu Principal" + FIM_DE_LINHA;
 		do {
-			System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
-			System.out.print(OPCOES + FIM_DE_LINHA
-					+ "Informe a opção desejada: ");
-			opcao = scan.nextInt();
-			scan.nextLine();
+			opcao = printOpcoes(OPCOES);
 
 			switch (opcao) {
 			case ADICIONAR:
