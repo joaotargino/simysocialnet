@@ -582,7 +582,8 @@ public class UserController {
 			if (grupo.getUsers().contains(friend)) {
 				grupo.getUsers().remove(friend);
 				user.getGroups().put(grupo.getName(), grupo);
-				this.dbController.update();
+				this.dbController.update(user);
+				user.updateFriends();
 				break;
 			}
 		}

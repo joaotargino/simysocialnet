@@ -391,6 +391,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		}
 		this.getPendingFriendship().remove(contact);
 		this.updateBD();
+		this.updateFriends();
 	}
 
 	public Group getGrupo(UserAccount usuario, String group) throws Exception {
@@ -411,6 +412,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		sentFriendship.put(login,group);
 		this.getSentFriendshipAux().add(login);
 		this.updateBD();
+		this.updateFriends();
 	}
 
 	/**
@@ -422,6 +424,7 @@ public class UserAccount implements Comparable<UserAccount>{
 	public void receiveFriendshipRequest(UserAccount logado, String login, String message) {
 		pendingFriendship.put(login, logado.getName() + " " + logado.getSurname() + " <" + login + "> - mensagem: " + message);
 		this.updateBD();
+		this.updateFriends();
 	}
 
 	/**
@@ -471,6 +474,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		this.getSentFriendship().remove(login);
 		this.getSentFriendshipAux().remove(login);
 		this.updateBD();
+		this.updateFriends();
 	}
 
 	/**
@@ -520,7 +524,7 @@ public class UserAccount implements Comparable<UserAccount>{
 	 * Atualiza o banco de dados
 	 */
 	private void updateBD() {
-		this.DBController.update();
+		this.DBController.update(this);
 	}
 
 	public void setFriends(List<UserAccount> friends) {
@@ -572,6 +576,15 @@ public class UserAccount implements Comparable<UserAccount>{
 			}
 		}
 		return similarityFriends;
+	}
+
+	/**
+	 * Atualiza os amigos
+	 */
+	public void updateFriends() {
+		for (UserAccount user : this.getFriends()) {
+			user.updateBD();
+		}
 	}
 
 	/**
