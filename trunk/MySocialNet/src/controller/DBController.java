@@ -8,7 +8,7 @@ import beans.UserAccount;
 import dao.UsersDAO;
 
 public class DBController {
-	
+
 	/**
 	 * Adiciona um amigo ao DB
 	 * @param contaUsuario
@@ -30,7 +30,7 @@ public class DBController {
 		UsersDAO.getInstance().delete(login);
 
 	}	
-	
+
 	/**
 	 * Retorna um usuário do bd
 	 * @param login o login do usuário
@@ -45,17 +45,17 @@ public class DBController {
 		}
 		throw new Exception("Login inexistente");
 	}
-	
+
 	/**
 	 * @return todos os usuários 
 	 */
 	public List<UserAccount> getAllUsers() {
 		return UsersDAO.getInstance().getUsuarios();
 	}
-	
+
 	/**
 	 * Procura um usuário no DB
- 	 * @param login o login do usuário
+	 * @param login o login do usuário
 	 * @param friend o login do amigo
 	 * @return o amigo
 	 * @throws Exception 
@@ -81,7 +81,7 @@ public class DBController {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Atualiza o DB
 	 * @param user
@@ -89,6 +89,17 @@ public class DBController {
 	public void update(UserAccount user) {
 		UsersDAO.getInstance().update(user);
 	}
+
+	/**
+	 * Atualiza o DB
+	 * @param user
+	 */
+	public void update() {
+		for (UserAccount user : getAllUsers()) {
+			UsersDAO.getInstance().update(user);
+		}
+	}
+
 
 	/**
 	 * Retorna usuário
@@ -102,7 +113,7 @@ public class DBController {
 			throw new Exception("Usuário não logado");
 		return usuario;
 	}
-	
+
 	/**
 	 * Procura um usuário pelo nome completo dele
 	 * @param completeName
@@ -120,5 +131,5 @@ public class DBController {
 		}
 		throw new Exception(completeName);
 	}
-	
+
 }

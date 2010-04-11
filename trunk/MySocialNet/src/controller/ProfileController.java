@@ -125,11 +125,11 @@ public class ProfileController {
 		
 		if (profile.getType().equals(ProfileConstants.ALL)) {
 			usuario.setProfileAll(profile);
-			this.DBController.update(usuario);
+			this.DBController.update();
 		}
 		else {
 			usuario.setProfileFriends(profile);
-			this.DBController.update(usuario);
+			this.DBController.update();
 		}
 	}
 

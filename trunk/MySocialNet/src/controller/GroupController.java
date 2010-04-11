@@ -44,7 +44,7 @@ public class GroupController {
 		group.setUsers(users);
 		Collections.sort(group.getUsers());
 		usuario.getGroups().put(grupo, group);
-		this.dbController.update(usuario);
+		this.dbController.update();
 	} 
 	
 	/**
@@ -66,7 +66,7 @@ public class GroupController {
 			}
 			if (found) break;
 		}
-		this.dbController.update(usuario);
+		this.dbController.update();
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class GroupController {
 		group.getUsers().remove(usuarioToRemove);
 		grupoConhecidos.getUsers().add(usuarioToRemove);
 		
-		this.dbController.update(usuario);
+		this.dbController.update();
 	}
 	
 	public Group getGroup(UserAccount usuario, String group) throws Exception {
