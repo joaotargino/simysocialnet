@@ -4,7 +4,10 @@ import java.util.Scanner;
 
 import Util.ProfileConstants;
 
-import controller.ProfileController;
+//TODO mudar o nome das excecoes (tipo e.getMessage() , e1... e2...)
+//TODO alguem tem que rever uns parametros de classe q tao despadronizados =x depois lembro quais!
+//TODO botar uma linha pra pedir ENTER e um sc.nextLine() depois das excecoes? 
+//TODO porra, esqueci de visitar o perfil qdo procura a pessoa ¬¬
 
 public class UserInterface {
 
@@ -123,6 +126,8 @@ public class UserInterface {
 
 			switch (opcao) {
 			case MEU_PERFIL:
+				meuPerfil(login);
+//				opcao = LOGOFF;
 				break;
 			case AMIGOS:
 				menuAmigos(login);
@@ -155,6 +160,15 @@ public class UserInterface {
 		} while (opcao != LOGOFF);
 	}
 
+	public static void meuPerfil(String login) throws Exception {
+		try {
+			System.out.println(socialNet.viewProfile(login, login).toString());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	// TODO colocar um view perfil pra amigo ae...
 	public static void menuAmigos(String login) throws Exception {
 		int opcao;
 		String friend, contact, group, message;
@@ -257,7 +271,11 @@ public class UserInterface {
 			case RECUSAR:
 				System.out.print("Informe o login do usuario a ser recusado: ");
 				contact = scan.nextLine();
-				socialNet.declineFriendshipRequest(login, contact);
+				try {
+					socialNet.declineFriendshipRequest(login, contact);
+				} catch (Exception e1) {
+					System.out.println(e1.getMessage());
+				}
 				break;
 			case RECOMENDACOES:
 				try {
@@ -278,13 +296,13 @@ public class UserInterface {
 
 	}
 
+	// no idea de como funfa
 	public static void menuArquivo(String login) throws Exception {
 		int opcao;
 		final int MENU_PRINCIPAL = 0, EXPORTAR = 1, IMPORTAR = 2;
 		final String OPCOES = "1. Exportar Lista De Amigos" + FIM_DE_LINHA
 				+ "2. Importar Lista De Amigs" + FIM_DE_LINHA
 				+ "0. Menu Principal" + FIM_DE_LINHA;
-		// import export
 		do {
 			System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
 			System.out.print(OPCOES + FIM_DE_LINHA
@@ -385,8 +403,11 @@ public class UserInterface {
 		} while (opcao != MENU_PRINCIPAL);
 	}
 
+	// nao sei ainda como vai ficar esse field e type. olho amanha cedo (serao
+	// dadas as opcoes ao user, ne?)
 	public static void menuConfiguracoes(String login) throws Exception {
 		int opcao;
+		String field, type;
 		final int MENU_PRINCIPAL = 0, SETAR_PRIVACIDADE = 1, DELETAR = 2;
 		final String OPCOES = "1. Setar Privacidade" + FIM_DE_LINHA
 				+ "2. Deletar Minha Conta" + FIM_DE_LINHA + "0. Menu Principal"
@@ -400,6 +421,16 @@ public class UserInterface {
 
 			switch (opcao) {
 			case SETAR_PRIVACIDADE:
+				System.out
+						.print("Informe o campo para alterar a privacidade: ");
+				field = scan.nextLine();
+				System.out.print("Informe o tipo de privacidade: ");
+				type = scan.nextLine();
+				try {
+					socialNet.setFieldPrivacy(login, field, type);
+				} catch (Exception e1) {
+					System.out.println(e1.getMessage());
+				}
 				break;
 			case DELETAR:
 				System.out.print("Deseja deletar a sua conta? (Y/n): ");
@@ -422,8 +453,10 @@ public class UserInterface {
 		} while (opcao != MENU_PRINCIPAL);
 	}
 
+	// PRECISO REVER ISSO!!!!!!!!!!!!!!!!!!!!! vlw.
 	public static void menuPreferenciasUsuario(String login) throws Exception {
 		int opcao;
+		String preference;
 		final int MENU_PRINCIPAL = 0, ADICIONAR = 1, REMOVER = 2, VISUALIZAR = 3;
 		final String OPCOES = "1. Adicionar" + FIM_DE_LINHA + "2. Remover"
 				+ FIM_DE_LINHA + "3. Visualizar" + FIM_DE_LINHA
@@ -437,10 +470,29 @@ public class UserInterface {
 
 			switch (opcao) {
 			case ADICIONAR:
+				System.out.println("preferencia: ");
+				preference = scan.nextLine();
+				try {
+					socialNet.addUserPreference(login, preference);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case REMOVER:
+				System.out.println("preferencia: ");
+				preference = scan.nextLine();
+				try {
+					socialNet.removeUserPreference(login, preference);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case VISUALIZAR:
+				try {
+					System.out.println(socialNet.listUserPreferences(login));
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case MENU_PRINCIPAL:
 				menuPrincipal(login);
