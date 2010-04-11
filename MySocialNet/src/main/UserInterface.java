@@ -410,8 +410,11 @@ public class UserInterface {
 						.print("Informe o login ou nome completo do usuario a ser procurado: ");
 				friend = scan.nextLine();
 				try {
-					System.out.println(socialNet.findNewFriend(login, friend)
-							.toString());
+					String user = socialNet.findNewFriend(login, friend).toStringFullName();
+					if (user == null)
+						System.out.println("Usuario não encontrado");
+					else
+						System.out.println(user);
 				} catch (Exception e1) {
 					System.out.println(e1.getMessage());
 				}
@@ -510,14 +513,16 @@ public class UserInterface {
 		} while (opcao != MENU_PRINCIPAL);
 	}
 
+	// exibir qdo o grupo ta vazio!
 	public static void menuGrupo(String login) throws Exception {
 		int opcao;
 		String friend, group;
 		final int MENU_PRINCIPAL = 0, ADICIONAR = 1, REMOVER = 2, LISTAR = 3, PROCURAR = 4;
-		final String OPCOES = "1. Adicionar Amigo a grupo" + FIM_DE_LINHA
+		final String OPCOES = "1. Adicionar amigo a grupo" + FIM_DE_LINHA
 				+ "2. Remover amigo do grupo" + FIM_DE_LINHA
-				+ "3. Listar Grupo" + FIM_DE_LINHA + "4. Procurar Grupo"
-				+ FIM_DE_LINHA + "0. Menu Principal" + FIM_DE_LINHA;
+				+ "3. Listar mebros do grupo" + FIM_DE_LINHA
+				+ "4. Procurar no Grupo" + FIM_DE_LINHA + "0. Menu Principal"
+				+ FIM_DE_LINHA;
 		do {
 			opcao = printOpcoes(OPCOES);
 
@@ -552,7 +557,8 @@ public class UserInterface {
 				System.out.print("Informe o grupo que deseja listar: ");
 				group = scan.nextLine();
 				try {
-					socialNet.listGroupMembers(login, group);
+					System.out.println(socialNet.listGroupMembers(login, group)
+							.toString());
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
@@ -563,7 +569,8 @@ public class UserInterface {
 				System.out.print("Informe o grupo: ");
 				group = scan.nextLine();
 				try {
-					socialNet.findGroupMember(login, friend, group);
+					System.out.println(socialNet.findGroupMember(login, friend,
+							group).toString());
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
