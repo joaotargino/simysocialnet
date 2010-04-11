@@ -202,7 +202,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		}
 		throw new Exception("Amigo não encontrado");
 	}
-	
+
 	public List<String> getSentFriendshipAux() {
 		return sentFriendshipAux;
 	}
@@ -459,6 +459,8 @@ public class UserAccount implements Comparable<UserAccount>{
 		if (!this.getPreferences().contains(preferencia)) {
 			this.getPreferences().add(preferencia);
 			this.updateBD();
+			this.updateFriends();
+			DBController.update();
 		}
 
 	}
@@ -544,10 +546,10 @@ public class UserAccount implements Comparable<UserAccount>{
 
 		output.addAll(putFriendsIntoList(family));
 		output.addAll(putFriendsIntoList(friends));
-		for (UserAccount user : DBController.getAllUsers()) {
+		for (UserAccount user : this.getFriends()) {
 			output.addAll(user.getSimilarityFriends(this));
 		}
-		
+
 		for (int i = 0; i < output.size(); i ++) {
 			if ((!recomendedFriends.contains(output.get(i))) && !(output.get(i).getEmail().equals(getEmail()) || getFriends().contains(output.get(i)))) {
 				recomendedFriends.add(output.get(i));
@@ -571,7 +573,8 @@ public class UserAccount implements Comparable<UserAccount>{
 			allPreferences.addAll(user.getPreferences());
 			commumPreferences.retainAll(userAccount.getPreferences());
 			allPreferences.retainAll(userAccount.getPreferences());
-			if (((double) commumPreferences.size()/(double) allPreferences.size()) >= this.SIMILARITY_LEVEL) {
+			double similarity = ((double) commumPreferences.size()/(double) allPreferences.size());
+			if (similarity >= this.SIMILARITY_LEVEL) {
 				similarityFriends.add(user);
 			}
 		}
