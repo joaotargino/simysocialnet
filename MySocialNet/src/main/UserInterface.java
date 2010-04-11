@@ -114,13 +114,11 @@ public class UserInterface {
 		final int AMIGOS = 2;
 		final int GRUPOS = 3;
 		final int ARQUIVO = 4;
-		final int PREF_USUARIOS = 5;
-		final int CONFIGURACOES = 6;
+		final int CONFIGURACOES = 5;
 		final String OPCOES = "1. Meu Perfil" + FIM_DE_LINHA + "2. Amigos"
 				+ FIM_DE_LINHA + "3. Grupos" + FIM_DE_LINHA + "4. Arquivo"
-				+ FIM_DE_LINHA + "5. Preferências de Usuários" + FIM_DE_LINHA
-				+ "6. Configurações" + FIM_DE_LINHA + "0. Logoff"
-				+ FIM_DE_LINHA;
+				+ FIM_DE_LINHA + "5. Configurações" + FIM_DE_LINHA
+				+ "0. Logoff" + FIM_DE_LINHA;
 
 		do {
 			opcao = printOpcoes(OPCOES);
@@ -142,10 +140,6 @@ public class UserInterface {
 				menuArquivo(login);
 				opcao = LOGOFF;
 				break;
-			case PREF_USUARIOS:
-				menuPreferenciasUsuario(login);
-				opcao = LOGOFF;
-				break;
 			case CONFIGURACOES:
 				menuConfiguracoes(login);
 				opcao = LOGOFF;
@@ -164,26 +158,15 @@ public class UserInterface {
 
 	public static void meuPerfil(String login) throws Exception {
 		int opcao;
-		String friend, contact, group, message;
 		final int MENU_PRINCIPAL = 0;
 		final int VISUALIZAR = 1;
 		final int ALTERAR = 2;
 		final int SETAR_PRIVACIDADE = 3;
-		final int PROCURAR = 4;
-		final int VISUALIZAR_CONVITES_PENDENTES = 5;
-		final int VISUALIZAR_MEUS_PEDIDOS_AMIZADE = 6;
-		final int ACEITAR = 7;
-		final int RECUSAR = 8;
-		final int RECOMENDACOES = 9;
+		final int USER_PREF = 4;
 		final String OPCOES = "1. Visualizar meu perfil" + FIM_DE_LINHA
 				+ "2. Alterar dados do meu perfil" + FIM_DE_LINHA
-				+ "3. Setar Privacidade" + FIM_DE_LINHA + "4. Procurar"
-				+ FIM_DE_LINHA + "5. Visualizar Convites Pendentes"
-				+ FIM_DE_LINHA + "6. Visualizar Meus Pedidos Pendentes"
-				+ FIM_DE_LINHA + "7. Aceitar Convite" + FIM_DE_LINHA
-				+ "8. Recusar Convite" + FIM_DE_LINHA
-				+ "9. Visualizar Recomendações" + FIM_DE_LINHA
-				+ "0. Menu Principal" + FIM_DE_LINHA;
+				+ "3. Setar Privacidade" + FIM_DE_LINHA + "4. Preferencias"
+				+ FIM_DE_LINHA + "0. Sair" + FIM_DE_LINHA;
 		do {
 
 			opcao = printOpcoes(OPCOES);
@@ -203,8 +186,11 @@ public class UserInterface {
 				opcao = MENU_PRINCIPAL;
 				break;
 			case SETAR_PRIVACIDADE:
-				// socialNet.setFieldPrivacy(login, field, type)
 				setarPrivacidade(login);
+				opcao = MENU_PRINCIPAL;
+				break;
+			case USER_PREF:
+				menuPreferenciasUsuario(login);
 				opcao = MENU_PRINCIPAL;
 				break;
 			case MENU_PRINCIPAL:
@@ -220,19 +206,16 @@ public class UserInterface {
 	}
 
 	public static void setarPrivacidade(String login) throws Exception {
-		String field, type;
-		int opcao, tipo;
+		String field;
+		int opcao;
 		final int VOLTAR = 0;
 		final int ABOUT_ME = 1;
 		final int AGE = 2;
 		final int CITY = 3;
-		final int CONTACT_MAIL = 4;
+		final int CONTACT_EMAIL = 4;
 		final int COUNTRY = 5;
 		final int GENDER = 6;
 		final int PHOTO = 7;
-		final int ALL = 11;
-		final int FRIENDS = 12;
-		final int JUST_ME = 13;
 		do {
 			System.out.print(printField());
 			opcao = scan.nextInt();
@@ -249,6 +232,10 @@ public class UserInterface {
 				break;
 			case CITY:
 				field = ProfileConstants.CITY;
+				mudarTipo(login, field);
+				break;
+			case CONTACT_EMAIL:
+				field = ProfileConstants.CONTACT_EMAIL;
 				mudarTipo(login, field);
 				break;
 			case COUNTRY:
@@ -308,11 +295,11 @@ public class UserInterface {
 	}
 
 	public static String getType(int opcao) {
-		if (opcao == 1)
+		if (opcao == 11)
 			return ProfileConstants.ALL;
-		if (opcao == 2)
+		if (opcao == 12)
 			return ProfileConstants.FRIENDS;
-		if (opcao == 3)
+		if (opcao == 13)
 			return ProfileConstants.JUST_ME;
 		else
 			return "Opção Inválida";
@@ -373,7 +360,7 @@ public class UserInterface {
 				}
 				break;
 			case CITY:
-				System.out.print("Cidade ");
+				System.out.print("Cidade: ");
 				String city = scan.nextLine();
 				try {
 					socialNet.viewProfile(login, login).setCity(city);
@@ -749,7 +736,7 @@ public class UserInterface {
 
 			switch (opcao) {
 			case ADICIONAR:
-				System.out.println("preferencia: ");
+				System.out.println("Adicionar: ");
 				preference = scan.nextLine();
 				try {
 					socialNet.addUserPreference(login, preference);
@@ -758,7 +745,7 @@ public class UserInterface {
 				}
 				break;
 			case REMOVER:
-				System.out.println("preferencia: ");
+				System.out.println("Remover: ");
 				preference = scan.nextLine();
 				try {
 					socialNet.removeUserPreference(login, preference);
