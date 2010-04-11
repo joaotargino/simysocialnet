@@ -3,6 +3,10 @@ package beans;
 import interfaces.ProfileIF;
 import Util.ProfileConstants;
 
+/**
+ * @author Rafael Aquino
+ *
+ */
 public class ProfileJustMe implements ProfileIF{
 	
 	private String aboutMe; 

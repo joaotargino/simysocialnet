@@ -1,6 +1,10 @@
 package interfaces;
 
 
+/**
+ * @author Rafael Aquino
+ *
+ */
 public interface ProfileIF {
 	
 	public String getType();
