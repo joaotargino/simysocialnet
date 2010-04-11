@@ -40,6 +40,7 @@ public class UserAccount implements Comparable<UserAccount>{
 	private DBController DBController;
 	private Map<String,String> pendingFriendship;
 	private Map<String,String> sentFriendship;
+	private List<String> sentFriendshipAux;
 
 
 	public UserAccount(String nome, String sobrenome, String dataNascimento, String senha, String email) throws Exception {
@@ -72,6 +73,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		DBController = new DBController();
 		profileController = new ProfileController();
 		friends = new ArrayList<UserAccount>();
+		sentFriendshipAux = new ArrayList<String>();
 		createGroups();
 	}
 
@@ -102,6 +104,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		profileAll.init();
 		profileJustMe.init();
 		profileFriends.init();
+		sentFriendshipAux = new ArrayList<String>();
 		createGroups();
 	}
 
@@ -120,6 +123,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		profileJustMe.init();
 		profileFriends.init();
 		logged = false;
+		sentFriendshipAux = new ArrayList<String>();
 		createGroups();
 	}
 
@@ -176,6 +180,14 @@ public class UserAccount implements Comparable<UserAccount>{
 			}
 		}
 		throw new Exception("Amigo não encontrado");
+	}
+	
+	public List<String> getSentFriendshipAux() {
+		return sentFriendshipAux;
+	}
+
+	public void setSentFriendshipAux(List<String> sentFriendshipAux) {
+		this.sentFriendshipAux = sentFriendshipAux;
 	}
 
 	public void removeFriend(String email) throws Exception {
@@ -335,6 +347,7 @@ public class UserAccount implements Comparable<UserAccount>{
 		if(friends.contains(account)) throw new Exception ("Usuários " + this.getName() + " " + this.getSurname() + " e " + account.getName() + " " + account.getSurname() + " já são amigos");
 		if (sentFriendship.keySet().contains(login)) throw new Exception("Você já enviou um convite para o usuário " + account.getName() + " " + account.getSurname());
 		sentFriendship.put(login,group);
+		this.getSentFriendshipAux().add(login);
 		this.updateBD();
 		this.updateFriends();
 	}
@@ -348,11 +361,10 @@ public class UserAccount implements Comparable<UserAccount>{
 	public List<String> viewSentFriendship() {
 		List<String> resposta = new ArrayList<String>();
 		if(sentFriendship.isEmpty()) resposta.add("Não há nenhuma solicitação de amizade pendente");
-		for (String key : sentFriendship.keySet()) {
+		for (String key : sentFriendshipAux) {
 			resposta.add(key);
 		}
 		return resposta;
-
 	}
 
 	public List<String> viewPendingFriendship() {
@@ -375,6 +387,7 @@ public class UserAccount implements Comparable<UserAccount>{
 	public void removeSentFriendshipRequest(String login, UserAccount user) throws Exception{
 		this.addToGroup(user, this.getSentFriendship().get(login));
 		this.getSentFriendship().remove(login);
+		this.getSentFriendshipAux().remove(login);
 		this.updateBD();
 		this.updateFriends();
 	}
@@ -387,6 +400,7 @@ public class UserAccount implements Comparable<UserAccount>{
 			}
 		}
 		map.remove(chave);
+		if(map.equals(this.getSentFriendship())) this.getSentFriendshipAux().remove(chave);
 		this.updateBD();
 	}
 
@@ -469,11 +483,6 @@ public class UserAccount implements Comparable<UserAccount>{
 			output.addAll(user.getGrupo(user, "familia").getUsers());
 			output.addAll(user.getGrupo(user, "melhores amigos").getUsers());
 		}
-		return output;
-	}
-
-	private List<UserAccount> getFriendsFromGroup(UserAccount user, String group) throws Exception {
-		List<UserAccount> output = getGrupo(user, group).getUsers();
 		return output;
 	}
 

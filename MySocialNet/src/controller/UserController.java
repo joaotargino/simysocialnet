@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.SortedMap;
+import java.util.Map;
 
 import beans.Group;
 import beans.UserAccount;
@@ -428,10 +428,6 @@ public class UserController {
 				break;
 			}
 		}
-	}
-	
-	public static void main(String[] args) {
-//		SortedMap<String,String> map = new HashMap<String,String>();
 	}
 }
 
