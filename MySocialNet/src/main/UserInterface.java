@@ -151,6 +151,7 @@ public class UserInterface {
 				opcao = LOGOFF;
 				break;
 			case LOGOFF:
+				socialNet.logoff(login);
 				telaInicial();
 				opcao = LOGOFF;
 				break;
@@ -240,17 +241,27 @@ public class UserInterface {
 			switch (opcao) {
 			case ABOUT_ME:
 				field = ProfileConstants.ABOUT_ME;
-				System.out.print(printType());
-				tipo = scan.nextInt();
-				type = getType(tipo);
-				if (tipo < 11 || tipo > 13)
-					System.out.println("Opção Inválida");
-				else
-					try {
-						socialNet.setFieldPrivacy(login, field, type);
-					} catch (Exception e) {
-						System.out.println(e.getMessage());
-					}
+				mudarTipo(login, field);
+				break;
+			case AGE:
+				field = ProfileConstants.AGE;
+				mudarTipo(login, field);
+				break;
+			case CITY:
+				field = ProfileConstants.CITY;
+				mudarTipo(login, field);
+				break;
+			case COUNTRY:
+				field = ProfileConstants.COUNTRY;
+				mudarTipo(login, field);
+				break;
+			case GENDER:
+				field = ProfileConstants.GENDER;
+				mudarTipo(login, field);
+				break;
+			case PHOTO:
+				field = ProfileConstants.PHOTO;
+				mudarTipo(login, field);
 				break;
 			case VOLTAR:
 				meuPerfil(login);
@@ -260,6 +271,22 @@ public class UserInterface {
 				break;
 			}
 		} while (opcao != VOLTAR);
+	}
+
+	private static void mudarTipo(String login, String field) {
+		String type;
+		int tipo;
+		System.out.print(printType());
+		tipo = scan.nextInt();
+		type = getType(tipo);
+		if (tipo < 11 || tipo > 13)
+			System.out.println("Opção Inválida");
+		else
+			try {
+				socialNet.setFieldPrivacy(login, field, type);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 	}
 
 	public static String printField() {
@@ -317,22 +344,114 @@ public class UserInterface {
 				String aboutMe = scan.nextLine();
 				try {
 					socialNet.viewProfile(login, login).setAboutMe(aboutMe);
+					socialNet.updateUserProfile(login, aboutMe, socialNet
+							.viewProfile(login, login).getAge(), socialNet
+							.viewProfile(login, login).getPhoto(), socialNet
+							.viewProfile(login, login).getCountry(), socialNet
+							.viewProfile(login, login).getCity(), socialNet
+							.viewProfile(login, login).getGender(), socialNet
+							.viewProfile(login, login).getContactEmail());
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
 				break;
 
 			case AGE:
+				System.out.print("Idade: ");
+				String age = scan.nextLine();
+				try {
+					socialNet.viewProfile(login, login).setAge(age);
+					socialNet.updateUserProfile(login, socialNet.viewProfile(
+							login, login).getAboutMe(), age, socialNet
+							.viewProfile(login, login).getPhoto(), socialNet
+							.viewProfile(login, login).getCountry(), socialNet
+							.viewProfile(login, login).getCity(), socialNet
+							.viewProfile(login, login).getGender(), socialNet
+							.viewProfile(login, login).getContactEmail());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case CITY:
+				System.out.print("Cidade ");
+				String city = scan.nextLine();
+				try {
+					socialNet.viewProfile(login, login).setCity(city);
+					socialNet.updateUserProfile(login, socialNet.viewProfile(
+							login, login).getAboutMe(), socialNet.viewProfile(
+							login, login).getAge(), socialNet.viewProfile(
+							login, login).getPhoto(), socialNet.viewProfile(
+							login, login).getCountry(), city, socialNet
+							.viewProfile(login, login).getGender(), socialNet
+							.viewProfile(login, login).getContactEmail());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case CONTACT_MAIL:
+				System.out.print("E-mail: ");
+				String contactEMail = scan.nextLine();
+				try {
+					socialNet.viewProfile(login, login).setContactEmail(
+							contactEMail);
+					socialNet.updateUserProfile(login, socialNet.viewProfile(
+							login, login).getAboutMe(), socialNet.viewProfile(
+							login, login).getAge(), socialNet.viewProfile(
+							login, login).getPhoto(), socialNet.viewProfile(
+							login, login).getCountry(), socialNet.viewProfile(
+							login, login).getCity(), socialNet.viewProfile(
+							login, login).getGender(), contactEMail);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case COUNTRY:
+				System.out.print("País: ");
+				String country = scan.nextLine();
+				try {
+					socialNet.viewProfile(login, login).setCountry(country);
+					socialNet.updateUserProfile(login, socialNet.viewProfile(
+							login, login).getAboutMe(), socialNet.viewProfile(
+							login, login).getAge(), socialNet.viewProfile(
+							login, login).getPhoto(), country, socialNet
+							.viewProfile(login, login).getCity(), socialNet
+							.viewProfile(login, login).getGender(), socialNet
+							.viewProfile(login, login).getContactEmail());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case GENDER:
+				System.out.print("Sexo: ");
+				String gender = scan.nextLine();
+				try {
+					socialNet.viewProfile(login, login).setGender(gender);
+					socialNet.updateUserProfile(login, socialNet.viewProfile(
+							login, login).getAboutMe(), socialNet.viewProfile(
+							login, login).getAge(), socialNet.viewProfile(
+							login, login).getPhoto(), socialNet.viewProfile(
+							login, login).getCountry(), socialNet.viewProfile(
+							login, login).getCity(), gender, socialNet
+							.viewProfile(login, login).getContactEmail());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case PHOTO:
+				System.out.print("Foto: ");
+				String photo = scan.nextLine();
+				try {
+					socialNet.viewProfile(login, login).setPhoto(photo);
+					socialNet.updateUserProfile(login, socialNet.viewProfile(
+							login, login).getAboutMe(), socialNet.viewProfile(
+							login, login).getAge(), photo, socialNet
+							.viewProfile(login, login).getCountry(), socialNet
+							.viewProfile(login, login).getCity(), socialNet
+							.viewProfile(login, login).getGender(), socialNet
+							.viewProfile(login, login).getContactEmail());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case VOLTAR:
 				meuPerfil(login);
@@ -345,7 +464,6 @@ public class UserInterface {
 		} while (opcao != VOLTAR);
 	}
 
-	// TODO colocar um view perfil pra amigo ae...
 	public static void menuAmigos(String login) throws Exception {
 		int opcao;
 		String friend, contact, group, message;
@@ -410,7 +528,8 @@ public class UserInterface {
 						.print("Informe o login ou nome completo do usuario a ser procurado: ");
 				friend = scan.nextLine();
 				try {
-					String user = socialNet.findNewFriend(login, friend).toStringFullName();
+					String user = socialNet.findNewFriend(login, friend)
+							.toStringFullName();
 					if (user == null)
 						System.out.println("Usuario não encontrado");
 					else
@@ -586,31 +705,15 @@ public class UserInterface {
 		} while (opcao != MENU_PRINCIPAL);
 	}
 
-	// nao sei ainda como vai ficar esse field e type. olho amanha cedo (serao
-	// dadas as opcoes ao user, ne?)
 	public static void menuConfiguracoes(String login) throws Exception {
 		int opcao;
-		String field, type;
-		final int MENU_PRINCIPAL = 0, SETAR_PRIVACIDADE = 1, DELETAR = 2;
-		final String OPCOES = "1. Setar Privacidade" + FIM_DE_LINHA
-				+ "2. Deletar Minha Conta" + FIM_DE_LINHA + "0. Menu Principal"
-				+ FIM_DE_LINHA;
+		final int MENU_PRINCIPAL = 0, DELETAR = 1;
+		final String OPCOES = "1. Deletar Minha Conta" + FIM_DE_LINHA
+				+ "0. Menu Principal" + FIM_DE_LINHA;
 		do {
 			opcao = printOpcoes(OPCOES);
 
 			switch (opcao) {
-			case SETAR_PRIVACIDADE:
-				System.out
-						.print("Informe o campo para alterar a privacidade: ");
-				field = scan.nextLine();
-				System.out.print("Informe o tipo de privacidade: ");
-				type = scan.nextLine();
-				try {
-					socialNet.setFieldPrivacy(login, field, type);
-				} catch (Exception e1) {
-					System.out.println(e1.getMessage());
-				}
-				break;
 			case DELETAR:
 				System.out.print("Deseja deletar a sua conta? (Y/n): ");
 				String resposta = scan.nextLine();
@@ -633,6 +736,7 @@ public class UserInterface {
 	}
 
 	// PRECISO REVER ISSO!!!!!!!!!!!!!!!!!!!!! vlw.
+	// tem que ir pra MEU PERFIL ¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
 	public static void menuPreferenciasUsuario(String login) throws Exception {
 		int opcao;
 		String preference;
