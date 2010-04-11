@@ -222,7 +222,8 @@ public class UserInterface {
 						.print("Informe o login do usuario a ser procurado: ");
 				friend = scan.nextLine();
 				try {
-					System.out.println(socialNet.findNewFriend(login, friend).toString());
+					System.out.println(socialNet.findNewFriend(login, friend)
+							.toString());
 				} catch (Exception e1) {
 					System.out.println(e1.getMessage());
 				}
@@ -293,8 +294,12 @@ public class UserInterface {
 
 			switch (opcao) {
 			case EXPORTAR:
+				// socialNet.exportFriendList(login, fileName, exportFields);
+				// alguem que sabe como isso funciona...
 				break;
 			case IMPORTAR:
+				// socialNet.restoreFriendList(login, file);
+				// idem
 				break;
 			case MENU_PRINCIPAL:
 				menuPrincipal(login);
@@ -309,11 +314,12 @@ public class UserInterface {
 
 	public static void menuGrupo(String login) throws Exception {
 		int opcao;
+		String friend, group;
 		final int MENU_PRINCIPAL = 0, ADICIONAR = 1, REMOVER = 2, LISTAR = 3, PROCURAR = 4;
-		final String OPCOES = "1. Adicionar Grupo" + FIM_DE_LINHA
-				+ "2. Remover Grupo" + FIM_DE_LINHA + "3. Listar Grupo"
-				+ FIM_DE_LINHA + "4. Procurar Grupo" + FIM_DE_LINHA
-				+ "0. Menu Principal" + FIM_DE_LINHA;
+		final String OPCOES = "1. Adicionar Amigo a grupo" + FIM_DE_LINHA
+				+ "2. Remover amigo do grupo" + FIM_DE_LINHA
+				+ "3. Listar Grupo" + FIM_DE_LINHA + "4. Procurar Grupo"
+				+ FIM_DE_LINHA + "0. Menu Principal" + FIM_DE_LINHA;
 		do {
 			System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
 			System.out.print(OPCOES + FIM_DE_LINHA
@@ -323,12 +329,50 @@ public class UserInterface {
 
 			switch (opcao) {
 			case ADICIONAR:
+				System.out
+						.print("Informe o login do amigo a ser adicionado no grupo: ");
+				friend = scan.nextLine();
+				System.out
+						.print("Informe o grupo onde o amigo deve ser adicionado: ");
+				group = scan.nextLine();
+				try {
+					socialNet.addGroupMember(login, group, friend);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case REMOVER:
+				System.out
+						.print("Informe o login do amigo a ser removido do grupo: ");
+				friend = scan.nextLine();
+				System.out
+						.print("Informe o grupo onde o amigo deve ser removido: ");
+				group = scan.nextLine();
+				try {
+					socialNet.removeGroupMember(login, group, friend);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case LISTAR:
+				System.out.print("Informe o grupo que deseja listar: ");
+				group = scan.nextLine();
+				try {
+					socialNet.listGroupMembers(login, group);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case PROCURAR:
+				System.out.print("Informe o login do amigo: ");
+				friend = scan.nextLine();
+				System.out.print("Informe o grupo: ");
+				group = scan.nextLine();
+				try {
+					socialNet.findGroupMember(login, friend, group);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case MENU_PRINCIPAL:
 				menuPrincipal(login);
@@ -358,6 +402,14 @@ public class UserInterface {
 			case SETAR_PRIVACIDADE:
 				break;
 			case DELETAR:
+				System.out.print("Deseja deletar a sua conta? (Y/n): ");
+				String resposta = scan.nextLine();
+				if (resposta.equalsIgnoreCase("Y"))
+					try {
+						socialNet.deleteUser(login);
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					}
 				break;
 			case MENU_PRINCIPAL:
 				menuPrincipal(login);
