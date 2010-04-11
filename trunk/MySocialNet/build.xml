@@ -1,0 +1,40 @@
+<project name="MySocialNet" default="jar" basedir="/home/tellesmvn/workspace">
+    <description>
+        simple example build file
+    </description>
+  <!-- set global properties for this build -->
+  <property name="social" location="${basedir}/MySocialNet"/>
+  <property name="src" location="${social}/src"/>
+  <property name="build" location="${social}/bin"/>
+  <property name="dist.dir"  location="${basedir}/dist"/>
+  <property name="dist.doc" location="${dist.dir}/doc"/>
+	
+  <target name="clean"
+ 	        description="clean up" >
+ 	    <!-- Delete the ${build} and ${dist} directory trees -->
+ 	    <delete dir="${build}"/>
+	    <delete dir="${dist.dir}"/>
+  </target>
+
+  <target name="init" depends="clean">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  	<mkdir dir="${dist.dir}"/>
+  	<mkdir dir="${dist.doc}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build}"/>
+  </target>
+
+  <target name="jar" depends="compile"
+        description="generate the distribution" >
+
+    <jar jarfile="${dist.dir}/MySocialNet.jar" basedir="${build}"/>
+  </target>
+
+</project>
