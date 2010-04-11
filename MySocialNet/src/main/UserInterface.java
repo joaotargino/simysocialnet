@@ -112,7 +112,7 @@ public class UserInterface {
 		final int PREF_USUARIOS = 5;
 		final int CONFIGURACOES = 6;
 		final String OPCOES = "1. Meu Perfil" + FIM_DE_LINHA + "2. Amigos"
-				+ FIM_DE_LINHA + "3. Grupos" + FIM_DE_LINHA + "4. FriendList"
+				+ FIM_DE_LINHA + "3. Grupos" + FIM_DE_LINHA + "4. Arquivo"
 				+ FIM_DE_LINHA + "5. Preferências de Usuários" + FIM_DE_LINHA
 				+ "6. Configurações" + FIM_DE_LINHA + "0. Logoff"
 				+ FIM_DE_LINHA;
