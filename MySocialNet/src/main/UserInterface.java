@@ -707,6 +707,11 @@ public class UserInterface {
 				if (resposta.equalsIgnoreCase("Y"))
 					try {
 						socialNet.deleteUser(login);
+						System.out
+								.println("Sua conta foi excluida. Pressione ENTER para voltar à tela inicial");
+						scan.nextLine();
+						telaInicial();
+						opcao = MENU_PRINCIPAL;
 					} catch (Exception e) {
 						System.out.println(e.getMessage());
 					}
