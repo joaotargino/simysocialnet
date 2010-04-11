@@ -24,8 +24,7 @@ public class UserInterface {
 	private static int printOpcoes(final String OPCOES) {
 		int opcao;
 		System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
-		System.out.print(OPCOES + FIM_DE_LINHA
-				+ "Informe a opção desejada: ");
+		System.out.print(OPCOES + FIM_DE_LINHA + "Informe a opção desejada: ");
 		opcao = scan.nextInt();
 		scan.nextLine();
 		return opcao;
@@ -175,8 +174,9 @@ public class UserInterface {
 		final int ACEITAR = 7;
 		final int RECUSAR = 8;
 		final int RECOMENDACOES = 9;
-		final String OPCOES = "1. Visualizar meu perfil" + FIM_DE_LINHA + "2. Alterar dados do meu perfil"
-				+ FIM_DE_LINHA + "3. Setar Privacidade" + FIM_DE_LINHA + "4. Procurar"
+		final String OPCOES = "1. Visualizar meu perfil" + FIM_DE_LINHA
+				+ "2. Alterar dados do meu perfil" + FIM_DE_LINHA
+				+ "3. Setar Privacidade" + FIM_DE_LINHA + "4. Procurar"
 				+ FIM_DE_LINHA + "5. Visualizar Convites Pendentes"
 				+ FIM_DE_LINHA + "6. Visualizar Meus Pedidos Pendentes"
 				+ FIM_DE_LINHA + "7. Aceitar Convite" + FIM_DE_LINHA
@@ -202,6 +202,9 @@ public class UserInterface {
 				opcao = MENU_PRINCIPAL;
 				break;
 			case SETAR_PRIVACIDADE:
+				// socialNet.setFieldPrivacy(login, field, type)
+				setarPrivacidade(login);
+				opcao = MENU_PRINCIPAL;
 				break;
 			case MENU_PRINCIPAL:
 				menuPrincipal(login);
@@ -213,6 +216,79 @@ public class UserInterface {
 			}
 		} while (opcao != MENU_PRINCIPAL);
 
+	}
+
+	public static void setarPrivacidade(String login) throws Exception {
+		String field, type;
+		int opcao, tipo;
+		final int VOLTAR = 0;
+		final int ABOUT_ME = 1;
+		final int AGE = 2;
+		final int CITY = 3;
+		final int CONTACT_MAIL = 4;
+		final int COUNTRY = 5;
+		final int GENDER = 6;
+		final int PHOTO = 7;
+		final int ALL = 11;
+		final int FRIENDS = 12;
+		final int JUST_ME = 13;
+		do {
+			System.out.print(printField());
+			opcao = scan.nextInt();
+			scan.nextLine();
+
+			switch (opcao) {
+			case ABOUT_ME:
+				field = ProfileConstants.ABOUT_ME;
+				System.out.print(printType());
+				tipo = scan.nextInt();
+				type = getType(tipo);
+				if (tipo < 11 || tipo > 13)
+					System.out.println("Opção Inválida");
+				else
+					try {
+						socialNet.setFieldPrivacy(login, field, type);
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					}
+				break;
+			case VOLTAR:
+				meuPerfil(login);
+				break;
+			default:
+				System.out.println("Opcão Inválida");
+				break;
+			}
+		} while (opcao != VOLTAR);
+	}
+
+	public static String printField() {
+		return FIM_DE_LINHA + "1." + ProfileConstants.ABOUT_ME + FIM_DE_LINHA
+				+ "2." + ProfileConstants.AGE + FIM_DE_LINHA + "3."
+				+ ProfileConstants.CITY + FIM_DE_LINHA + "4."
+				+ ProfileConstants.CONTACT_EMAIL + FIM_DE_LINHA + "5."
+				+ ProfileConstants.COUNTRY + FIM_DE_LINHA + "6."
+				+ ProfileConstants.GENDER + FIM_DE_LINHA + "7."
+				+ ProfileConstants.PHOTO + FIM_DE_LINHA + "0. Voltar"
+				+ FIM_DE_LINHA + "Informe o campo que deseja alterar: ";
+	}
+
+	public static String printType() {
+		return FIM_DE_LINHA + "11." + ProfileConstants.ALL + FIM_DE_LINHA
+				+ "12." + ProfileConstants.FRIENDS + FIM_DE_LINHA + "13."
+				+ ProfileConstants.JUST_ME + FIM_DE_LINHA + "0. Voltar"
+				+ FIM_DE_LINHA + "Informe o tipo de privacidade: ";
+	}
+
+	public static String getType(int opcao) {
+		if (opcao == 1)
+			return ProfileConstants.ALL;
+		if (opcao == 2)
+			return ProfileConstants.FRIENDS;
+		if (opcao == 3)
+			return ProfileConstants.JUST_ME;
+		else
+			return "Opção Inválida";
 	}
 
 	public static void alterarPerfil(String login) throws Exception {
@@ -233,11 +309,7 @@ public class UserInterface {
 				+ "0. Voltar" + FIM_DE_LINHA;
 		do {
 
-			System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
-			System.out.print(OPCOES + FIM_DE_LINHA
-					+ "Informe a opção que deseja alterar: ");
-			opcao = scan.nextInt();
-			scan.nextLine();
+			opcao = printOpcoes(OPCOES);
 
 			switch (opcao) {
 			case ABOUT_ME:
@@ -290,12 +362,11 @@ public class UserInterface {
 		final int RECOMENDACOES = 10;
 		final String OPCOES = "1. Adicionar" + FIM_DE_LINHA + "2. Remover"
 				+ FIM_DE_LINHA + "3. Listar" + FIM_DE_LINHA + "4. Procurar"
-				+ FIM_DE_LINHA + "5. Visitar perfil"
-				+ FIM_DE_LINHA + "6. Visualizar Convites Pendentes"
-				+ FIM_DE_LINHA + "7. Visualizar Meus Pedidos Pendentes"
-				+ FIM_DE_LINHA + "8. Aceitar Convite" + FIM_DE_LINHA
-				+ "9. Recusar Convite" + FIM_DE_LINHA
-				+ "10. Visualizar Recomendações" + FIM_DE_LINHA
+				+ FIM_DE_LINHA + "5. Visitar perfil" + FIM_DE_LINHA
+				+ "6. Visualizar Convites Pendentes" + FIM_DE_LINHA
+				+ "7. Visualizar Meus Pedidos Pendentes" + FIM_DE_LINHA
+				+ "8. Aceitar Convite" + FIM_DE_LINHA + "9. Recusar Convite"
+				+ FIM_DE_LINHA + "10. Visualizar Recomendações" + FIM_DE_LINHA
 				+ "0. Menu Principal" + FIM_DE_LINHA;
 
 		do {
@@ -346,8 +417,7 @@ public class UserInterface {
 				}
 				break;
 			case VISITAR:
-				System.out
-						.print("Informe o login do usuario: ");
+				System.out.print("Informe o login do usuario: ");
 				friend = scan.nextLine();
 				try {
 					System.out.println(socialNet.viewProfile(login, friend)
