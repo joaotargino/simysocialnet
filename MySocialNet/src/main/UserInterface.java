@@ -12,6 +12,10 @@ public class UserInterface {
 
 	private final static String FIM_DE_LINHA = System
 			.getProperty("line.separator");
+	private final static String LOGO = "MySocialNet" + FIM_DE_LINHA;
+	private final static String GRUPOS = "1. Escola" + FIM_DE_LINHA + "2. Família"
+	+ FIM_DE_LINHA + "3. Melhores amigos" + FIM_DE_LINHA
+	+ "4. Trabalho" + FIM_DE_LINHA + "5. Conhecidos";
 	private final static Scanner scan = new Scanner(System.in);
 	private static SocialNet socialNet = new SocialNet();
 
@@ -22,8 +26,8 @@ public class UserInterface {
 	private static int printOpcoes(final String OPCOES) {
 		int opcao;
 		final int ERRO = -1;
-		System.out.println(FIM_DE_LINHA + "MySocialNet" + FIM_DE_LINHA);
-		System.out.print(OPCOES + FIM_DE_LINHA + "Informe a opção desejada: ");
+		System.out.print(FIM_DE_LINHA + OPCOES + FIM_DE_LINHA
+				+ "Informe a opção desejada: ");
 		if (scan.hasNextInt()) {
 			opcao = scan.nextInt();
 			scan.nextLine();
@@ -38,7 +42,7 @@ public class UserInterface {
 		String login, senha, name = null, lastName = null, email = null, passwd = null;
 		int opcao;
 		final int SAIR = 0, CRIAR = 1, LOGAR = 2;
-		final String OPCOES = "1. Criar nova conta" + FIM_DE_LINHA
+		final String OPCOES = LOGO + "1. Criar nova conta" + FIM_DE_LINHA
 				+ "2. Fazer Login" + FIM_DE_LINHA + "0. Sair" + FIM_DE_LINHA;
 		do {
 			opcao = printOpcoes(OPCOES);
@@ -93,10 +97,10 @@ public class UserInterface {
 		final int GRUPOS = 3;
 		final int ARQUIVO = 4;
 		final int CONFIGURACOES = 5;
-		final String OPCOES = "1. Meu Perfil" + FIM_DE_LINHA + "2. Amigos"
-				+ FIM_DE_LINHA + "3. Grupos" + FIM_DE_LINHA + "4. Arquivo"
-				+ FIM_DE_LINHA + "5. Configurações" + FIM_DE_LINHA
-				+ "0. Logoff" + FIM_DE_LINHA;
+		final String OPCOES = LOGO + "1. Meu Perfil" + FIM_DE_LINHA
+				+ "2. Amigos" + FIM_DE_LINHA + "3. Grupos" + FIM_DE_LINHA
+				+ "4. Arquivo" + FIM_DE_LINHA + "5. Configurações"
+				+ FIM_DE_LINHA + "0. Logoff" + FIM_DE_LINHA;
 
 		do {
 			opcao = printOpcoes(OPCOES);
@@ -449,9 +453,7 @@ public class UserInterface {
 				+ "8. Aceitar Convite" + FIM_DE_LINHA + "9. Recusar Convite"
 				+ FIM_DE_LINHA + "10. Visualizar Recomendações" + FIM_DE_LINHA
 				+ "0. Menu Principal" + FIM_DE_LINHA;
-		final String GRUPOS = "1. Escola" + FIM_DE_LINHA + "2. Família"
-				+ FIM_DE_LINHA + "3. Melhores amigos" + FIM_DE_LINHA
-				+ "4. Trabalho" + FIM_DE_LINHA + "5. Conhecidos";
+		
 
 		do {
 			opcao = printOpcoes(OPCOES);
@@ -532,8 +534,9 @@ public class UserInterface {
 			case ACEITAR:
 				System.out.print("Informe o login do amigo a ser adicionado: ");
 				contact = scan.nextLine();
-				System.out.print("Informe o grupo do amigo a ser adicionado: ");
-				group = scan.nextLine();
+				System.out.print("Escolha o grupo do amigo a ser adicionado");
+				opcaoGrupo = printOpcoes(GRUPOS);
+				group = escolhaGrupo(opcaoGrupo);
 
 				try {
 					socialNet.acceptFriendshipRequest(login, contact, group);
@@ -615,7 +618,7 @@ public class UserInterface {
 
 	// exibir qdo o grupo ta vazio!
 	private static void menuGrupo(String login) throws Exception {
-		int opcao;
+		int opcao, opcaoGrupo;
 		String friend, group;
 		final int MENU_PRINCIPAL = 0, ADICIONAR = 1, REMOVER = 2, LISTAR = 3, PROCURAR = 4;
 		final String OPCOES = "1. Adicionar amigo a grupo" + FIM_DE_LINHA
@@ -632,8 +635,9 @@ public class UserInterface {
 						.print("Informe o login do amigo a ser adicionado no grupo: ");
 				friend = scan.nextLine();
 				System.out
-						.print("Informe o grupo onde o amigo deve ser adicionado: ");
-				group = scan.nextLine();
+						.print("Escolha o grupo onde o amigo deve ser adicionado");
+				opcaoGrupo = printOpcoes(GRUPOS);
+				group = escolhaGrupo(opcaoGrupo);
 				try {
 					socialNet.addGroupMember(login, group, friend);
 				} catch (Exception e) {
@@ -645,8 +649,9 @@ public class UserInterface {
 						.print("Informe o login do amigo a ser removido do grupo: ");
 				friend = scan.nextLine();
 				System.out
-						.print("Informe o grupo onde o amigo deve ser removido: ");
-				group = scan.nextLine();
+						.print("Escolha o grupo onde o amigo deve ser removido");
+				opcaoGrupo = printOpcoes(GRUPOS);
+				group = escolhaGrupo(opcaoGrupo);
 				try {
 					socialNet.removeGroupMember(login, group, friend);
 				} catch (Exception e) {
@@ -654,8 +659,9 @@ public class UserInterface {
 				}
 				break;
 			case LISTAR:
-				System.out.print("Informe o grupo que deseja listar: ");
-				group = scan.nextLine();
+				System.out.print("Escolha o grupo que deseja listar");
+				opcaoGrupo = printOpcoes(GRUPOS);
+				group = escolhaGrupo(opcaoGrupo);
 				try {
 					System.out.println(socialNet.listGroupMembers(login, group)
 							.toString());
@@ -666,8 +672,9 @@ public class UserInterface {
 			case PROCURAR:
 				System.out.print("Informe o login do amigo: ");
 				friend = scan.nextLine();
-				System.out.print("Informe o grupo: ");
-				group = scan.nextLine();
+				System.out.print("Escolha o grupo");
+				opcaoGrupo = printOpcoes(GRUPOS);
+				group = escolhaGrupo(opcaoGrupo);
 				try {
 					System.out.println(socialNet.findGroupMember(login, friend,
 							group).toString());
