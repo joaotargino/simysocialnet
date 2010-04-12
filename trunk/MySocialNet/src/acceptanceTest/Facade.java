@@ -3,10 +3,12 @@
 //import java.util.List;
 //
 //import beans.UserAccount;
-package main;
+package acceptanceTest;
 
-import java.util.Collections;
 import java.util.List;
+
+import main.SocialNet;
+
 
 import beans.UserAccount;
 

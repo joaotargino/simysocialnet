@@ -24,7 +24,7 @@ public class UsersDAO {
 	
 	private static UsersDAO instance;
 	// arquivo com o BD dos usuarios
-	private static final File USUARIOSBD = new File("./src/dao/usuariosBD.xml");
+	private static final File USUARIOSBD = new File("./usuariosBD.xml");
 
 	
 	public static synchronized UsersDAO getInstance() {
@@ -140,7 +140,7 @@ public class UsersDAO {
 	}
 
 	/**
-	 * Remove o usu�rio, cujo nome e sobrenome sao iguais aos passados como
+	 * Remove o usuário, cujo nome e sobrenome sao iguais aos passados como
 	 * parametro, se possivel.
 	 * 
 	 * @param nome
@@ -218,7 +218,7 @@ public class UsersDAO {
 			throws FileNotFoundException, IOException {
 
 		if (objeto == null) {
-			throw new NullPointerException("Objeto passado � nulo");
+			throw new NullPointerException("Objeto passado é nulo");
 		}
 		XMLEncoder e = null;
 
@@ -228,9 +228,9 @@ public class UsersDAO {
 			e.writeObject(objeto);
 
 		} catch (FileNotFoundException ex) {
-			throw new FileNotFoundException("O arquivo n�o pode ser encontrado");
+			throw new FileNotFoundException("O arquivo não pode ser encontrado");
 		} catch (IOException ex) {
-			throw new IOException("Erro de entrada e sa�da");
+			throw new IOException("Erro de entrada e saída");
 		} finally {
 			if (e != null) {
 				e.close();
@@ -253,7 +253,7 @@ public class UsersDAO {
 		Object obj = null;
 
 		if (file == null) {
-			throw new NullPointerException("Objeto FILE � Nulo.");
+			throw new NullPointerException("Objeto FILE é Nulo.");
 		}
 		XMLDecoder d = null;
 
@@ -264,9 +264,9 @@ public class UsersDAO {
 			obj = d.readObject();
 
 		} catch (FileNotFoundException e) {
-			throw new FileNotFoundException("Arquivo n�o encontrado");
+			throw new FileNotFoundException("Arquivo não encontrado");
 		} catch (IOException e) {
-			throw new IOException("Erro de entrada e sa�da");
+			throw new IOException("Erro de entrada e saída");
 		} finally {
 			if (d != null) {
 				d.close();

@@ -1,6 +1,5 @@
 package interfaces;
 
-
 /**
  * @author Rafael Aquino
  *
