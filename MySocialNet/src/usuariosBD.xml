@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.6.0_0" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="beans.UserAccount">
+    <void property="email">
+     <string>dev@email.com</string>
+    </void>
+    <void property="name">
+     <string>John</string>
+    </void>
+    <void property="password">
+     <string>123456</string>
+    </void>
+    <void property="sentFriendship">
+     <void method="put">
+      <string>xpto123@email.com</string>
+      <string>conhecidos</string>
+     </void>
+     <void method="put">
+      <string>xpto@email.com</string>
+      <string>conhecidos</string>
+     </void>
+    </void>
+    <void property="sentFriendshipAux">
+     <void method="add">
+      <string>xpto@email.com</string>
+     </void>
+     <void method="add">
+      <string>xpto123@email.com</string>
+     </void>
+    </void>
+    <void property="surname">
+     <string>Doe</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="beans.UserAccount">
+    <void property="email">
+     <string>xpto123456@email.com</string>
+    </void>
+    <void property="name">
+     <string>Beltrano</string>
+    </void>
+    <void property="password">
+     <string>123456</string>
+    </void>
+    <void property="surname">
+     <string>Santos</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="beans.UserAccount">
+    <void property="email">
+     <string>xpto@email.com</string>
+    </void>
+    <void property="name">
+     <string>Fulano</string>
+    </void>
+    <void property="password">
+     <string>123456</string>
+    </void>
+    <void property="pendingFriendship">
+     <void method="put">
+      <string>dev@email.com</string>
+      <string>John Doe &lt;dev@email.com&gt; - mensagem: Olá, xpto@email.com me adicione como seu amigo.</string>
+     </void>
+    </void>
+    <void property="surname">
+     <string>de Tal</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="beans.UserAccount">
+    <void property="email">
+     <string>xpto123@email.com</string>
+    </void>
+    <void property="name">
+     <string>Sicrano</string>
+    </void>
+    <void property="password">
+     <string>123456</string>
+    </void>
+    <void property="pendingFriendship">
+     <void method="put">
+      <string>dev@email.com</string>
+      <string>John Doe &lt;dev@email.com&gt; - mensagem: Olá, xpto123@email.com me adicione como seu amigo.</string>
+     </void>
+    </void>
+    <void property="surname">
+     <string>Silva</string>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

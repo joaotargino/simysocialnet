@@ -1,12 +1,13 @@
-package main;
+package acceptanceTest;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import easyaccept.EasyAcceptFacade;
 
 public class Main {
 
-	public static void main(String[] args) throws Exception {
-
+	public static void main(String[] args) {
 		List<String> files = new ArrayList<String>();
 		files.add("test/US01.txt");
 		files.add("test/US02.txt");
@@ -22,5 +23,6 @@ public class Main {
 		System.out.println(eaFacade.getCompleteResults());
 
 	}
+
 
 }

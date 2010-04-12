@@ -1,48 +1,54 @@
-<project name="MySocialNet" default="jar" basedir="/home/tellesmvn/workspace">
-    <description>
-        simple example build file
-    </description>
-  <!-- set global properties for this build -->
-  <property name="social" location="${basedir}/MySocialNet"/>
-  <property name="src" location="${social}/src"/>
-  <property name="build" location="${social}/bin"/>
-  <property name="dist.dir"  location="${basedir}/dist"/>
-  <property name="dist.doc" location="${dist.dir}/doc"/>
+<project name="MySocialNet" default="all" basedir=".">
 	
-  <target name="clean" description="clean up" >
- 	    <delete dir="${build}"/>
-	    <delete dir="${dist.dir}"/>
-  </target>
-
-  <target name="init" depends="clean">
-    <tstamp/>
-    <mkdir dir="${build}"/>
-  	<mkdir dir="${dist.dir}"/>
-  	<mkdir dir="${dist.doc}"/>
-  </target>
-
-  <target name="compile" depends="init" description="compile the source" >
-    <javac srcdir="${src}" destdir="${build}" encoding="UTF-8">
-    	<classpath refid="${build}"/>
-    </javac>
-  	
-  </target>
+	<property name="src" value="${basedir}/src"/>
+	<property name="build" value="${basedir}/bin"/>
+	<property name="docs" value="${basedir}/docs"/>
+	<property name="jar" value="${basedir}/MySocialNet.jar"/>
+	<property name="facade.class.path" value="test.main.Facade" />
+	<property name="tests.dir" value="${basedir}/test" />
 	
-  <target name="test" depends="compile" description="run the tests">
-  </target>
+<target name="clean" description="clean up the output directories and jar.">
+	<echo>Limpando projeto</echo>
+	<delete dir="${build}"/>
+	<delete dir="${docs}"/>
+	<delete file="${jar}"/>
+	<delete file="./usuariosBD.xml"/>
+</target>
 	
-  <!-- JAVADOC -->
-  <target name="javadoc" depends="test" description="Cria a documentação javadoc do projeto.">
-  	<javadoc destdir="${dist.doc}" author="false" version="false" use="true" windowtitle="MySocialNet Doc">
-        <fileset dir="${social}/src" defaultexcludes="yes">
-            <include name="**/*.java" />
-        </fileset>
-    </javadoc>
-  </target>
-  <!-- /JAVADOC -->
+<target name="init" depends="clean" description="initialize the properties.">
+	<mkdir dir="${build}"/>
+	<mkdir dir="${docs}"/>
+</target>
+	
+<target name="compile" depends="init" description="compile the Java source.">
+	<echo>Compilando projeto</echo>
+	<javac srcdir="${src}" destdir="${build}">
+	<classpath>
+		<pathelement path="lib\easyaccept.jar" />
+	</classpath>
+	</javac>
+</target>
+	
+<target name="doc" depends="compile" description="Generate the doc">
+	<echo>Gerando Javadoc</echo>
+	<javadoc author="false" sourcepath="${src}" destdir="${docs}" packagenames="*" windowtitle="MySocialNet API"/>
+</target>
+	
+<target name="test">
+	<echo>Testando...</echo>
+	<java classname="acceptanceTest/Main" fork="true">
+		<classpath path="${build}"/>
+		<classpath>
+		<pathelement path="lib/easyaccept.jar"/>
+		</classpath>
+	</java>
+	</target>
 
-  <target name="jar" depends="compile" description="generate the distribution" >
-    <jar jarfile="${dist.dir}/MySocialNet.jar" basedir="${build}"/>
-  </target>
-
+	
+<target name="jar" depends="compile">
+	<echo>Gerando Jar </echo>
+	<jar destfile="${jar}" basedir="${build}" manifest="${basedir}/META-INF/MANIFEST.MF"/>
+</target>
+	
+<target name="all" depends="clean,init,compile,doc,test,jar" description="perform all targets."/>
 </project>
