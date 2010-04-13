@@ -12,7 +12,7 @@
 	<delete dir="${build}"/>
 	<delete dir="${docs}"/>
 	<delete file="${jar}"/>
-	<delete file="./usuariosBD.xml"/>
+	<delete file="usuariosBD.xml"/>
 </target>
 	
 <target name="init" depends="clean" description="initialize the properties.">
@@ -24,7 +24,7 @@
 	<echo>Compilando projeto</echo>
 	<javac srcdir="${src}" destdir="${build}">
 	<classpath>
-		<pathelement path="lib\easyaccept.jar" />
+		<pathelement path="lib/easyaccept.jar" />
 	</classpath>
 	</javac>
 </target>
@@ -36,7 +36,7 @@
 	
 <target name="test">
 	<echo>Testando...</echo>
-	<java classname="acceptanceTest/Main" fork="true">
+	<java classname="acceptanceTest.Main" fork="true">
 		<classpath path="${build}"/>
 		<classpath>
 		<pathelement path="lib/easyaccept.jar"/>
