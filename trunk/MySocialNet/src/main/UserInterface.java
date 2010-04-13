@@ -492,12 +492,11 @@ public class UserInterface {
 						.print("Informe o login ou nome completo do usuario a ser procurado: ");
 				friend = scan.nextLine();
 				try {
-					String user = socialNet.findNewFriend(login, friend)
-							.toStringFullName();
-					if (user == null)
+					
+					if (socialNet.findNewFriend(login, friend) == null)
 						System.out.println("Usuario não encontrado");
 					else
-						System.out.println(user);
+						System.out.println(socialNet.findNewFriend(login, friend).toString());
 				} catch (Exception e1) {
 					System.out.println(e1.getMessage());
 				}
