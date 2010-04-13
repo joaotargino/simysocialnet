@@ -1,14 +1,3 @@
-//package main;
-//
-//import interfaces.ProfileIF;
-//
-//import java.util.List;
-//
-//import beans.Group;
-//import beans.UserAccount;
-//import controller.DBController;
-//import controller.GroupController;
-//import controller.UserController;
 package main;
 
 import interfaces.ProfileIF;
@@ -17,16 +6,14 @@ import java.util.List;
 
 import beans.Group;
 import beans.UserAccount;
-import controller.DBController;
 import controller.GroupController;
 import controller.UserController;
 
 public class SocialNet {
 
 	private static SocialNet social;
-	private GroupController groupController = new GroupController();;
-	private UserController userController = new UserController();;
-	private DBController dbController = new DBController();;
+	private GroupController groupController = new GroupController();
+	private UserController userController = new UserController();
 
 	public synchronized static SocialNet getInstance() {
 		if (social == null) {
@@ -97,7 +84,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public UserAccount getUser(String login) throws Exception {
-		return dbController.getUser(login);
+		return this.userController.getUser(login);
 	}
 
 	/**
@@ -180,7 +167,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public List<String> listUserPreferences(String login) throws Exception {
-		return this.dbController.getUsers(login).getPreferences();
+		return this.userController.getUsers(login).getPreferences();
 	}
 
 	/**
@@ -275,7 +262,7 @@ public class SocialNet {
 	 */
 	public UserAccount findNewFriend(String login, String friend)
 			throws Exception {
-		return this.dbController.findNewFriend(login, friend);
+		return this.userController.findNewFriend(login, friend);
 	}
 
 	/**
@@ -378,10 +365,7 @@ public class SocialNet {
 	 * @param exportFields
 	 */
 	public void exportFriendList(String login, String fileName, String exportFields) throws Exception {
-		UserAccount usuario = this.dbController.getUser(login);
-		if (!usuario.isLogged())	throw new Exception("Usuário não logado");
-		userController.exportFriendList(usuario, login, fileName, exportFields);
-
+		this.userController.exportFriendList(login, fileName, exportFields);
 	}
 
 	/**
@@ -392,9 +376,7 @@ public class SocialNet {
 	 * @throws Exception 
 	 */
 	public String restoreFriendList(String login, String file) throws Exception {
-		UserAccount usuario = this.dbController.getUser(login);
-		if (!usuario.isLogged())	throw new Exception("Usuário não logado");
-		return userController.restoreFriendList(usuario, file);
+		return userController.restoreFriendList(login,file);
 	}
 
 	/**

@@ -24,10 +24,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import beans.Group;
 import beans.UserAccount;
@@ -404,8 +402,9 @@ public class UserController {
 	 * @param exportFields
 	 * @throws Exception
 	 */
-	public void exportFriendList(UserAccount usuario, String login, String fileName, String exportFields) throws Exception {
-
+	public void exportFriendList(String login, String fileName, String exportFields) throws Exception {
+		UserAccount usuario = this.getUser(login);
+		if (!usuario.isLogged())	throw new Exception("Usuário não logado");
 		String dadosExportados = "";
 		//		this.criaPastas(fileName);
 		File file;
@@ -463,7 +462,9 @@ public class UserController {
 	 * @return
 	 * @throws Exception
 	 */
-	public String restoreFriendList(UserAccount usuario, String fileName) throws Exception{
+	public String restoreFriendList(String login, String fileName) throws Exception{
+		UserAccount usuario = this.getUser(login);
+		if (!usuario.isLogged())	throw new Exception("Usuário não logado");
 		List<String> notImportedContacts = new ArrayList<String>();
 		FileReader fileReader;
 		BufferedReader reader;
@@ -587,6 +588,18 @@ public class UserController {
 				break;
 			}
 		}
+	}
+
+	public UserAccount getUser(String login) throws Exception{
+		return this.dbController.getUser(login);
+	}
+
+	public UserAccount getUsers(String login) throws Exception{
+		return this.dbController.getUsers(login);
+	}
+
+	public UserAccount findNewFriend(String login, String friend) throws Exception{
+		return this.dbController.findNewFriend(login, friend);
 	}
 }
 
