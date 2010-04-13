@@ -24,7 +24,7 @@ public class UsersDAO {
 	
 	private static UsersDAO instance;
 	// arquivo com o BD dos usuarios
-	private static final File USUARIOSBD = new File("usuariosBD.xml");
+	private static final File USUARIOSBD = new File("./usuariosBD.xml");
 
 	
 	public static synchronized UsersDAO getInstance() {
