@@ -492,11 +492,12 @@ public class UserInterface {
 						.print("Informe o login ou nome completo do usuario a ser procurado: ");
 				friend = scan.nextLine();
 				try {
-					
+
 					if (socialNet.findNewFriend(login, friend) == null)
-						System.out.println("Usuario não encontrado");
+						System.out.println("Usuário não encontrado");
 					else
-						System.out.println(socialNet.findNewFriend(login, friend).toString());
+						System.out.println(socialNet.findNewFriend(login,
+								friend).toString());
 				} catch (Exception e1) {
 					System.out.println(e1.getMessage());
 				}
@@ -711,8 +712,11 @@ public class UserInterface {
 				opcaoGrupo = printOpcoes(GRUPOS);
 				group = escolhaGrupo(opcaoGrupo);
 				try {
-					System.out.println(socialNet.findGroupMember(login, friend,
-							group).toString());
+					if (socialNet.findGroupMember(login, friend, group) == null)
+						System.out.println("Usuário não encontrado");
+					else
+						System.out.println(socialNet.findGroupMember(login,
+								friend, group).toString());
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
