@@ -4,18 +4,14 @@ import java.util.Scanner;
 
 import Util.ProfileConstants;
 
-//TODO mudar o nome das excecoes (tipo e.getMessage() , e1... e2...)
-//TODO alguem tem que rever uns parametros de classe q tao despadronizados =x depois lembro quais!
-//TODO botar uma linha pra pedir ENTER e um sc.nextLine() depois das excecoes? 
-
 public class UserInterface {
 
 	private final static String FIM_DE_LINHA = System
 			.getProperty("line.separator");
 	private final static String LOGO = "MySocialNet" + FIM_DE_LINHA;
-	private final static String GRUPOS = "1. Escola" + FIM_DE_LINHA + "2. Família"
-	+ FIM_DE_LINHA + "3. Melhores amigos" + FIM_DE_LINHA
-	+ "4. Trabalho" + FIM_DE_LINHA + "5. Conhecidos";
+	private final static String GRUPOS = "1. Escola" + FIM_DE_LINHA
+			+ "2. Família" + FIM_DE_LINHA + "3. Melhores amigos" + FIM_DE_LINHA
+			+ "4. Trabalho" + FIM_DE_LINHA + "5. Conhecidos";
 	private final static Scanner scan = new Scanner(System.in);
 	private static SocialNet socialNet = new SocialNet();
 
@@ -264,7 +260,7 @@ public class UserInterface {
 				+ "E-mail de contato" + FIM_DE_LINHA + "5." + "País"
 				+ FIM_DE_LINHA + "6." + "Sexo" + FIM_DE_LINHA + "7." + "Foto"
 				+ FIM_DE_LINHA + "0. Voltar" + FIM_DE_LINHA
-				+ "Informe o campo que deseja alterar: ";
+				+ "Informe o campo: ";
 	}
 
 	private static String printType() {
@@ -453,7 +449,6 @@ public class UserInterface {
 				+ "8. Aceitar Convite" + FIM_DE_LINHA + "9. Recusar Convite"
 				+ FIM_DE_LINHA + "10. Visualizar Recomendações" + FIM_DE_LINHA
 				+ "0. Menu Principal" + FIM_DE_LINHA;
-		
 
 		do {
 			opcao = printOpcoes(OPCOES);
@@ -586,9 +581,9 @@ public class UserInterface {
 		return "conhecidos";
 	}
 
-	// no idea de como funfa
 	private static void menuArquivo(String login) throws Exception {
 		int opcao;
+		String file, exportFields;
 		final int MENU_PRINCIPAL = 0, EXPORTAR = 1, IMPORTAR = 2;
 		final String OPCOES = "1. Exportar Lista De Amigos" + FIM_DE_LINHA
 				+ "2. Importar Lista De Amigs" + FIM_DE_LINHA
@@ -598,12 +593,19 @@ public class UserInterface {
 
 			switch (opcao) {
 			case EXPORTAR:
-				// socialNet.exportFriendList(login, fileName, exportFields);
-				// alguem que sabe como isso funciona...
+				System.out.print("Informe o arquivo: ");
+				file = scan.nextLine();
+				exportFields = getFields();
+				socialNet.exportFriendList(login, file, exportFields);
 				break;
 			case IMPORTAR:
-				// socialNet.restoreFriendList(login, file);
-				// idem
+				System.out.print("Informe o arquivo: ");
+				file = scan.nextLine();
+				try {
+					socialNet.restoreFriendList(login, file);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case MENU_PRINCIPAL:
 				menuPrincipal(login);
@@ -616,7 +618,41 @@ public class UserInterface {
 		} while (opcao != MENU_PRINCIPAL);
 	}
 
-	// exibir qdo o grupo ta vazio!
+	private static String getFields() {
+		int opcaoField = -1;
+		final int VOLTAR = 0;
+		final int ABOUT_ME = 1;
+		final int AGE = 2;
+		final int CITY = 3;
+		final int CONTACT_EMAIL = 4;
+		final int COUNTRY = 5;
+		final int GENDER = 6;
+		final int PHOTO = 7;
+		String fields = "";
+		while (opcaoField != VOLTAR) {
+			System.out.print(printField());
+			opcaoField = scan.nextInt();
+			scan.nextLine();
+			if (opcaoField == ABOUT_ME)
+				fields += ProfileConstants.ABOUT_ME + ",";
+			if (opcaoField == AGE)
+				fields += ProfileConstants.AGE + ",";
+			if (opcaoField == CITY)
+				fields += ProfileConstants.CITY + ",";
+			if (opcaoField == CONTACT_EMAIL)
+				fields += ProfileConstants.CONTACT_EMAIL + ",";
+			if (opcaoField == COUNTRY)
+				fields += ProfileConstants.COUNTRY + ",";
+			if (opcaoField == GENDER)
+				fields += ProfileConstants.GENDER + ",";
+			if (opcaoField == PHOTO)
+				fields += ProfileConstants.PHOTO + ",";
+		}
+		if (fields.length() == 0)
+			return "";
+		return fields.substring(0, fields.length() - 1);
+	}
+
 	private static void menuGrupo(String login) throws Exception {
 		int opcao, opcaoGrupo;
 		String friend, group;
@@ -728,7 +764,6 @@ public class UserInterface {
 		} while (opcao != MENU_PRINCIPAL);
 	}
 
-	// TODO PRECISO REVER ISSO!!!!!!!!!!!!!!!!!!!!! vlw.
 	private static void menuPreferenciasUsuario(String login) throws Exception {
 		int opcao;
 		String preference;
