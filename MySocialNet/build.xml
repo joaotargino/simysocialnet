@@ -12,7 +12,7 @@
 	<delete dir="${build}"/>
 	<delete dir="${docs}"/>
 	<delete file="${jar}"/>
-	<delete file="usuariosBD.xml"/>
+	<delete file="./usuariosBD.xml"/>
 </target>
 	
 <target name="init" depends="clean" description="initialize the properties.">
