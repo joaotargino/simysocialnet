@@ -13,7 +13,7 @@ public class UserInterface {
 			+ "2. Família" + FIM_DE_LINHA + "3. Melhores amigos" + FIM_DE_LINHA
 			+ "4. Trabalho" + FIM_DE_LINHA + "5. Conhecidos";
 	private final static Scanner scan = new Scanner(System.in);
-	private static SocialNet socialNet = new SocialNet();
+	private static SocialNet socialNet = SocialNet.getInstance();
 
 	public static void main(String[] args) throws Exception {
 		telaInicial();
