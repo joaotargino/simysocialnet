@@ -2,29 +2,22 @@ package facades;
 
 import interfaces.ProfileIF;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
-import controller.DBController;
-import Util.Util;
 import beans.Group;
 import beans.UserAccount;
+import controller.DBController;
 
 public class UserAccountDBFacade {
-	private UserAccount userAccount;
 	private DBController dbController;
-	private Group group;
 	private static UserAccountDBFacade instancia;
+	private ProfileUtilFacade profileUtilFacade;
 	
 	protected UserAccountDBFacade() {
-		this.userAccount = new UserAccount();
 		this.dbController = new DBController();
+		this.profileUtilFacade = ProfileUtilFacade.getInstance();
 	}
 	
 	public synchronized static UserAccountDBFacade getInstance() {
@@ -170,9 +163,10 @@ public class UserAccountDBFacade {
 	 * @param city
 	 * @param gender
 	 * @param contactEmail
+	 * @throws Exception 
 	 */
-	public void updateUserProfile(String login,UserAccount usuario, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
-		this.dbController.getUser(login).profileController.updateUserProfile(usuario, aboutMe, age, photo, country, city, gender, contactEmail);
+	public void updateUserProfile(String login,UserAccount usuario, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) throws Exception {
+		this.dbController.getUser(login).updateUserProfile(usuario, aboutMe, age, photo, country, city, gender, contactEmail);
 	}
 
 	/**
@@ -182,12 +176,12 @@ public class UserAccountDBFacade {
 	 * @param field
 	 * @throws Exception
 	 */
-	public void setFieldPrivacy(String owner, String visibility, String field) throws Exception {
-		profileController.setPrivacy(owner, visibility, field);
+	public void setFieldPrivacy(String login, String owner, String visibility, String field) throws Exception {
+		this.dbController.getUser(login).setFieldPrivacy(owner, visibility, field);
 	}
 
-	public ProfileIF getProfile(UserAccount user, String visibility) {
-		return profileController.getProfile(user, visibility);
+	public ProfileIF getProfile(String login, UserAccount user, String visibility) throws Exception {
+		return this.dbController.getUser(login).getProfile(user, visibility);
 	}
 
 	public void setSentFriendship(String login,Map<String,String> sentFriendship) throws Exception {
@@ -208,8 +202,8 @@ public class UserAccountDBFacade {
 		this.dbController.getUser(login).acceptFriendshipRequest(contact, group, contato);
 	}
 
-	public Group getGrupo(UserAccount usuario, String group) throws Exception {
-		return groupController.getGroup(usuario, group);
+	public Group getGrupo(String login, UserAccount usuario, String group) throws Exception {
+		return this.dbController.getUser(login).getGrupo(usuario, group);
 	}
 
 	/**
