@@ -6,20 +6,23 @@ import java.util.List;
 
 import beans.Group;
 import beans.UserAccount;
-import controller.GroupController;
-import controller.UserController;
+import facades.ControllersFacade;
 
 public class SocialNet {
 
 	private static SocialNet social;
-	private GroupController groupController = new GroupController();
-	private UserController userController = new UserController();
+	private ControllersFacade controllersFacade;
 
 	public synchronized static SocialNet getInstance() {
 		if (social == null) {
 			social = new SocialNet();
 		}
 		return social;
+	}
+	
+	
+	protected SocialNet() { 
+		controllersFacade = ControllersFacade.getInstance();
 	}
 
 	/**
@@ -29,7 +32,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public void login(String login, String senha) throws Exception {
-		userController.login(login, senha);
+	this.controllersFacade.login(login, senha);;
 	}
 
 	/**
@@ -38,7 +41,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public void logoff(String email) throws Exception {
-		userController.logoff(email);
+	this.controllersFacade.logoff(email);;
 	}
 
 	/**
@@ -46,7 +49,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public boolean isLoged(String login) throws Exception {
-		return userController.isLoged(login);
+		return this.controllersFacade.isLoged(login);
 	}
 
 	/**
@@ -69,8 +72,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public void createUser(String name, String lastName, String email,
-			String passwd) throws Exception {
-		userController.createUser(name, lastName, email, passwd);
+			String passwd) throws Exception {		this.controllersFacade.createUser(name, lastName, email, passwd);;
 	}
 
 	/**
@@ -84,7 +86,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public UserAccount getUser(String login) throws Exception {
-		return this.userController.getUser(login);
+		return this.controllersFacade.getUser(login);
 	}
 
 	/**
@@ -105,8 +107,7 @@ public class SocialNet {
 	public void updateUserProfile(String login, String aboutMe, String age,
 			String photo, String country, String city, String gender,
 			String contactEmail) throws Exception {
-		
-		userController.updateUserProfile(login, aboutMe, age, photo, country, city, gender, contactEmail);
+				this.controllersFacade.updateUserProfile(login, aboutMe, age, photo, country, city, gender, contactEmail);;
 	}
 
 	/**
@@ -118,9 +119,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public void setFieldPrivacy(String login, String field, String type)
-			throws Exception {
-		
-		userController.setFieldPrivacy(login, field, type);
+			throws Exception {		this.controllersFacade.setFieldPrivacy(login, field, type);;
 	}
 
 	/**
@@ -136,13 +135,11 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public ProfileIF checkProfile(String login, String visibility) throws Exception {
-		
-		return userController.checkProfile(login, visibility);
+		return this.controllersFacade.checkProfile(login, visibility);
 	}
 
 	public ProfileIF viewProfile(String viewer, String profileOwner) throws Exception {
-		
-		return userController.viewProfile(viewer, profileOwner);
+		return this.controllersFacade.viewProfile(viewer, profileOwner);
 	}
 
 	/**
@@ -152,9 +149,7 @@ public class SocialNet {
 	 * @param preference
 	 * @throws Exception
 	 */
-	public void addUserPreference(String login, String preference)throws Exception {
-
-		userController.addUserPreferences(login, preference);
+	public void addUserPreference(String login, String preference)throws Exception {		this.controllersFacade.addUserPreferences(login, preference);;
 	}
 
 	/**
@@ -167,7 +162,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public List<String> listUserPreferences(String login) throws Exception {
-		return this.userController.getUsers(login).getPreferences();
+		return this.controllersFacade.getUser(login).getPreferences();
 	}
 
 	/**
@@ -177,9 +172,7 @@ public class SocialNet {
 	 * @param preference
 	 * @throws Exception
 	 */
-	public void removeUserPreference(String login, String preference) throws Exception {
-		
-		userController.removeUserPreference(login, preference);
+	public void removeUserPreference(String login, String preference) throws Exception {		this.controllersFacade.removeUserPreference(login, preference);;
 	}
 
 	/**
@@ -188,8 +181,7 @@ public class SocialNet {
 	 * @param login
 	 * @throws Exception
 	 */
-	public void deleteUser(String login) throws Exception {
-		userController.deleteUser(login);
+	public void deleteUser(String login) throws Exception {		this.controllersFacade.deleteUser(login);
 	}
 
 	/**
@@ -201,7 +193,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public Group listGroupMembers(String email, String group) throws Exception {
-		return groupController.listGroupMembers(email, group);
+		return this.controllersFacade.listGroupMembers(email, group);
 	}
 
 	/**
@@ -215,7 +207,7 @@ public class SocialNet {
 	 */
 	public UserAccount findGroupMember(String login, String friend,
 			String group) throws Exception {
-		return groupController.getMembro(login, friend, group);
+		return this.controllersFacade.getMembro(login, friend, group);
 	}
 
 	/**
@@ -224,8 +216,7 @@ public class SocialNet {
 	 * @param user
 	 * @throws Exception
 	 */
-	public void addGroupMember(String email, String group, String user) throws Exception {
-		groupController.addToGroup(email, group, user);
+	public void addGroupMember(String email, String group, String user) throws Exception {		this.controllersFacade.addToGroup(email, group, user);
 	}
 
 	/**
@@ -237,8 +228,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public void removeGroupMember(String email, String group, String user)
-			throws Exception {
-		groupController.removeFromGroup(email, group, user);
+			throws Exception {		this.controllersFacade.removeFromGroup(email, group, user);
 	}
 
 	/**
@@ -249,7 +239,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public List<UserAccount> listFriends(String email) throws Exception {
-		return userController.listFriends(email);
+		return this.controllersFacade.listFriends(email);
 	}
 
 	/**
@@ -262,7 +252,7 @@ public class SocialNet {
 	 */
 	public UserAccount findNewFriend(String login, String friend)
 			throws Exception {
-		return this.userController.findNewFriend(login, friend);
+		return this.controllersFacade.findNewFriend(login, friend);
 	}
 
 	/**
@@ -274,8 +264,7 @@ public class SocialNet {
 	 * @param group
 	 */
 	public void sendFriendshipRequest(String login, String user,
-			String message, String group) throws Exception {
-		userController.sendFriendshipRequest(login, user, message, group);
+			String message, String group) throws Exception {		this.controllersFacade.sendFriendshipRequest(login, user, message, group);
 	}
 
 	/**
@@ -286,7 +275,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public List<String> viewPendingFriendship(String login) throws Exception {
-		return userController.viewPendingFriendship(login);
+		return this.controllersFacade.viewPendingFriendship(login);
 	}
 
 	/**
@@ -297,7 +286,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public List<String> viewSentFriendship(String login) throws Exception {
-		return userController.viewSentFriendship(login);
+		return this.controllersFacade.viewSentFriendship(login);
 	}
 
 	/**
@@ -307,8 +296,7 @@ public class SocialNet {
 	 * @param contact
 	 */
 	public void declineFriendshipRequest(String login, String contact)
-			throws Exception {
-		userController.declineFriendshipRequest(login, contact);
+			throws Exception {		this.controllersFacade.declineFriendshipRequest(login, contact);
 	}
 
 	/**
@@ -318,8 +306,7 @@ public class SocialNet {
 	 * @param contact
 	 * @param group
 	 */
-	public void acceptFriendshipRequest(String login, String contact, String group) throws Exception {
-		userController.acceptFriendshipRequest(login, contact, group);
+	public void acceptFriendshipRequest(String login, String contact, String group) throws Exception {		this.controllersFacade.acceptFriendshipRequest(login, contact, group);
 	}
 
 	/**
@@ -331,7 +318,7 @@ public class SocialNet {
 	 * @throws Exception
 	 */
 	public UserAccount getFriend(String email, String friend) throws Exception {
-		return userController.getFriend(email, friend);
+		return this.controllersFacade.getFriend(email, friend);
 	}
 
 	/**
@@ -341,8 +328,7 @@ public class SocialNet {
 	 * @param friend
 	 * @throws Exception
 	 */
-	public void removeFriend(String login, String friend) throws Exception {
-		userController.removeFriend(login, friend);
+	public void removeFriend(String login, String friend) throws Exception {		this.controllersFacade.removeFriend(login, friend);
 	}
 
 	/**
@@ -353,7 +339,7 @@ public class SocialNet {
 	 * @return
 	 */
 	public List<UserAccount> getRecommendFriends(String login) throws Exception {
-		return this.userController.getRecommendedFriends(login);
+		return this.controllersFacade.getRecommendedFriends(login);
 	}
 
 	/**
@@ -364,8 +350,7 @@ public class SocialNet {
 	 * @param fileName
 	 * @param exportFields
 	 */
-	public void exportFriendList(String login, String fileName, String exportFields) throws Exception {
-		this.userController.exportFriendList(login, fileName, exportFields);
+	public void exportFriendList(String login, String fileName, String exportFields) throws Exception {		this.controllersFacade.exportFriendList(login, fileName, exportFields);
 	}
 
 	/**
@@ -376,14 +361,13 @@ public class SocialNet {
 	 * @throws Exception 
 	 */
 	public String restoreFriendList(String login, String file) throws Exception {
-		return userController.restoreFriendList(login,file);
+		return this.controllersFacade.restoreFriendList(login,file);
 	}
 
 	/**
 	 * Limpar o banco de dados
 	 */
-	public void clean() {
-		userController.clean();
+	public void clean() {		this.controllersFacade.clean();
 	}
 	
 }
