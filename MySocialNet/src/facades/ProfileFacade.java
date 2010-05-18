@@ -5,17 +5,17 @@ import interfaces.ProfileIF;
 import Util.ProfileConstants;
 import beans.UserAccount;
 
-public class ProfileUtilFacade {
+public class ProfileFacade {
 	
-	private static ProfileUtilFacade instancia;
+	private static ProfileFacade instancia;
 	private ProfileController profileController;
-	protected ProfileUtilFacade() {
+	protected ProfileFacade() {
 		this.profileController = new ProfileController();
 	}
 	
-	public static synchronized ProfileUtilFacade getInstance() {
+	public static synchronized ProfileFacade getInstance() {
 		if(instancia == null) { 
-			instancia = new ProfileUtilFacade();
+			instancia = new ProfileFacade();
 		}
 		return instancia;
 	}

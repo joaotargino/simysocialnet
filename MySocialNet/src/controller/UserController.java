@@ -30,9 +30,10 @@ import java.util.List;
 import beans.Group;
 import beans.UserAccount;
 import dao.UsersDAO;
+import facades.UserAccountDBFacade;
 
 public class UserController {
-	private DBController dbController;
+	private UserAccountDBFacade userAccountDBFacade;
 	private List<UserAccount> usuariosLogados;
 
 
@@ -41,7 +42,7 @@ public class UserController {
 	 */
 	public UserController() {
 		usuariosLogados = new ArrayList<UserAccount>();
-		dbController = new DBController();
+		userAccountDBFacade = UserAccountDBFacade.getInstance();
 	}
 
 	public List<UserAccount> getUsuariosLogados() {
@@ -63,7 +64,7 @@ public class UserController {
 	public void login(String login, String senha) throws Exception {
 		UserAccount usuario;
 		try {
-			usuario = this.dbController.getUsers(login);
+			usuario = this.userAccountDBFacade.getUsers(login);
 			if (usuario == null)
 				throw new Exception("Login inválido ou senha incorreta");
 			else if (!senha.equals(usuario.getPassword()))
@@ -76,7 +77,7 @@ public class UserController {
 		}
 		usuario.setLogged(true);
 		usuariosLogados.add(usuario);
-		this.dbController.update(usuario);
+		this.userAccountDBFacade.update(usuario);
 	}
 
 	/**
@@ -87,7 +88,7 @@ public class UserController {
 	public void logoff(String login) throws Exception {
 		UserAccount user;
 		try {
-			user = dbController.getUsers(login);
+			user = this.userAccountDBFacade.getUsers(login);
 		} catch (Exception e) {
 			throw new Exception("Login inválido");
 		}
@@ -95,7 +96,7 @@ public class UserController {
 			throw new Exception("Usuário não logado");
 		user.setLogged(false);
 		usuariosLogados.remove(user);
-		dbController.update(user);
+		this.userAccountDBFacade.update(user);
 	}
 
 	/**
@@ -105,7 +106,7 @@ public class UserController {
 	 * @throws Exception
 	 */
 	public void addUserPreferences(String login,String preferencia) throws Exception {
-		UserAccount user = this.dbController.getUsers(login);
+		UserAccount user = this.userAccountDBFacade.getUsers(login);
 		if (!user.isLogged()) {
 			throw new Exception("Usuário não logado");
 		}
@@ -123,12 +124,12 @@ public class UserController {
 	public void sendFriendshipRequest(String login, String user, String message, String group) throws Exception {
 		UserAccount convidado; 
 		try {
-			convidado = this.dbController.getUsers(user);
+			convidado = this.userAccountDBFacade.getUsers(user);
 		}catch(Exception e) {
 			throw new Exception("Contato inexistente");
 		}
 		if(login.equals(user)) throw new Exception("Operação não permitida");
-		UserAccount logado = this.dbController.getUsers(login);
+		UserAccount logado = this.userAccountDBFacade.getUsers(login);
 		if(!verifyIfUserIsLogged(logado)) throw new Exception("Usuário não logado");
 		logado.sendFriendshipRequest(user, group);
 		convidado.receiveFriendshipRequest(logado, login, message);
@@ -142,8 +143,8 @@ public class UserController {
 	 * @throws Exception
 	 */
 	public void acceptFriendshipRequest(String login, String contact,String group) throws Exception {
-		UserAccount user = this.dbController.getUsers(login);
-		UserAccount contato = this.dbController.getUsers(contact);
+		UserAccount user = this.userAccountDBFacade.getUsers(login);
+		UserAccount contato = this.userAccountDBFacade.getUsers(contact);
 		if(!verifyIfUserIsLogged(user)) throw new Exception("Usuário não logado");
 		user.acceptFriendshipRequest(contact, group, contato);
 		contato.removeSentFriendshipRequest(login,user);
@@ -164,7 +165,7 @@ public class UserController {
 	 * @throws Exception
 	 */
 	public List<UserAccount> listFriends(String email) throws Exception {
-		UserAccount usuario = this.dbController.getUsers(email);
+		UserAccount usuario = this.userAccountDBFacade.getUsers(email);
 		if(!verifyIfUserIsLogged(usuario)) throw new Exception("Usuário não logado");
 		return usuario.getFriends();
 	}
@@ -176,7 +177,7 @@ public class UserController {
 	 * @throws Exception
 	 */
 	public List<String> viewPendingFriendship(String login) throws Exception{
-		UserAccount usuario = this.dbController.getUsers(login);
+		UserAccount usuario = this.userAccountDBFacade.getUsers(login);
 
 		if(!verifyIfUserIsLogged(usuario)) throw new Exception("Usuário não logado");
 		return usuario.viewPendingFriendship();
@@ -189,7 +190,7 @@ public class UserController {
 	 * @throws Exception
 	 */
 	public List<String> viewSentFriendship(String login)throws Exception {
-		UserAccount usuario = this.dbController.getUsers(login);
+		UserAccount usuario = this.userAccountDBFacade.getUsers(login);
 
 		if(!verifyIfUserIsLogged(usuario)) throw new Exception("Usuário não logado");
 		return usuario.viewSentFriendship();
@@ -205,8 +206,8 @@ public class UserController {
 		UserAccount usuario;
 		UserAccount contato;
 		try{
-			usuario = this.dbController.getUsers(login);
-			contato = this.dbController.getUsers(contact);
+			usuario = this.userAccountDBFacade.getUsers(login);
+			contato = this.userAccountDBFacade.getUsers(contact);
 		}catch (Exception e) {
 			throw new Exception("Login inexistente");
 		}
@@ -216,14 +217,14 @@ public class UserController {
 	}
 
 	public UserAccount getFriend(String email, String friend) throws Exception {
-		UserAccount user = this.dbController.getUsers(email);
+		UserAccount user = this.userAccountDBFacade.getUsers(email);
 		UserAccount amigo;
 		if (!verifyIfUserIsLogged(user)) {
-			amigo = this.dbController.getUsers(friend);
+			amigo = this.userAccountDBFacade.getUsers(friend);
 			throw new Exception("Usuário não logado");
 		}
 		try {
-			amigo = this.dbController.getUsers(friend);
+			amigo = this.userAccountDBFacade.getUsers(friend);
 		} catch (Exception e) {
 			return null;
 		}
@@ -233,7 +234,7 @@ public class UserController {
 	public List<UserAccount> getRecommendedFriends(String login) throws Exception{
 		UserAccount user;
 		try {
-			user = this.dbController.getUsers(login);
+			user = this.userAccountDBFacade.getUsers(login);
 		}catch (Exception e) {
 			throw new Exception("Usuário inexistente");
 		}
@@ -271,7 +272,7 @@ public class UserController {
 			else
 				throw new Exception(e.getMessage());
 		}
-		this.dbController.addToDB(contaUsuario);
+		this.userAccountDBFacade.addToDB(contaUsuario);
 
 	}
 
@@ -291,7 +292,7 @@ public class UserController {
 			String photo, String country, String city, String gender,
 			String contactEmail) throws Exception {
 
-		UserAccount usuario = this.dbController.getUsers(login);
+		UserAccount usuario = this.userAccountDBFacade.getUsers(login);
 		if (!usuario.isLogged())
 			throw new Exception("Usuário não logado");
 		usuario.updateUserProfile(usuario, aboutMe, age, photo, country, city,
@@ -307,7 +308,7 @@ public class UserController {
 	 * @throws Exception
 	 */
 	public void setFieldPrivacy(String login, String field, String type) throws Exception {
-		UserAccount usuario = this.dbController.getUsers(login);
+		UserAccount usuario = this.userAccountDBFacade.getUsers(login);
 		if (!usuario.isLogged())
 			throw new Exception("Usuário não logado");
 		usuario.setFieldPrivacy(login, type, field);
@@ -325,7 +326,7 @@ public class UserController {
 
 		UserAccount user;
 		try {
-			user = this.dbController.getUsers(login);
+			user = this.userAccountDBFacade.getUsers(login);
 		} catch (Exception e) {
 			throw new Exception("Perfil inexistente");
 		}
@@ -348,12 +349,12 @@ public class UserController {
 		UserAccount viewerUser;
 		UserAccount ownerUser;
 		try {
-			viewerUser = this.dbController.getUsers(viewer);
+			viewerUser = this.userAccountDBFacade.getUsers(viewer);
 		} catch (Exception e) {
 			throw new Exception("Login do viewer não existente no sistema");
 		}
 		try {
-			ownerUser = this.dbController.getUsers(profileOwner);
+			ownerUser = this.userAccountDBFacade.getUsers(profileOwner);
 		} catch (Exception e) {
 			throw new Exception("Perfil inexistente");
 		}
@@ -372,11 +373,11 @@ public class UserController {
 	 * @throws Exception
 	 */
 	public void removeUserPreference(String login, String preference) throws Exception {
-		UserAccount user = this.dbController.getUsers(login);
+		UserAccount user = this.userAccountDBFacade.getUsers(login);
 		if (!user.isLogged())
 			throw new Exception("Usuário não logado");
 		user.getPreferences().remove(preference);
-		this.dbController.update(user);
+		this.userAccountDBFacade.update(user);
 
 	}
 
@@ -386,10 +387,10 @@ public class UserController {
 	 * @throws Exception
 	 */
 	public void deleteUser(String login) throws Exception {
-		UserAccount user = this.dbController.getUsers(login);
+		UserAccount user = this.userAccountDBFacade.getUsers(login);
 		if (!user.isLogged())
 			throw new Exception("Usuário não logado");
-		this.dbController.removeFromDB(login);
+		this.userAccountDBFacade.removeFromDB(login);
 
 	}
 
@@ -532,7 +533,7 @@ public class UserController {
 		String completeName = separatedFriendInformation[0] + " " + separatedFriendInformation[1];
 		String errorMessage = "";
 		try {
-			UserAccount newFriend = dbController.getUserFromCompleteName(completeName);
+			UserAccount newFriend = this.userAccountDBFacade.getUserFromCompleteName(completeName);
 			try {
 				usuario.getFriend(newFriend.getEmail());
 				errorMessage += "Usuários "+usuario.getName()+" "+usuario.getSurname()+" e "+completeName+" já são amigos";
@@ -556,10 +557,10 @@ public class UserController {
 	 * @throws Exception
 	 */
 	public void removeFriend(String login, String friend) throws Exception {
-		UserAccount usuario = this.dbController.getUsers(login);
+		UserAccount usuario = this.userAccountDBFacade.getUsers(login);
 		UserAccount amigo;
 		try {
-			amigo = this.dbController.getUsers(friend);
+			amigo = this.userAccountDBFacade.getUsers(friend);
 		} catch (Exception e) {
 			throw new Exception("Amigo não existente no sistema");
 		}
@@ -583,7 +584,7 @@ public class UserController {
 			if (grupo.getUsers().contains(friend)) {
 				grupo.getUsers().remove(friend);
 				user.getGroups().put(grupo.getName(), grupo);
-				this.dbController.update(user);
+				this.userAccountDBFacade.update(user);
 				user.updateFriends();
 				break;
 			}
@@ -591,15 +592,15 @@ public class UserController {
 	}
 
 	public UserAccount getUser(String login) throws Exception{
-		return this.dbController.getUser(login);
+		return this.userAccountDBFacade.getUser(login);
 	}
 
 	public UserAccount getUsers(String login) throws Exception{
-		return this.dbController.getUsers(login);
+		return this.userAccountDBFacade.getUsers(login);
 	}
 
 	public UserAccount findNewFriend(String login, String friend) throws Exception{
-		return this.dbController.findNewFriend(login, friend);
+		return this.userAccountDBFacade.findNewFriend(login, friend);
 	}
 }
 
