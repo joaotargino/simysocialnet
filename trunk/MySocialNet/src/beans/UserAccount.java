@@ -1,5 +1,6 @@
 package beans;
 
+import facades.ProfileFacade;
 import interfaces.ProfileIF;
 
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import java.util.TreeSet;
 import Util.Util;
 import controller.DBController;
 import controller.GroupController;
-import controller.ProfileController;
 
 /**
  * @author Rafael Aquino, Telles Nóbrega, Thiago Ortega
@@ -35,12 +35,12 @@ public class UserAccount implements Comparable<UserAccount>{
 	private List<UserAccount> friends;
 	private List<String> preferences;
 	private boolean logged;
-	private ProfileController profileController;
 	private GroupController groupController;
 	private DBController DBController;
 	private Map<String,String> pendingFriendship;
 	private Map<String,String> sentFriendship;
 	private List<String> sentFriendshipAux;
+	private ProfileFacade profileFacade;
 	private final double SIMILARITY_LEVEL = 0.35;
 
 
@@ -80,8 +80,8 @@ public class UserAccount implements Comparable<UserAccount>{
 		profileAll.init();
 		profileJustMe.init();
 		profileFriends.init();
+		profileFacade = ProfileFacade.getInstance();
 		DBController = new DBController();
-		profileController = new ProfileController();
 		friends = new ArrayList<UserAccount>();
 		sentFriendshipAux = new ArrayList<String>();
 		createGroups();
@@ -118,10 +118,10 @@ public class UserAccount implements Comparable<UserAccount>{
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
 		DBController = new DBController();
-		profileController = new ProfileController();
 		profileAll.init();
 		profileJustMe.init();
 		profileFriends.init();
+		profileFacade = ProfileFacade.getInstance();
 		sentFriendshipAux = new ArrayList<String>();
 		createGroups();
 	}
@@ -137,12 +137,12 @@ public class UserAccount implements Comparable<UserAccount>{
 		profileAll = new ProfileAll();
 		profileJustMe = new ProfileJustMe();
 		profileFriends = new ProfileFriends();
-		profileController = new ProfileController();
 		DBController = new DBController();
 		friends = new ArrayList<UserAccount>();
 		profileAll.init();
 		profileJustMe.init();
 		profileFriends.init();
+		profileFacade = ProfileFacade.getInstance();
 		logged = false;
 		sentFriendshipAux = new ArrayList<String>();
 		createGroups();
@@ -332,7 +332,7 @@ public class UserAccount implements Comparable<UserAccount>{
 	 * @param contactEmail
 	 */
 	public void updateUserProfile(UserAccount usuario, String aboutMe, String age, String photo, String country, String city, String gender, String contactEmail) {
-		profileController.updateUserProfile(usuario, aboutMe, age, photo, country, city, gender, contactEmail);
+		profileFacade.updateUserProfile(usuario, aboutMe, age, photo, country, city, gender, contactEmail);
 	}
 
 	/**
@@ -343,11 +343,11 @@ public class UserAccount implements Comparable<UserAccount>{
 	 * @throws Exception
 	 */
 	public void setFieldPrivacy(String owner, String visibility, String field) throws Exception {
-		profileController.setPrivacy(owner, visibility, field);
+		profileFacade.setPrivacy(owner, visibility, field);
 	}
 
 	public ProfileIF getProfile(UserAccount user, String visibility) {
-		return profileController.getProfile(user, visibility);
+		return profileFacade.getProfile(user, visibility);
 	}
 
 	public void setSentFriendship(Map<String,String> sentFriendship) {
