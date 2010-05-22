@@ -8,7 +8,7 @@ import Util.ProfileConstants;
  *
  */
 public class ProfileJustMe implements ProfileIF{
-	
+
 	private String aboutMe; 
 	private String photo; 
 	private String country; 
@@ -17,14 +17,14 @@ public class ProfileJustMe implements ProfileIF{
 	private String contactEmail;
 	private String age;
 	private static ProfileJustMe profile;
-	
+
 	public synchronized static ProfileJustMe getInstance() { 
 		if(profile == null) {
 			profile = new ProfileJustMe();
 		}
 		return profile;
 	}
-	
+
 	public void init() {
 		aboutMe = "";
 		photo = "";
@@ -34,7 +34,7 @@ public class ProfileJustMe implements ProfileIF{
 		contactEmail = "";
 		age = "";
 	}
-	
+
 	public String getPhoto() {
 		return photo;
 	}
@@ -86,16 +86,16 @@ public class ProfileJustMe implements ProfileIF{
 	public void setAboutMe(String aboutMe) {
 		this.aboutMe = aboutMe;
 	}
-	
+
 	public String getAboutMe() {
 		return aboutMe;
 	}
-	
+
 	@Override
 	public String getType() {
 		return ProfileConstants.JUST_ME;
 	}
-	
+
 	private String imprime() {
 		String string = "";
 		if (contactEmail != null) string += "contactEmail=" + contactEmail + ",";
@@ -108,7 +108,7 @@ public class ProfileJustMe implements ProfileIF{
 		return string;
 
 	}
-	
+
 	@Override
 	public String toString() {
 		String string = imprime();

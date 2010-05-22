@@ -2,16 +2,13 @@ package facades;
 
 import interfaces.ProfileIF;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 
-import Util.Util;
 import beans.Group;
 import beans.UserAccount;
 import controller.DBController;
-import dao.UsersDAO;
 
 public class UserAccountDBFacade {
 	private DBController dbController;

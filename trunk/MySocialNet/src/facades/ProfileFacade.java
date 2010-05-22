@@ -1,14 +1,14 @@
 package facades;
 
-import controller.ProfileController;
 import interfaces.ProfileIF;
-import Util.ProfileConstants;
 import beans.UserAccount;
+import controller.ProfileController;
 
 public class ProfileFacade {
 	
 	private static ProfileFacade instancia;
 	private ProfileController profileController;
+	
 	protected ProfileFacade() {
 		this.profileController = new ProfileController();
 	}

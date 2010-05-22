@@ -13,6 +13,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import Util.ProfileConstants;
 import Util.Util;
 import controller.DBController;
 import controller.GroupController;
@@ -69,19 +70,16 @@ public class UserAccount implements Comparable<UserAccount>{
 		if(Util.verifyEmail(email)) {
 			this.email = email;
 		}
+		DBController = new DBController();
 		logged = false;
 		groupController = new GroupController();
 		pendingFriendship = new HashMap<String,String>();
 		sentFriendship = new HashMap<String,String>();
 		preferences = new ArrayList<String>();
-		profileAll = new ProfileAll();
-		profileJustMe = new ProfileJustMe();
-		profileFriends = new ProfileFriends();
-		profileAll.init();
-		profileJustMe.init();
-		profileFriends.init();
+		profileAll = createProfiles(ProfileConstants.ALL);
+		profileJustMe = createProfiles(ProfileConstants.JUST_ME);
+		profileFriends = createProfiles(ProfileConstants.FRIENDS);
 		profileFacade = ProfileFacade.getInstance();
-		DBController = new DBController();
 		friends = new ArrayList<UserAccount>();
 		sentFriendshipAux = new ArrayList<String>();
 		createGroups();
@@ -108,46 +106,40 @@ public class UserAccount implements Comparable<UserAccount>{
 		if(Util.verifyEmail(email)) {
 			this.email = email;
 		}
+		DBController = new DBController();
 		logged = false;
 		groupController = new GroupController();
 		pendingFriendship = new HashMap<String,String>();
 		sentFriendship = new HashMap<String,String>();
 		preferences = new ArrayList<String>();
 		friends = new ArrayList<UserAccount>();
-		profileAll = new ProfileAll();
-		profileJustMe = new ProfileJustMe();
-		profileFriends = new ProfileFriends();
-		DBController = new DBController();
-		profileAll.init();
-		profileJustMe.init();
-		profileFriends.init();
+		profileAll = createProfiles(ProfileConstants.ALL);
+		profileJustMe = createProfiles(ProfileConstants.JUST_ME);
+		profileFriends = createProfiles(ProfileConstants.FRIENDS);
 		profileFacade = ProfileFacade.getInstance();
 		sentFriendshipAux = new ArrayList<String>();
 		createGroups();
 	}
-
+	
 	/**
 	 * Construtor de UserAccount
 	 */
 	public UserAccount() {
+		DBController = new DBController();
 		groupController = new GroupController();
 		pendingFriendship = new HashMap<String,String>();
 		sentFriendship = new HashMap<String,String>();
 		preferences = new ArrayList<String>();
-		profileAll = new ProfileAll();
-		profileJustMe = new ProfileJustMe();
-		profileFriends = new ProfileFriends();
-		DBController = new DBController();
 		friends = new ArrayList<UserAccount>();
-		profileAll.init();
-		profileJustMe.init();
-		profileFriends.init();
+		profileAll = createProfiles(ProfileConstants.ALL);
+		profileJustMe = createProfiles(ProfileConstants.JUST_ME);
+		profileFriends = createProfiles(ProfileConstants.FRIENDS);
 		profileFacade = ProfileFacade.getInstance();
 		logged = false;
 		sentFriendshipAux = new ArrayList<String>();
 		createGroups();
 	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -257,8 +249,8 @@ public class UserAccount implements Comparable<UserAccount>{
 		return this.friends;
 	}
 
-	public void setPreferences(List<String> preferencias) {
-		this.preferences = preferencias;
+	public void setPreferences(List<String> preferences) {
+		this.preferences = preferences;
 	}
 
 	public List<String> getPreferences() {
@@ -373,6 +365,23 @@ public class UserAccount implements Comparable<UserAccount>{
 		groups.put("familia", familia);
 		groups.put("melhores amigos", melhoresAmigos);
 		groups.put("trabalho", trabalho);
+	}
+	
+	private ProfileIF createProfiles(String type) {
+		ProfileIF profile = null; 
+		if (type.equals(ProfileConstants.ALL)) {
+			profile = new ProfileAll();
+			profile.init();
+		}
+		else if (type.equals(ProfileConstants.FRIENDS)) {
+			profile = new ProfileFriends();
+			profile.init();
+		}
+		else if (type.equals(ProfileConstants.JUST_ME)) {
+			profile = new ProfileJustMe();
+			profile.init();
+		}
+		return profile;
 	}
 
 	/**
