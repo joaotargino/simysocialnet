@@ -28,12 +28,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import beans.Group;
+import beans.Invitation;
 import beans.UserAccount;
 import dao.UsersDAO;
-import facades.UserAccountDBFacade;
+import facades.DBFacade;
 
 public class UserController {
-	private UserAccountDBFacade userAccountDBFacade;
+	private DBFacade userAccountDBFacade;
 	private List<UserAccount> usuariosLogados;
 
 
@@ -42,7 +43,7 @@ public class UserController {
 	 */
 	public UserController() {
 		usuariosLogados = new ArrayList<UserAccount>();
-		userAccountDBFacade = UserAccountDBFacade.getInstance();
+		userAccountDBFacade = DBFacade.getInstance();
 	}
 
 	public List<UserAccount> getUsuariosLogados() {
@@ -115,24 +116,29 @@ public class UserController {
 
 	/**
 	 * Envia um convite para um amigo
-	 * @param login
-	 * @param user
+	 * @param sender
+	 * @param receiver
 	 * @param message
 	 * @param group
 	 * @throws Exception
 	 */
-	public void sendFriendshipRequest(String login, String user, String message, String group) throws Exception {
+	public void sendFriendshipRequest(String sender, String receiver, String message, String group) throws Exception {
 		UserAccount convidado; 
 		try {
-			convidado = this.userAccountDBFacade.getUsers(user);
+			convidado = this.userAccountDBFacade.getUsers(receiver);
 		}catch(Exception e) {
 			throw new Exception("Contato inexistente");
 		}
-		if(login.equals(user)) throw new Exception("Operação não permitida");
-		UserAccount logado = this.userAccountDBFacade.getUsers(login);
+		if(sender.equals(receiver)) throw new Exception("Operação não permitida");
+		UserAccount logado = this.userAccountDBFacade.getUsers(sender);
 		if(!verifyIfUserIsLogged(logado)) throw new Exception("Usuário não logado");
-		logado.sendFriendshipRequest(user, group);
-		convidado.receiveFriendshipRequest(logado, login, message);
+		Invitation invitation = new Invitation();
+		invitation.setMessage(logado.toStringFullName() + " <" + sender + "> - mensagem: " + message);
+		invitation.setSenderGroup(group);
+		invitation.setSenderLogin(sender);
+		invitation.setReceiverLogin(receiver);
+		logado.sendFriendshipRequest(invitation);
+		convidado.receiveFriendshipRequest(invitation);
 	}
 
 	/**
@@ -146,8 +152,10 @@ public class UserController {
 		UserAccount user = this.userAccountDBFacade.getUsers(login);
 		UserAccount contato = this.userAccountDBFacade.getUsers(contact);
 		if(!verifyIfUserIsLogged(user)) throw new Exception("Usuário não logado");
-		user.acceptFriendshipRequest(contact, group, contato);
-		contato.removeSentFriendshipRequest(login,user);
+		Invitation invitation = user.acceptFriendshipRequest(contact, group, contato);
+		if (invitation != null) {
+			contato.removeSentFriendshipRequest(invitation,login,user);
+		}
 	}
 
 	/**
@@ -212,8 +220,8 @@ public class UserController {
 			throw new Exception("Login inexistente");
 		}
 		if(!verifyIfUserIsLogged(usuario)) throw new Exception("Usuário não logado");
-		usuario.declineFriendshipRequest(contact, usuario.getPendingFriendship());
-		contato.declineFriendshipRequest(login, contato.getSentFriendship());
+		usuario.declinePendingFriendshipRequest(contact, usuario.getPendingFriendship());
+		contato.declineSentFriendshipRequest(login, contato.getSentFriendship());
 	}
 
 	public UserAccount getFriend(String email, String friend) throws Exception {
@@ -478,7 +486,7 @@ public class UserController {
 		testValidFile(reader);
 		fileReader  = new FileReader(fileName);
 		reader = new BufferedReader(fileReader);
-		String friendInformation = reader.readLine();
+		String firstLine = reader.readLine();
 		String linhaLida = reader.readLine();
 		while (linhaLida != null) {
 			String errorInRestore = restoreSingleFriend(usuario, linhaLida);
@@ -487,10 +495,10 @@ public class UserController {
 		}
 		if (notImportedContacts.size() == 0) return "Todos os contatos foram importados";
 		return ("Contatos não importados: "+organizeNotImportedContacts(notImportedContacts));
-		
+
 
 	}
-	
+
 	/**
 	 * Organiza contatos não importados
 	 * @param notImportedContacts
@@ -539,7 +547,7 @@ public class UserController {
 				errorMessage += "Usuários "+usuario.getName()+" "+usuario.getSurname()+" e "+completeName+" já são amigos";
 				return errorMessage;
 			} catch(Exception e){}
-			if (newFriend.getPendingFriendship().containsKey(usuario.getEmail())) errorMessage = "Você já enviou um convite para o usuário "+completeName;
+			if (searchPendingFriendship(usuario.getEmail(), newFriend)) errorMessage = "Você já enviou um convite para o usuário "+completeName;
 			else {
 				String message = "Olá, "+newFriend.getEmail()+" me adicione como seu amigo.";
 				this.sendFriendshipRequest(usuario.getEmail(), newFriend.getEmail(), message, "conhecidos");
@@ -548,6 +556,17 @@ public class UserController {
 			errorMessage += completeName;
 		}
 		return errorMessage;
+
+	}
+	
+	
+	public boolean searchPendingFriendship(String email, UserAccount newFriend) {
+		Iterator<Invitation> iteraInvites = newFriend.getPendingFriendship().iterator();
+		while (iteraInvites.hasNext()) {
+			Invitation friendshipRequest = iteraInvites.next();
+			if (friendshipRequest.getSenderLogin().equals(email)) return true;
+		}
+		return false;
 	}
 
 	/**
