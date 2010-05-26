@@ -3,16 +3,17 @@ package controller;
 import java.util.Collections;
 import java.util.List;
 
-import beans.UserAccount;
 import beans.Group;
+import beans.UserAccount;
+import facades.DBFacade;
 
 public class GroupController {
 	
-	private DBController dbController;
+	private DBFacade dbFacade;
 	
 
 	public GroupController() {
-		this.dbController = new DBController();
+		this.dbFacade = DBFacade.getInstance();;
 	}
 
 	/**
@@ -24,11 +25,11 @@ public class GroupController {
 	 */
 	public void addToGroup(String login, String grupo, String loginToAdd) throws Exception {
 		
-		UserAccount usuario = this.dbController.getUsers(login);
+		UserAccount usuario = this.dbFacade.getUsers(login);
 		UserAccount usuarioToAdd;
 		
 		try {
-			usuarioToAdd = this.dbController.getUsers(loginToAdd);
+			usuarioToAdd = this.dbFacade.getUsers(loginToAdd);
 		} catch (Exception e) {
 			throw new Exception("Usuário a ser adicionado inexistente no sistema");
 		}
@@ -44,9 +45,9 @@ public class GroupController {
 		group.setUsers(users);
 		Collections.sort(group.getUsers());
 		usuario.getGroups().put(grupo, group);
-		this.dbController.update(usuario);
+		this.dbFacade.update(usuario);
 		usuario.updateFriends();
-		this.dbController.update();
+		this.dbFacade.update();
 	} 
 	
 	/**
@@ -68,7 +69,7 @@ public class GroupController {
 			}
 			if (found) break;
 		}
-		this.dbController.update(usuario);
+		this.dbFacade.update(usuario);
 	}
 
 	/**
@@ -79,12 +80,12 @@ public class GroupController {
 	 * @throws Exception
 	 */
 	public void removeFromGroup(String login, String grupo, String loginToRemove) throws Exception {
-		UserAccount usuario = this.dbController.getUsers(login);
+		UserAccount usuario = this.dbFacade.getUsers(login);
 		UserAccount usuarioToRemove;
 		String conhecidos = "conhecidos";
 		
 		try {
-			usuarioToRemove = this.dbController.getUsers(loginToRemove);
+			usuarioToRemove = this.dbFacade.getUsers(loginToRemove);
 		} catch (Exception e) {
 			throw new Exception("Usuário a ser removido inexistente no sistema");
 		}
@@ -96,7 +97,7 @@ public class GroupController {
 		group.getUsers().remove(usuarioToRemove);
 		grupoConhecidos.getUsers().add(usuarioToRemove);
 		
-		this.dbController.update(usuario);
+		this.dbFacade.update(usuario);
 	}
 	
 	public Group getGroup(UserAccount usuario, String group) throws Exception {
@@ -107,7 +108,7 @@ public class GroupController {
 
 	public UserAccount getMembro(String login, String friend, String group) throws Exception {
 		
-		UserAccount usuario = this.dbController.getUsers(login);
+		UserAccount usuario = this.dbFacade.getUsers(login);
 		if (!usuario.isLogged()) throw new Exception("Usuário não logado");
 		
 		List<UserAccount> listaUsuarios = getGroup(usuario,group).getUsers();
@@ -128,7 +129,7 @@ public class GroupController {
 	 * @throws Exception
 	 */
 	public Group listGroupMembers(String email, String group) throws Exception {
-		UserAccount usuario = this.dbController.getUsers(email);
+		UserAccount usuario = this.dbFacade.getUsers(email);
 		if (!usuario.isLogged())
 			throw new Exception("Usuário não logado");
 		return getGroup(usuario, group);
