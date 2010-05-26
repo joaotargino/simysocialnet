@@ -40,7 +40,7 @@
 	
 <target name="test">
 	<echo>Testando...</echo>
-	<java classname="acceptanceTest.Main" fork="true">
+	<java classname="acceptanceTest.Main" fork="true" >
 		<classpath path="${build}"/>
 		<classpath>
 		<pathelement path="lib/easyaccept.jar"/>
@@ -51,7 +51,7 @@
 	
 <target name="jar" depends="compile">
 	<echo>Gerando Jar </echo>
-	<jar destfile="${jar}" basedir="${build}" encoding="ISO-8859-1" manifest="${basedir}/META-INF/MANIFEST.MF"/>
+	<jar destfile="${jar}" basedir="${build}" manifest="${basedir}/META-INF/MANIFEST.MF"/>
 </target>
 	
 <target name="all" depends="clean,init,compile,doc,test,jar" description="perform all targets."/>
