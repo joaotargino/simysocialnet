@@ -18,32 +18,68 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	private ArrayList<ConviteRecebido> convitesPendentes;
 	private ArrayList<ConviteEnviado> convitesEnviados;
 	private ArrayList<Usuario> recommendFriends;
-	private Grupo escola, familia, melhoresAmigos,trabalho,conhecidos;
+	private Grupo conhecidos;
 	private ArrayList<Grupo> grupos;
-	private final double similaridade = 0.35;
+	private double similaridade = 0.35;
 
-	
+
 	public Usuario(String nome, String sobrenome, String email, String senha) throws Exception {
 		this.setNome(nome);
 		this.setSobrenome(sobrenome);
 		this.setEmail(email);
 		this.setSenha(senha);
 		this.perfil = new Perfil("", "", "", "", "", "", "");
-		this.escola = new Grupo("escola");
-		this.familia = new Grupo("familia");
-		this.melhoresAmigos = new Grupo("melhores amigos");
-		this.trabalho = new Grupo("trabalho");
-		this.conhecidos = new Grupo("conhecidos");
+		this.conhecidos = new Grupo("conhecidos",0.0);
 		this.convitesPendentes = new ArrayList<ConviteRecebido>();
 		this.convitesEnviados = new ArrayList<ConviteEnviado>();
 		this.recommendFriends = new ArrayList<Usuario>();
 		this.grupos = new ArrayList<Grupo>();
-		grupos.add(escola);
-		grupos.add(familia);
-		grupos.add(melhoresAmigos);
-		grupos.add(trabalho);
 		grupos.add(conhecidos);
-		
+
+	}
+
+	public void criarNovoGrupo(String nome, double peso) throws Exception {
+		if (this.possuiGrupo(nome)) {
+			throw new Exception("Grupo já existe");
+		}
+		Grupo novoGrupo = new Grupo(nome, peso);
+		grupos.add(novoGrupo);
+	}
+
+	public void removerGrupo(String nome) throws Exception {
+		if (!this.possuiGrupo(nome)) {
+			throw new Exception("Grupo não existe");
+		}
+		if (nome.equals("conhecidos")) {
+			throw new Exception("Grupo conhecidos não pode ser removido");
+		}
+		Grupo grupoParaRemover = new Grupo(nome, 0);
+		Iterator<Grupo> it = grupos.iterator();
+		while (it.hasNext()) {
+			Grupo grupo = it.next();
+			if(grupo.equals(grupoParaRemover)) {
+				Iterator<Usuario> usersIterator = grupo.getContatos().iterator();
+				while(usersIterator.hasNext()) {
+					Usuario contato = usersIterator.next();
+					this.addGroupMember(contato, "conhecidos");
+				}
+				break;
+			}
+		}
+		grupos.remove(grupoParaRemover);
+	}
+
+	public void renomearGrupo(String nomeAntigo, String novoNome) throws Exception {
+		if(!this.possuiGrupo(nomeAntigo)) {
+			throw new Exception("Grupo não existe");
+		}
+		Iterator<Grupo> it = grupos.iterator();
+		while (it.hasNext()) {
+			Grupo grupo = it.next();
+			if (grupo.getNome().equals(nomeAntigo)) {
+				grupo.setNome(novoNome);
+			}
+		}
 	}
 
 	public void setSenha(String senha) throws Exception {
@@ -68,6 +104,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			throw new Exception("E-mail inválido");
 		}
 		this.email = email;
+	}
+
+	public double getSimilaridade() {
+		return similaridade;
+	}
+
+	public void setSimilaridade(double similaridade) {
+		this.similaridade = similaridade;
 	}
 
 	/**
@@ -103,7 +147,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public String getSobrenome() {
 		return sobrenome;
 	}
-	
+
 	@Override
 	public String toString() {
 		try {
@@ -122,7 +166,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public Perfil getPerfil() {
 		return perfil;
 	}
-	
+
 	public String getNomeCompleto(){
 		return this.nome + " " + this.sobrenome;
 	}
@@ -154,7 +198,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 				throw new Exception("Você já enviou um convite para o usuário Fulano de Tal");
 			}
 		}
-		
+
 		ConviteEnviado convite = new ConviteEnviado(contato,grupo);
 		convitesEnviados.add(convite);
 	}
@@ -192,7 +236,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		if(convitesEnviados.size() == 0){
 			sentFriendship =  "Não há nenhuma solicitação de amizade pendente";
 		}
-		
+
 		Iterator<ConviteEnviado> convites = convitesEnviados.iterator();
 		while(convites.hasNext()){
 			ConviteEnviado c = convites.next();
@@ -225,7 +269,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			}
 		}
 	}
-	
+
 	/**
 	 * Aceita pedido de amizade
 	 * @param contato
@@ -240,9 +284,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 				return;
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Adiciona amigo
 	 * @param contato
@@ -255,9 +299,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 				convitesEnviados.remove(index);
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Busca amigo no grupo
 	 * @param friend
@@ -270,7 +314,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		if(g.getContatos().contains(friend))return "Nome=" + friend.getNome() + ",Sobrenome=" + friend.getSobrenome();
 		return null;
 	}
-	
+
 	/**
 	 * Retorna amigo pelo seu login
 	 * @param friend
@@ -280,7 +324,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public String getFriend(String friend) throws Exception {
 		for(int index = 0; index < grupos.size(); index++) {
 			ArrayList<Usuario> amigosGrupo = grupos.get(index).getContatos();
-			
+
 			Iterator<Usuario> u = amigosGrupo.iterator();
 			while(u.hasNext()){
 				Usuario c = u.next();
@@ -292,7 +336,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Retorna amigo pelo objeto Usuario
 	 * @param contato
@@ -312,7 +356,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Remove amigo
 	 * @param contato
@@ -322,7 +366,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		if(getFriend(contato) == null){
 			throw new Exception ("Amigo não encontrado em nenhum grupo");
 		}
-		
+
 		for(int index = 0; index < grupos.size(); index++) {
 			ArrayList<Usuario> amigosGrupo = grupos.get(index).getContatos();
 			for(int j = 0; j < amigosGrupo.size(); j++) {
@@ -332,9 +376,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Lista membros do grupo
 	 * @param grupo
@@ -345,7 +389,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		Grupo g = getGrupo(grupo);
 		return g.listContatos();
 	}
-	
+
 	/**
 	 * Adiciona contato no grupo
 	 * @param contato
@@ -369,7 +413,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			}
 		}
 	}
-	
+
 	/**
 	 * Remove contato do grupo
 	 * @param contato
@@ -383,140 +427,179 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		}
 		g.getContatos().remove(contato);
 		conhecidos.addContato(contato);
-		
+
 	}
+
+//	public List<Usuario> getGruposFamiliaEMelhoresAmigos(){
+//		List<Usuario> familiaAmigos = new ArrayList<Usuario>();
+//		familiaAmigos.addAll(familia.getContatos());
+//		familiaAmigos.addAll(melhoresAmigos.getContatos());
+//		return familiaAmigos;
+//	}
+
+	public String getRecommendFriends() throws Exception {
+//		String saida = "";
+//		recommend();
+//		if(recommendFriends.size() > 0){
+//			Iterator<Usuario> itRecommends = recommendFriends.iterator();
+//			while(itRecommends.hasNext()){
+//				Usuario u = itRecommends.next();
+//				saida += u.getNomeCompleto() + ",";
+//			}
+//			saida = saida.substring(0, saida.length() - 1);
+//		}
+//		return saida;
+		
+		Iterator<Grupo> iteradorDosMeusGrupos = this.getGrupos().iterator();
+		while (iteradorDosMeusGrupos.hasNext()) {
+			Grupo meuGrupo = iteradorDosMeusGrupos.next();
+			if (meuGrupo.getPeso() >= this.getSimilaridade()) {
+				procurarAmigoParaRecomendar(meuGrupo);
+			}
+		}
+		return recommendFriends.toString();
+	}
+
+	private void procurarAmigoParaRecomendar(Grupo meuGrupo) throws Exception {
+		Iterator<Usuario> procuraAmigos = meuGrupo.getContatos().iterator();
+		while (procuraAmigos.hasNext()) {
+			Usuario a = procuraAmigos.next();
+			Iterator<Grupo> iteraGruposDoAmigo = a.getGrupos().iterator();
+			while (iteraGruposDoAmigo.hasNext()) {
+				Grupo grupoDoAmigo = iteraGruposDoAmigo.next();
+				if (grupoDoAmigo.getPeso() >= this.getSimilaridade()) {
+					recomendaGrupoDeAmigos(grupoDoAmigo);
+				}
+			}
+		}
+	}
+
+	private void recomendaGrupoDeAmigos(Grupo grupoDoAmigo) throws Exception {
+		Iterator<Usuario> iteraPossiveisAmigos = grupoDoAmigo.getContatos().iterator();
+		while(iteraPossiveisAmigos.hasNext()) {
+			Usuario possivelAmigo = iteraPossiveisAmigos.next();
+			if(!recommendFriends.contains(possivelAmigo) && !possivelAmigo.getEmail().equals(this.email)
+					&& !getFriends().contains(possivelAmigo)){
+				recommendFriends.add(possivelAmigo);
+			}
+		}
+	}
+
+//	/**
+//	 * Metodo auxiliar para recomendar amigos
+//	 * @throws Exception
+//	 */
+//	private void recommend() throws Exception{
+//		ArrayList<Usuario> amigos = new ArrayList<Usuario>();
+//		amigos.addAll(melhoresAmigos.getContatos());
+//		amigos.addAll(familia.getContatos());
+//		for(Usuario user : getFriends()){
+//			getSimilarityFriends(user);
+//		}
+//	}
+
+//	private void getSimilarityFriends(Usuario usuario) throws Exception{
+//		for(Usuario contato : usuario.getGruposFamiliaEMelhoresAmigos()){
+//			double similaridadeFriend = calcSimilaridade(contato.getPerfil().getListPreferences());
+//			if(similaridadeFriend >= similaridade){
+//				if(!recommendFriends.contains(contato) && !contato.getEmail().equals(this.email)
+//						&& !getFriends().contains(contato)){
+//					recommendFriends.add(contato);
+//				}
+//			}
+//		}
+//	}
+
+	public void addUserPreference(String preference) {
+		perfil.setPreferences(preference);
+	}
+
+//	private double calcSimilaridade(ArrayList<String> preferenciasContato){
+//		ArrayList<String> minhasPreferencias = this.perfil.getListPreferences();
+//		double preferenciasComuns = 0.0 , uniao = 0.0;
+//		double similaridade = 0.0;
+//		for(int index = 0; index < minhasPreferencias.size(); index ++){
+//			if(preferenciasContato.contains(minhasPreferencias.get(index))){
+//				preferenciasComuns++;
+//			}
+//		}
+//		uniao = (minhasPreferencias.size() + preferenciasContato.size());
+//
+//		if(preferenciasComuns == 0.0 && uniao == 0.0){
+//			return 0.40;
+//		}
+//
+//		similaridade = preferenciasComuns / (minhasPreferencias.size() + preferenciasContato.size());
+//
+//		return similaridade;
+//	}
 	
-    public List<Usuario> getGruposFamiliaEMelhoresAmigos(){
-        List<Usuario> familiaAmigos = new ArrayList<Usuario>();
-        familiaAmigos.addAll(familia.getContatos());
-        familiaAmigos.addAll(melhoresAmigos.getContatos());
-        return familiaAmigos;
-    }
-   
-    public String getRecommendFriends() throws Exception {
-        String saida = "";
-        recommend();
-        if(recommendFriends.size() > 0){
-            Iterator<Usuario> itRecommends = recommendFriends.iterator();
-            while(itRecommends.hasNext()){
-                Usuario u = itRecommends.next();
-                saida += u.getNomeCompleto() + ",";
-            }
-            saida = saida.substring(0, saida.length() - 1);
-        }
-        return saida;
-    }
-   
-    /**
-     * Metodo auxiliar para recomendar amigos
-     * @throws Exception
-     */
-    private void recommend() throws Exception{
-        ArrayList<Usuario> amigos = new ArrayList<Usuario>();
-        amigos.addAll(melhoresAmigos.getContatos());
-        amigos.addAll(familia.getContatos());
-        for(Usuario user : getFriends()){
-            getSimilarityFriends(user);
-        }
-    }
-   
-    private void getSimilarityFriends(Usuario usuario) throws Exception{
-        for(Usuario contato : usuario.getGruposFamiliaEMelhoresAmigos()){
-            double similaridadeFriend = calcSimilaridade(contato.getPerfil().getListPreferences());
-            if(similaridadeFriend >= similaridade){
-                if(!recommendFriends.contains(contato) && !contato.getEmail().equals(this.email)
-                        && !getFriends().contains(contato)){
-                    recommendFriends.add(contato);
-                }
-            }
-        }
-    }
-   
-    public void addUserPreference(String preference) {
-        perfil.setPreferences(preference);
-    }
-   
-    private double calcSimilaridade(ArrayList<String> preferenciasContato){
-        ArrayList<String> minhasPreferencias = this.perfil.getListPreferences();
-        double preferenciasComuns = 0.0 , uniao = 0.0;
-        double similaridade = 0.0;
-        for(int index = 0; index < minhasPreferencias.size(); index ++){
-            if(preferenciasContato.contains(minhasPreferencias.get(index))){
-                preferenciasComuns++;
-            }
-        }
-        uniao = (minhasPreferencias.size() + preferenciasContato.size());
-       
-        if(preferenciasComuns == 0.0 && uniao == 0.0){
-            return 0.40;
-        }
-       
-        similaridade = preferenciasComuns / (minhasPreferencias.size() + preferenciasContato.size());
-       
-        return similaridade;
-    }
-	
+	public boolean possuiGrupo(String nomeGrupo) throws Exception {
+		Grupo grupo = new Grupo(nomeGrupo,0);
+		return grupos.contains(grupo);
+	}
+
 	/**
 	 * Retorna o grupo a apartir a string correspondente ao seu nome
 	 * @param nome o nome do grupo
 	 * @return grupo o grupo pesquisado ou null caso o grupo nao exista
 	 */
-	public Grupo getGrupo(String nome){
-		Iterator<Grupo> grupo = grupos.iterator();
-		while(grupo.hasNext()){
-			Grupo g = grupo.next();
-			if(g.getNome().equals(nome)){
-				return g;
-			}
-		} return null;
-	}
+	 public Grupo getGrupo(String nome){
+		 Iterator<Grupo> grupo = grupos.iterator();
+		 while(grupo.hasNext()){
+			 Grupo g = grupo.next();
+			 if(g.getNome().equals(nome)){
+				 return g;
+			 }
+		 } return null;
+	 }
 
-	public boolean containsContato(Usuario contato) {
-		for (int index = 0; index < grupos.size(); index++) {
-			Grupo g = grupos.get(index);
-			if(g.getContatos().contains(contato)){
-				return true;
-			}
-		}
-		return false;
-	}
+	 public boolean containsContato(Usuario contato) {
+		 for (int index = 0; index < grupos.size(); index++) {
+			 Grupo g = grupos.get(index);
+			 if(g.getContatos().contains(contato)){
+				 return true;
+			 }
+		 }
+		 return false;
+	 }
 
-	public ArrayList<Grupo> getGrupos(){
-		return this.grupos;
-	}
+	 public ArrayList<Grupo> getGrupos(){
+		 return this.grupos;
+	 }
 
 
-	public List<Usuario> getFriends(){
-        List<Usuario> friends = new ArrayList<Usuario>();
-        
-        for(Grupo g : grupos){
-                friends.addAll(g.getContatos());
-        }
-        
-        return friends;
-        
-	}
+	 public List<Usuario> getFriends(){
+		 List<Usuario> friends = new ArrayList<Usuario>();
 
-	@Override
-    public int compareTo(Usuario u) {
-		return (getNome()+" "+getSobrenome()).compareTo(u.getNome()+" "+u.getSobrenome());
-    }
+		 for(Grupo g : grupos){
+			 friends.addAll(g.getContatos());
+		 }
 
-	public String checkProfile(String visibility) {
-		return getPerfil().getVisibilidade(visibility);
-	}
+		 return friends;
 
-	public String viewProfile() {
-		return getPerfil().getVisibilidade("ALL");
-	}
+	 }
 
-	public void removeUserPreference(String preference) throws Exception {
-		getPerfil().removePreference(preference);
-	}
+	 @Override
+	 public int compareTo(Usuario u) {
+		 return (getNome()+" "+getSobrenome()).compareTo(u.getNome()+" "+u.getSobrenome());
+	 }
 
-	public String listUserPreference() {
-		return getPerfil().getPreferences();
-	}
+	 public String checkProfile(String visibility) {
+		 return getPerfil().getVisibilidade(visibility);
+	 }
 
-	
+	 public String viewProfile() {
+		 return getPerfil().getVisibilidade("ALL");
+	 }
+
+	 public void removeUserPreference(String preference) throws Exception {
+		 getPerfil().removePreference(preference);
+	 }
+
+	 public String listUserPreference() {
+		 return getPerfil().getPreferences();
+	 }
+
+
 }

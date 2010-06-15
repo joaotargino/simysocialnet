@@ -26,7 +26,6 @@ public class Sistema {
 	private Map<String, Usuario> listUsers = new HashMap<String, Usuario>();
 	private FacadeDB facadeDB = new FacadeDB();
 	private ArrayList<Usuario> usuariosLogadosAtuais = new ArrayList<Usuario>();
-	private ArrayList<String> grupos = new ArrayList<String>();
 	
 	/**
 	 * Construtor da Classe Sistema - Realiza a conexao com o BD
@@ -35,11 +34,6 @@ public class Sistema {
 	 */
 	public Sistema() throws FileNotFoundException, IOException{
 		facadeDB.conectionDB();
-		grupos.add("conhecidos");
-		grupos.add("escola");
-		grupos.add("familia");
-		grupos.add("melhores amigos");
-		grupos.add("trabalho");
 	}
 	
 	
@@ -397,7 +391,7 @@ public class Sistema {
 			return user.findGroupMember(contato,group);
 			
 		}
-		if (!grupos.contains(group)) throw new Exception("Grupo invalido");
+		if (!user.possuiGrupo(group)) throw new Exception("Grupo invalido");
 		return user.findGroupMember(contato,group);
 	}
 	
@@ -445,8 +439,8 @@ public class Sistema {
 	 * @throws Exception
 	 */
 	public String listGroupMembers(String email, String grupo) throws Exception {
-		if (!grupos.contains(grupo)) throw new Exception("Grupo " + grupo + " não existe");
 		Usuario user = getLogin(email);
+		if (!user.possuiGrupo(grupo)) throw new Exception("Grupo " + grupo + " não existe");
 		return user.listGroupMembers(grupo);
 	}
 	
@@ -458,8 +452,8 @@ public class Sistema {
 	 * @throws Exception
 	 */
 	public void addGroupMember(String email, String grupo, String user) throws Exception {
-		if (!grupos.contains(grupo)) throw new Exception("Grupo " + grupo + " não existe");
 		Usuario contato = listUsers.get(user);
+		if (!contato.possuiGrupo(grupo)) throw new Exception("Grupo " + grupo + " não existe");
 		if(contato == null){
 			throw new Exception("Usuário a ser adicionado inexistente no sistema");
 		}
@@ -477,7 +471,7 @@ public class Sistema {
 	public void removeGroupMember(String email, String group, String user) throws Exception {
 		Usuario usuario = getLogin(email);
 		Usuario contato = listUsers.get(user);
-		if (!grupos.contains(group)) throw new Exception("Grupo " + group + " não existe");
+		if (!usuario.possuiGrupo(group)) throw new Exception("Grupo " + group + " não existe");
 		if(contato == null)throw new Exception("Usuário a ser removido inexistente no sistema");
 		usuario.removeGroupMember(contato,group);
 	}
@@ -682,4 +676,23 @@ public class Sistema {
 		}
 	}
 	
+	public void criarNovoGrupo(String novoGrupo, double peso, String login) throws Exception {
+		Usuario contato = listUsers.get(login);
+		contato.criarNovoGrupo(novoGrupo, peso);
+	}
+	
+	public void removerGrupo(String nomeGrupo, String login) throws Exception {
+		Usuario contato = listUsers.get(login);
+		contato.removerGrupo(nomeGrupo);
+	}
+	
+	public void renomearGrupo(String nomeAntigo, String novoNome, String login) throws Exception {
+		Usuario contato = listUsers.get(login);
+		contato.renomearGrupo(nomeAntigo, novoNome);
+	}
+	
+	public void alterarSimilaridade(String login,double similaridade) throws Exception {
+		Usuario usuario = this.getLogin(login);
+		usuario.setSimilaridade(similaridade);
+	}
 }

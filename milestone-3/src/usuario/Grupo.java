@@ -10,14 +10,23 @@ public class Grupo {
 	private ArrayList<Usuario> usuariosDoGrupo;
 	private String nomeDoGrupo;
 	private String [] usuarios;
+	private double peso;
 	
 	/**
 	 * Construtor da classe Grupo criada para gerenciar os grupos
 	 * @param nome
+	 * @throws Exception 
 	 */
-	public Grupo(String nome) {
+	public Grupo(String nome, double peso) throws Exception {
+		if (nome == null || nome.trim().isEmpty()) {
+			throw new Exception("Nome do grupo eh null ou vazio");
+		}
+		if (peso < 0 || peso > 1) {
+			throw new Exception("Valor do peso invalido");
+		}
 		this.nomeDoGrupo = nome;
 		this.usuariosDoGrupo = new ArrayList<Usuario>();
+		this.peso = peso;
 	}
 	
 	/**
@@ -26,6 +35,10 @@ public class Grupo {
 	 */
 	public void addContato(Usuario amigo){
 		usuariosDoGrupo.add(amigo);
+	}
+	
+	public void setNome(String nome) {
+		this.nomeDoGrupo = nome;
 	}
 	
 	/**
@@ -97,6 +110,23 @@ public class Grupo {
 	 */
 	public ArrayList<Usuario> getContatos(){
 		return this.usuariosDoGrupo;
+	}
+
+	public void setPeso(double peso) {
+		this.peso = peso;
+	}
+
+	public double getPeso() {
+		return peso;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Grupo) {
+			Grupo novoGrupo = (Grupo) obj;
+			return this.nomeDoGrupo.equals(novoGrupo.nomeDoGrupo);
+		}
+		return false;
 	}
 	
 
